@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kuo-Chen Wu / 吳國禎 — CV</title>
+<meta name="description" content="Kuo-Chen Wu (吳國禎) — Algorithm Engineer, China Medical University Hospital AI Center.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:wght@100;300;400;500;700&family=Noto+Sans+JP:wght@200;300;400;500;700&family=Noto+Sans+TC:wght@200;300;400;500;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg-0: #050b16; --bg-1: #0a1424; --bg-2: #1a2e43; --bg-deep: #02050b;
+  --cyan: #28efef; --cyan-soft: rgba(40,239,239,0.65); --cyan-dim: rgba(40,239,239,0.35);
+  --glow: #22c8ff; --teal-dark: #106060;
+  --white: #ffffff; --text: rgba(255,255,255,0.92);
+  --text-dim: rgba(255,255,255,0.72); --text-faint: rgba(255,255,255,0.5);
+  --line: rgba(255,255,255,0.18); --line-soft: rgba(255,255,255,0.08);
+  --glow-text: 0 0 10px var(--glow), 0 0 10px var(--glow), 0 0 0.4px var(--glow);
+  --glow-text-strong: 0 0 14px var(--glow), 0 0 14px var(--glow), 0 0 0.4px var(--glow);
+  --serif: 'Amiri', 'Cormorant Garamond', serif;
+  --sans: 'Roboto', 'Noto Sans JP', 'Noto Sans TC', 'メイリオ', 'Meiryo', sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  background: var(--bg-0); color: var(--text);
+  font-family: var(--sans); font-weight: 300; line-height: 1.7;
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+::selection { background: rgba(40,239,239,0.22); color: #fff; }
+::-moz-selection { background: rgba(40,239,239,0.22); color: #fff; }
+
+/* ===== Parallax background ===== */
+.bgs { position: fixed; inset: 0; z-index: -10; overflow: hidden; pointer-events: none; }
+.bgs .sky { position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(34,200,255,0.10), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 85% 30%, rgba(40,239,239,0.05), transparent 70%),
+    radial-gradient(ellipse 70% 60% at 15% 70%, rgba(34,200,255,0.06), transparent 70%),
+    linear-gradient(180deg, #050b16 0%, #0a1424 40%, #0b1730 70%, #050b16 100%);
+}
+.bgs .layer { position: absolute; left: 0; right: 0; width: 100%; will-change: transform; }
+.bgs .layer1 { top: 0; height: 140vh;
+  background:
+    linear-gradient(180deg, transparent, rgba(34,200,255,0.04) 30%, transparent 60%, rgba(40,239,239,0.03) 80%, transparent),
+    radial-gradient(ellipse 100% 30% at 50% 40%, rgba(34,200,255,0.10), transparent 70%);
+  opacity: 0; animation: layerIn 1.8s ease-out 2.0s forwards;
+}
+.bgs .layer2 { top: 0; height: 160vh; opacity: 0; animation: layerIn 1.8s ease-out 2.2s forwards; }
+.bgs .layer3 { top: 0; height: 180vh;
+  background: radial-gradient(ellipse 60% 40% at 50% 90%, rgba(40,239,239,0.07), transparent 70%);
+  opacity: 0; animation: layerIn 1.8s ease-out 2.4s forwards;
+}
+@keyframes layerIn { to { opacity: 1; } }
+.bgs .layer2 .constellation { position: absolute; inset: 0; width: 100%; height: 100%; }
+.starfield { position: fixed; inset: 0; z-index: -9; pointer-events: none;
+  opacity: 0; animation: layerIn 2s ease-out 2.0s forwards;
+}
+
+/* ===== Memori three-tier ticks ===== */
+.memori {
+  position: fixed; top: 0; bottom: 0; width: 10px;
+  z-index: 5; pointer-events: none;
+  background-image:
+    repeating-linear-gradient(to bottom, var(--cyan) 0, var(--cyan) 1px, transparent 1px, transparent 100px),
+    repeating-linear-gradient(to bottom, rgba(255,255,255,0.55) 0, rgba(255,255,255,0.55) 1px, transparent 1px, transparent 30px),
+    repeating-linear-gradient(to bottom, rgba(255,255,255,0.22) 0, rgba(255,255,255,0.22) 1px, transparent 1px, transparent 6px);
+  background-size: 6px 100%, 5px 100%, 3px 100%;
+  background-position: 50% 0;
+  background-repeat: no-repeat;
+  opacity: 0; animation: memoriIn 1.4s ease-out 4.4s forwards;
+}
+@keyframes memoriIn { to { opacity: 1; } }
+.memori::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(255,255,255,0.08) 5%, rgba(255,255,255,0.18) 50%, rgba(255,255,255,0.08) 95%, transparent);
+  box-shadow: 0 0 4px rgba(34,200,255,0.3); transform: translateX(-0.5px);
+}
+.memori.left { left: 0; border-right: 1px solid rgba(255,255,255,0.06); }
+.memori.right { right: 0; border-left: 1px solid rgba(255,255,255,0.06); }
+
+/* ===== 5-stage opening sequence ===== */
+.opening-logo {
+  position: fixed; inset: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none; background: var(--bg-0);
+  animation: openingBgFade 1.4s ease-out 2.6s forwards, openingHide 0s linear 4s forwards;
+}
+@keyframes openingBgFade { to { background: transparent; } }
+@keyframes openingHide { to { visibility: hidden; pointer-events: none; } }
+.opening-logo svg { width: 560px; max-width: 84vw; height: auto; overflow: visible; }
+
+/* Text "Wu" and "KC" — stroke-then-fill, staggered draw */
+.opening-logo .path, .opening-logo .path2 {
+  stroke: #fff; fill: rgba(255,255,255,0);
+  stroke-width: 0.7; stroke-linecap: round; stroke-linejoin: round;
+  filter: drop-shadow(0 0 7px var(--glow)) drop-shadow(0 0 16px var(--glow));
+  stroke-dasharray: 1000; stroke-dashoffset: 1000;
+}
+.opening-logo .path  { animation: openingStroke 2.4s cubic-bezier(0.65,0,0.35,1) 0.5s forwards, openingFill 1.8s ease-out 1.6s forwards; }
+.opening-logo .path2 { animation: openingStroke 2.4s cubic-bezier(0.65,0,0.35,1) 0.8s forwards, openingFill 1.8s ease-out 1.9s forwards; }
+
+/* Subtle hairline ornament beneath the name — gradient-faded, draws after text */
+.opening-logo .ornament {
+  fill: none; stroke-width: 0.8; stroke-linecap: round;
+  filter: drop-shadow(0 0 5px var(--glow)) drop-shadow(0 0 12px var(--glow));
+  stroke-dasharray: 200; stroke-dashoffset: 200;
+  animation: openingStroke 1.4s ease-out 2.0s forwards;
+}
+.opening-logo .ornament-dot {
+  fill: var(--cyan);
+  filter: drop-shadow(0 0 5px var(--glow)) drop-shadow(0 0 10px var(--glow));
+  opacity: 0;
+  animation: openingStarFade 0.8s ease-out 2.8s forwards;
+}
+
+@keyframes openingStroke { to { stroke-dashoffset: 0; } }
+@keyframes openingFill { to { fill: rgba(255,255,255,1); } }
+@keyframes openingStarFade { to { opacity: 1; } }
+
+.stage { visibility: hidden; opacity: 0; animation: stageReveal 1s ease-out 3.4s forwards; }
+@keyframes stageReveal { 0% { visibility: visible; opacity: 0; } 100% { visibility: visible; opacity: 1; } }
+
+/* ===== Layout ===== */
+.wrap { max-width: 1040px; margin: 0 auto; padding: 90px 70px 110px; position: relative; }
+
+/* ===== Hero ===== */
+.hero {
+  text-align: center; padding: 40px 0 50px; position: relative;
+  min-height: 420px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.hero .badge {
+  font-family: var(--serif); font-style: italic;
+  font-size: 13px; color: var(--cyan); letter-spacing: 6px; text-transform: uppercase;
+  text-shadow: var(--glow-text);
+  opacity: 0; animation: heroFadeUp 1s ease-out 3.8s forwards;
+}
+.hero-title-svg {
+  display: block; width: 640px; max-width: 90vw; height: 130px;
+  margin: 20px auto 8px; overflow: visible;
+}
+.hero-title-svg .path-name {
+  stroke: var(--white); fill: rgba(255,255,255,0);
+  stroke-width: 0.6; stroke-linecap: round;
+  filter: drop-shadow(0 0 8px var(--glow)) drop-shadow(0 0 16px var(--glow));
+  stroke-dasharray: 1200; stroke-dashoffset: 1200;
+  animation: drawTitle 3.2s cubic-bezier(0.65,0,0.35,1) 3.8s forwards,
+             fillTitle 2.4s ease-out 5.6s forwards;
+}
+@keyframes drawTitle { to { stroke-dashoffset: 0; } }
+@keyframes fillTitle { to { fill: rgba(255,255,255,1); } }
+.hero .subname {
+  font-family: var(--serif); font-style: italic;
+  font-size: 22px; color: var(--text); letter-spacing: 18px;
+  text-shadow: var(--glow-text);
+  margin: 28px 0 14px; padding-left: 18px;
+  opacity: 0; animation: heroFadeUp 1.2s ease-out 5.8s forwards;
+}
+.hero .contact-line {
+  display: flex; justify-content: center; align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 14px 38px;
+  margin: 4px 0 32px;
+  opacity: 0; animation: heroFadeUp 1s ease-out 6.2s forwards;
+}
+.hero .contact-line .contact-item {
+  display: flex; flex-direction: column; align-items: center;
+  position: relative;
+}
+.hero .contact-line .contact-item:not(:last-child)::after {
+  content: '·';
+  position: absolute;
+  right: -23px; bottom: 1px;
+  color: rgba(40,239,239,0.55);
+  font-size: 20px;
+  line-height: 1;
+  text-shadow: 0 0 6px rgba(34,200,255,0.4);
+  pointer-events: none;
+}
+.hero .contact-line .label {
+  font-family: var(--serif); font-style: italic;
+  font-size: 10px;
+  color: rgba(40,239,239,0.55);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  text-shadow: 0 0 5px rgba(34,200,255,0.35);
+  margin-bottom: 5px;
+}
+.hero .contact-line a {
+  position: relative; display: inline-block;
+  font-family: var(--serif); font-style: italic;
+  font-size: 14px; letter-spacing: 1.5px;
+  color: var(--cyan);
+  text-decoration: none;
+  text-shadow: var(--glow-text);
+  padding: 2px 4px;
+  transition: text-shadow 0.3s ease;
+}
+.hero .contact-line a:hover {
+  text-shadow: 0 0 14px var(--glow), 0 0 14px var(--glow), 0 0 0.4px var(--glow);
+}
+.hero .contact-line a::after {
+  content: ''; position: absolute; left: 50%; bottom: -2px;
+  width: 0; height: 1px; background: var(--cyan);
+  box-shadow: 0 0 6px var(--cyan);
+  transform: translateX(-50%);
+  transition: width 0.35s cubic-bezier(0.65,0,0.35,1);
+}
+.hero .contact-line a:hover::after { width: calc(100% - 8px); }
+@keyframes heroFadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+.hero .boxline {
+  width: 360px; max-width: 70%; height: 14px; margin: 32px auto 0;
+  opacity: 0; animation: heroFadeUp 1s ease-out 6.8s forwards;
+}
+
+/* ===== Section titles ===== */
+section { margin-top: 80px; position: relative; }
+.sec-ttl { text-align: center; margin-bottom: 44px; position: relative; padding-top: 8px; }
+.sec-ttl .sec-svg { display: block; margin: 0 auto 14px; height: 56px; max-width: 100%; overflow: visible; }
+.sec-ttl .sec-svg .sec-path {
+  stroke: var(--white); fill: rgba(255,255,255,0);
+  stroke-width: 0.5;
+  filter: drop-shadow(0 0 6px var(--glow)) drop-shadow(0 0 12px var(--glow));
+  stroke-dasharray: 800; stroke-dashoffset: 800;
+}
+.sec-ttl.in-view .sec-svg .sec-path {
+  animation: secStroke 2.2s cubic-bezier(0.65,0,0.35,1) forwards, secFill 1.6s ease-out 0.8s forwards;
+}
+@keyframes secStroke { to { stroke-dashoffset: 0; } }
+@keyframes secFill { to { fill: rgba(255,255,255,1); } }
+.sec-ttl .sub {
+  font-family: var(--serif); font-style: italic;
+  font-size: 11px; letter-spacing: 8px;
+  color: var(--cyan); text-transform: uppercase;
+  text-shadow: var(--glow-text);
+  display: block; margin-top: 6px;
+}
+.sec-ttl .ttl-line { display: block; width: 200px; height: 14px; margin: 12px auto 0; }
+
+/* ===== Education ===== */
+.edu-item {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding: 18px 4px; border-bottom: 1px solid var(--line-soft); position: relative;
+}
+.edu-item::before { content: ''; position: absolute; left: 0; bottom: -1px;
+  width: 30px; height: 1px; background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
+.edu-item:last-child { border-bottom: none; }
+.edu-school { font-size: 17px; font-weight: 400; color: var(--white); letter-spacing: 0.5px; }
+.edu-degree { font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--text-dim); margin-top: 3px; }
+.edu-meta { font-family: var(--serif); font-style: italic; font-size: 13px;
+  color: var(--cyan); text-shadow: var(--glow-text); text-align: right; white-space: nowrap; }
+.edu-meta .place { display: block; color: var(--text-faint); font-style: normal;
+  font-family: var(--sans); font-size: 11px; letter-spacing: 2px; margin-top: 2px; }
+
+/* ===== Skill / role cards: four-edge gradient bloom on hover ===== */
+.skill-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.skill-card {
+  position: relative; padding: 26px 24px 22px;
+  background: rgba(0,0,0,0.32);
+  outline: 1px solid rgba(255,255,255,0.10); outline-offset: -1px;
+  transition: background 0.4s ease, outline-color 0.4s ease;
+}
+.skill-card .edge, .role-cell .edge {
+  position: absolute; pointer-events: none; z-index: 1;
+  transition: width 0.45s cubic-bezier(0.65,0,0.35,1), height 0.45s cubic-bezier(0.65,0,0.35,1);
+}
+.skill-card .edge-t, .role-cell .edge-t { left: 0; top: 0; height: 1px; width: 0; background: linear-gradient(90deg, #fff 0%, #6a6a6a 100%); }
+.skill-card .edge-l, .role-cell .edge-l { left: 0; top: 0; width: 1px; height: 0; background: linear-gradient(180deg, #fff 0%, #6a6a6a 100%); }
+.skill-card .edge-r, .role-cell .edge-r { right: 0; bottom: 0; width: 1px; height: 0; background: linear-gradient(0deg, #fff 0%, #6a6a6a 100%); }
+.skill-card .edge-b, .role-cell .edge-b { right: 0; bottom: 0; height: 1px; width: 0; background: linear-gradient(270deg, #fff 0%, #6a6a6a 100%); }
+.skill-card:hover, .role-cell:hover { outline-color: transparent; background: rgba(40,239,239,0.04); }
+.skill-card:hover .edge-t, .skill-card:hover .edge-b,
+.role-cell:hover .edge-t, .role-cell:hover .edge-b { width: 100%; }
+.skill-card:hover .edge-l, .skill-card:hover .edge-r,
+.role-cell:hover .edge-l, .role-cell:hover .edge-r { height: 100%; }
+.skill-card h3 {
+  font-family: var(--serif); font-style: italic; font-weight: 700;
+  font-size: 16px; color: var(--cyan); letter-spacing: 2px;
+  margin-bottom: 14px; text-shadow: var(--glow-text);
+  position: relative; z-index: 2;
+}
+.skill-card ul { list-style: none; position: relative; z-index: 2; }
+.skill-card li {
+  font-size: 13px; color: var(--text-dim);
+  padding: 3px 0 3px 16px; position: relative;
+}
+.skill-card li::before {
+  content: ''; position: absolute; left: 2px; top: 13px;
+  width: 8px; height: 1px; background: var(--cyan); box-shadow: 0 0 4px var(--cyan);
+}
+
+/* ===== Current roles ===== */
+.role-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-bottom: 50px; }
+.role-cell {
+  position: relative; padding: 24px 14px; text-align: center;
+  background: rgba(0,0,0,0.4);
+  outline: 1px solid rgba(255,255,255,0.10); outline-offset: -1px;
+  transition: background 0.4s ease, outline-color 0.4s ease;
+}
+.role-cell .role-label {
+  font-family: var(--serif); font-style: italic;
+  font-size: 13px; color: var(--cyan); letter-spacing: 4px;
+  margin-bottom: 8px; text-shadow: var(--glow-text);
+  position: relative; z-index: 2;
+}
+.role-cell .role-org { font-size: 14px; color: var(--white); position: relative; z-index: 2; }
+
+/* ===== Experience: episode circle ===== */
+.exp-block { position: relative; padding-left: 80px; margin-bottom: 60px; }
+.exp-block:last-child { margin-bottom: 0; }
+.exp-episode { position: absolute; left: 0; top: 0; width: 60px; height: 100%; }
+.exp-episode .crcl {
+  position: absolute; left: 0; top: 0;
+  width: 40px; height: 40px;
+  border: 1px solid #fff; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--serif); font-style: italic; font-size: 18px;
+  color: #fff; text-shadow: var(--glow-text);
+  box-shadow: 0 0 12px rgba(34,200,255,0.25), inset 0 0 8px rgba(34,200,255,0.15);
+  background: rgba(0,0,0,0.4);
+}
+.exp-episode .line {
+  position: absolute; left: 19px; top: 50px;
+  width: 1px; height: 20px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.1));
+}
+.exp-episode .txt {
+  position: absolute; left: -38px; top: 100px; width: 130px;
+  font-family: var(--serif); font-style: italic;
+  font-size: 14px; color: var(--text-dim);
+  letter-spacing: 4px; text-align: right;
+  transform: rotate(-90deg); transform-origin: right top;
+  white-space: nowrap;
+}
+.exp-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; flex-wrap: wrap; }
+.exp-role {
+  font-family: var(--serif); font-style: italic; font-weight: 700;
+  font-size: 22px; color: var(--cyan); text-shadow: var(--glow-text); letter-spacing: 1px;
+}
+.exp-date {
+  font-family: var(--serif); font-style: italic; font-size: 13px;
+  color: var(--cyan); text-shadow: var(--glow-text);
+}
+.exp-org {
+  font-size: 14px; color: var(--text-dim);
+  margin-bottom: 18px; padding-bottom: 12px;
+  border-bottom: 1px dashed var(--line-soft); position: relative;
+}
+.exp-org::after {
+  content: ''; position: absolute; left: 0; bottom: -1px;
+  width: 60px; height: 1px; background: var(--cyan); box-shadow: 0 0 6px var(--cyan);
+}
+.exp-project {
+  font-family: var(--serif); font-style: italic; font-size: 15px;
+  color: var(--cyan-soft); text-shadow: var(--glow-text);
+  margin: 18px 0 14px; padding-left: 14px; border-left: 2px solid var(--cyan);
+}
+.star-block { margin-top: 10px; }
+.star-line {
+  font-size: 13.5px; color: var(--text-dim);
+  margin-bottom: 8px; text-align: justify; line-height: 1.75;
+}
+.star-line .label {
+  font-family: var(--serif); font-weight: 700; font-style: italic;
+  color: var(--cyan); margin-right: 6px; letter-spacing: 1px;
+  text-shadow: var(--glow-text);
+}
+
+/* ===== Pubs/patents/sub-headings ===== */
+.sub-heading {
+  font-family: var(--serif); font-style: italic;
+  font-size: 18px; color: var(--cyan); letter-spacing: 4px;
+  margin: 30px 0 14px; padding: 8px 0 12px 8px;
+  position: relative; text-shadow: var(--glow-text);
+}
+.sub-heading::before, .sub-heading::after {
+  content: ''; position: absolute; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent 0%, var(--cyan) 15%, rgba(40,239,239,0.4) 50%, var(--cyan) 85%, transparent 100%);
+  filter: blur(0.4px); opacity: 0.45;
+}
+.sub-heading::before { top: 0; }
+.sub-heading::after { bottom: 0; }
+.sub-heading:first-child { margin-top: 0; }
+
+.pub-entry {
+  display: flex; align-items: flex-start;
+  padding: 12px 6px; border-bottom: 1px solid var(--line-soft);
+  font-size: 13px; line-height: 1.7;
+  transition: background 0.3s ease, padding 0.3s ease;
+  position: relative;
+}
+.pub-entry:hover { background: rgba(40,239,239,0.04); padding-left: 14px; }
+.pub-entry::before {
+  content: ''; position: absolute; left: 0; top: 50%;
+  width: 0; height: 1px; background: var(--cyan); box-shadow: 0 0 4px var(--cyan);
+  transition: width 0.3s ease;
+}
+.pub-entry:hover::before { width: 6px; }
+.q-tag {
+  flex: 0 0 40px; margin-right: 14px;
+  font-family: var(--serif); font-style: italic; font-weight: 700;
+  font-size: 13px; text-align: center; padding: 3px 0;
+  border: 1px solid; border-radius: 2px; letter-spacing: 1px;
+}
+.q-tag.q1 { color: #fff; border-color: var(--cyan); background: rgba(40,239,239,0.12); text-shadow: var(--glow-text); }
+.q-tag.q2 { color: var(--cyan); border-color: var(--cyan-soft); text-shadow: 0 0 4px rgba(34,200,255,0.4); }
+.q-tag.q3 { color: var(--text-dim); border-color: var(--line); }
+.pub-body { flex: 1; color: var(--text-dim); }
+.pub-body .me { color: #fff; font-weight: 500; text-shadow: 0 0 4px rgba(34,200,255,0.3); }
+.pub-body em { color: var(--cyan-soft); font-style: italic; }
+.pub-body a {
+  color: var(--text-faint); text-decoration: none; word-break: break-all;
+  border-bottom: 1px dotted rgba(255,255,255,0.15);
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+.pub-body a:hover { color: var(--cyan); border-bottom-color: var(--cyan); text-shadow: var(--glow-text); }
+
+.conf-entry { padding: 14px 6px; border-bottom: 1px solid var(--line-soft); font-size: 13px;
+  transition: background 0.3s ease, padding 0.3s ease; }
+.conf-entry:hover { background: rgba(40,239,239,0.04); padding-left: 14px; }
+.conf-head { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 4px; flex-wrap: wrap; }
+.conf-venue {
+  color: #fff; font-family: var(--serif); font-style: italic; font-weight: 700;
+  font-size: 14px; letter-spacing: 1px;
+}
+.conf-meta {
+  color: var(--cyan); font-family: var(--serif); font-style: italic; font-size: 12px;
+  text-shadow: var(--glow-text);
+}
+.conf-title { color: var(--text-dim); }
+.invited {
+  display: inline-block; background: var(--cyan); color: var(--bg-deep);
+  font-family: var(--serif); font-style: italic; font-weight: 700;
+  font-size: 10px; padding: 1px 8px; letter-spacing: 1px; margin-right: 6px;
+  vertical-align: middle; box-shadow: 0 0 8px rgba(40,239,239,0.5);
+}
+
+.patent-entry { padding: 12px 6px; border-bottom: 1px solid var(--line-soft); font-size: 13px;
+  transition: background 0.3s ease, padding 0.3s ease; }
+.patent-entry:hover { background: rgba(40,239,239,0.04); padding-left: 14px; }
+.patent-head { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.patent-id {
+  font-family: var(--serif); font-style: italic; font-weight: 700;
+  color: var(--cyan); letter-spacing: 1px; text-shadow: var(--glow-text);
+}
+.patent-date { font-family: var(--serif); font-style: italic; font-size: 12px; color: var(--text-faint); }
+.patent-title { color: var(--text-dim); margin-top: 3px; }
+
+.comp-entry {
+  display: flex; align-items: baseline;
+  padding: 12px 6px; border-bottom: 1px solid var(--line-soft);
+  font-size: 13px; transition: background 0.3s ease, padding 0.3s ease;
+}
+.comp-entry:hover { background: rgba(40,239,239,0.04); padding-left: 14px; }
+.comp-year {
+  flex: 0 0 64px; font-family: var(--serif); font-style: italic;
+  color: var(--cyan); font-size: 19px; letter-spacing: 1px;
+  text-shadow: var(--glow-text);
+}
+.comp-award { flex: 0 0 auto; color: #fff; font-weight: 500; min-width: 200px; margin-right: 14px; letter-spacing: 0.5px; }
+.comp-body { flex: 1; color: var(--text-dim); }
+.comp-body strong { color: #fff; font-weight: 500; text-shadow: 0 0 4px rgba(34,200,255,0.3); }
+
+.cv-footer { margin-top: 110px; padding-top: 40px; text-align: center;
+  border-top: 1px solid var(--line-soft); position: relative; }
+.cv-footer::before {
+  content: ''; position: absolute; top: -1px; left: 50%;
+  transform: translateX(-50%); width: 100px; height: 1px;
+  background: var(--cyan); box-shadow: 0 0 12px var(--cyan);
+}
+.cv-footer::after {
+  content: ''; position: absolute; top: -5px; left: 50%;
+  transform: translateX(-50%); width: 10px; height: 10px;
+  background: var(--cyan); border-radius: 50%;
+  box-shadow: 0 0 14px var(--cyan), 0 0 6px #fff;
+}
+.cv-footer .tagline {
+  font-family: var(--serif); font-style: italic;
+  font-size: 19px; color: #fff; letter-spacing: 5px;
+  text-shadow: var(--glow-text-strong); margin-top: 14px;
+}
+.cv-footer .meta { font-size: 11px; color: var(--text-faint); letter-spacing: 3px; margin-top: 14px; }
+
+/* ===== Top nav bar ===== */
+.topnav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  background: rgba(5, 11, 22, 0.78);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  border-bottom: 1px solid rgba(40,239,239,0.18);
+  padding: 12px 14px;
+  text-align: center;
+  opacity: 0;
+  animation: navFadeIn 1s ease-out 3.4s forwards;
+}
+.topnav::after {
+  content: '';
+  position: absolute; left: 0; right: 0; bottom: -2px;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(40,239,239,0) 10%,
+    rgba(40,239,239,0.5) 50%,
+    rgba(40,239,239,0) 90%,
+    transparent 100%);
+  filter: blur(0.3px);
+}
+@keyframes navFadeIn { to { opacity: 1; } }
+
+.topnav-inner {
+  display: inline-flex; flex-wrap: wrap; justify-content: center; align-items: center;
+  gap: 0;
+}
+.topnav a {
+  position: relative;
+  font-family: var(--serif); font-style: italic;
+  font-size: 13px; color: var(--text-dim);
+  text-decoration: none; letter-spacing: 2.5px;
+  padding: 6px 18px;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+  white-space: nowrap;
+}
+.topnav a:hover {
+  color: var(--cyan);
+  text-shadow: var(--glow-text);
+}
+.topnav a:not(:last-child)::after {
+  content: '';
+  position: absolute; right: 0; top: 50%;
+  width: 1px; height: 12px;
+  background: rgba(255,255,255,0.18);
+  transform: translateY(-50%);
+}
+.topnav a::before {
+  content: '';
+  position: absolute; left: 50%; bottom: 0;
+  width: 0; height: 1px;
+  background: var(--cyan); box-shadow: 0 0 6px var(--cyan);
+  transform: translateX(-50%);
+  transition: width 0.35s cubic-bezier(0.65,0,0.35,1);
+}
+.topnav a:hover::before { width: calc(100% - 36px); }
+
+html { scroll-behavior: smooth; }
+section { scroll-margin-top: 80px; }
+
+.print-btn {
+  position: fixed; right: 32px; bottom: 32px; z-index: 90;
+  background: rgba(0,0,0,0.6);
+  border: 1px solid rgba(255,255,255,0.6); border-radius: 18px;
+  color: #fff; font-family: var(--serif); font-style: italic;
+  font-size: 13px; letter-spacing: 3px;
+  padding: 10px 22px; cursor: pointer;
+  transition: all 0.3s ease-out;
+  backdrop-filter: blur(8px);
+}
+.print-btn:hover { background-color: var(--teal-dark); border-color: var(--teal-dark); }
+@media print { .print-btn { display: none !important; } .topnav { display: none !important; } }
+
+/* ===== Print ===== */
+@media print {
+  @page { size: A4; margin: 14mm 12mm; }
+  html, body { background: #fff !important; color: #111 !important; font-size: 10pt; line-height: 1.5; }
+  .bgs, .starfield, .memori, .opening-logo { display: none !important; }
+  .stage { visibility: visible !important; opacity: 1 !important; animation: none !important; }
+  .wrap { max-width: 100%; padding: 0; }
+  .hero { padding: 0 0 18px; min-height: 0; }
+  .hero-title-svg { width: 100%; height: 100px; }
+  .hero-title-svg .path-name { stroke: #0a1424 !important; fill: #0a1424 !important; filter: none !important;
+    stroke-dashoffset: 0 !important; animation: none !important; }
+  .hero .badge, .hero .subname { color: #2a5d7a !important; text-shadow: none !important; animation: none !important; opacity: 1 !important; }
+  .hero .contact-line { color: #333 !important; text-shadow: none !important; animation: none !important; opacity: 1 !important; gap: 6px 24px !important; }
+  .hero .contact-line .label { color: #2a5d7a !important; text-shadow: none !important; }
+  .hero .contact-line a { color: #333 !important; text-shadow: none !important; }
+  .hero .contact-line a::after { display: none !important; }
+  .hero .contact-line .contact-item::after { color: #888 !important; }
+  .hero .boxline { display: none; }
+  section { margin-top: 22px; page-break-inside: avoid; }
+  .sec-ttl { margin-bottom: 14px; }
+  .sec-ttl .sec-svg .sec-path { stroke: #0a1424 !important; fill: #0a1424 !important; filter: none !important; stroke-dashoffset: 0 !important; animation: none !important; }
+  .sec-ttl .sub { color: #2a5d7a !important; text-shadow: none !important; }
+  .sec-ttl .ttl-line { display: none; }
+  .edu-school, .role-cell .role-org { color: #0a1424 !important; }
+  .edu-degree, .edu-meta, .role-cell .role-label, .skill-card h3, .exp-role, .exp-project,
+  .sub-heading, .patent-id, .comp-year, .conf-meta, .exp-date { color: #1a4d6e !important; text-shadow: none !important; }
+  .edu-meta .place, .exp-org, .star-line, .conf-title, .patent-title, .comp-body, .pub-body { color: #333 !important; }
+  .conf-venue { color: #0a1424 !important; }
+  .skill-card, .role-cell { background: #f5f8fa !important; outline: 1px solid #d0d6dc !important; animation: none !important; }
+  .skill-card .edge, .role-cell .edge { display: none !important; }
+  .skill-card li::before, .edu-item::before, .exp-org::after { background: #2a5d7a !important; box-shadow: none !important; }
+  .exp-project { border-left-color: #2a5d7a !important; }
+  .exp-episode .crcl { background: #fff !important; color: #0a1424 !important; border-color: #2a5d7a !important; box-shadow: none !important; text-shadow: none !important; }
+  .exp-episode .txt { color: #555 !important; }
+  .exp-episode .line { background: #aaa !important; }
+  .q-tag.q1 { background: #2a5d7a !important; color: #fff !important; border-color: #2a5d7a !important; text-shadow: none !important; }
+  .q-tag.q2 { color: #2a5d7a !important; border-color: #2a5d7a !important; text-shadow: none !important; }
+  .q-tag.q3 { color: #555 !important; border-color: #aaa !important; }
+  .invited { background: #2a5d7a !important; color: #fff !important; box-shadow: none !important; }
+  .pub-body .me, .comp-body strong { color: #0a1424 !important; text-shadow: none !important; }
+  .pub-body em { color: #1a4d6e !important; }
+  .pub-body a { color: #555 !important; border-bottom: none !important; }
+  .pub-entry:hover, .comp-entry:hover, .skill-card:hover, .role-cell:hover, .patent-entry:hover, .conf-entry:hover {
+    background: transparent !important; padding-left: 6px !important;
+  }
+  .pub-entry::before { display: none !important; }
+  .sub-heading::before, .sub-heading::after { background: #2a5d7a !important; opacity: 0.6 !important; height: 1px !important; }
+  .cv-footer { border-top-color: #aaa !important; margin-top: 30px; }
+  .cv-footer::before, .cv-footer::after { background: #2a5d7a !important; box-shadow: none !important; }
+  .cv-footer .tagline { color: #0a1424 !important; text-shadow: none !important; font-size: 13pt; }
+  .cv-footer .meta { color: #555 !important; }
+  .exp-block, .skill-card, .role-cell, .pub-entry, .patent-entry, .comp-entry, .conf-entry { break-inside: avoid; }
+}
+
+@media (max-width: 800px) {
+  .wrap { padding: 70px 30px 80px; }
+  .hero { min-height: 320px; padding: 20px 0 30px; }
+  .hero-title-svg { height: 80px; }
+  .skill-grid, .role-row { grid-template-columns: 1fr; gap: 16px; }
+  .exp-block { padding-left: 60px; }
+  .exp-episode .txt { display: none; }
+  .comp-entry { flex-wrap: wrap; }
+  .comp-award { min-width: 0; }
+  .hero .subname { font-size: 18px; letter-spacing: 12px; padding-left: 12px; }
+  .topnav { padding: 8px 2px; }
+  .topnav a { padding: 4px 7px; font-size: 10.5px; letter-spacing: 1px; }
+  .topnav a:not(:last-child)::after { height: 9px; }
+  section { scroll-margin-top: 60px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Opening logo: "Wu KC" with subtle hairline ornament beneath -->
+<div class="opening-logo" aria-hidden="true">
+  <svg viewBox="0 0 480 130" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="ornGrad" x1="0%" x2="100%" y1="0%" y2="0%">
+        <stop offset="0%"   stop-color="#fff" stop-opacity="0"/>
+        <stop offset="25%"  stop-color="#fff" stop-opacity="0.55"/>
+        <stop offset="50%"  stop-color="#fff" stop-opacity="0.85"/>
+        <stop offset="75%"  stop-color="#fff" stop-opacity="0.55"/>
+        <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+
+    <!-- "Wu" — italic Amiri serif -->
+    <text class="path" x="222" y="80"
+          text-anchor="end"
+          font-family="Amiri, Cormorant Garamond, serif"
+          font-style="italic"
+          font-size="80"
+          font-weight="400">Wu</text>
+
+    <!-- "KC" — italic Amiri serif -->
+    <text class="path2" x="258" y="80"
+          text-anchor="start"
+          font-family="Amiri, Cormorant Garamond, serif"
+          font-style="italic"
+          font-size="80"
+          font-weight="400">KC</text>
+
+    <!-- Hairline ornament — white gradient fading at both ends + cyan center dot -->
+    <line class="ornament" x1="110" y1="110" x2="370" y2="110"
+          stroke="url(#ornGrad)" stroke-width="1"/>
+    <circle class="ornament-dot" cx="240" cy="110" r="2.2"/>
+  </svg>
+</div>
+
+<!-- Background parallax layers -->
+<div class="bgs">
+  <div class="sky"></div>
+  <div class="layer layer1"></div>
+  <div class="layer layer2">
+    <svg class="constellation" viewBox="0 0 1000 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <g stroke="rgba(40,239,239,0.18)" stroke-width="0.5" fill="none">
+        <line x1="120" y1="180" x2="220" y2="240"/><line x1="220" y1="240" x2="280" y2="180"/><line x1="280" y1="180" x2="340" y2="260"/>
+        <line x1="600" y1="120" x2="680" y2="200"/><line x1="680" y1="200" x2="740" y2="160"/><line x1="740" y1="160" x2="820" y2="220"/>
+        <line x1="200" y1="540" x2="280" y2="600"/><line x1="280" y1="600" x2="340" y2="540"/>
+        <line x1="700" y1="500" x2="780" y2="560"/><line x1="780" y1="560" x2="850" y2="520"/>
+      </g>
+      <g fill="rgba(40,239,239,0.5)">
+        <circle cx="120" cy="180" r="1.5"/><circle cx="220" cy="240" r="2"/><circle cx="280" cy="180" r="1.5"/><circle cx="340" cy="260" r="1.8"/>
+        <circle cx="600" cy="120" r="1.5"/><circle cx="680" cy="200" r="2.2"/><circle cx="740" cy="160" r="1.5"/><circle cx="820" cy="220" r="1.8"/>
+        <circle cx="200" cy="540" r="1.8"/><circle cx="280" cy="600" r="2.2"/><circle cx="340" cy="540" r="1.5"/>
+        <circle cx="700" cy="500" r="1.8"/><circle cx="780" cy="560" r="2"/><circle cx="850" cy="520" r="1.5"/>
+      </g>
+    </svg>
+  </div>
+  <div class="layer layer3"></div>
+</div>
+
+<canvas class="starfield" id="starfield"></canvas>
+<div class="memori left" aria-hidden="true"></div>
+<div class="memori right" aria-hidden="true"></div>
+
+<button class="print-btn" onclick="window.print()">⤓ EXPORT PDF</button>
+
+<nav class="topnav" aria-label="Section navigation">
+  <div class="topnav-inner">
+    <a href="#" class="nav-home">Profile</a>
+    <a href="#education-sec">Education</a>
+    <a href="#skills-sec">Technical Skills</a>
+    <a href="#experience-sec">Experience</a>
+    <a href="#publications-sec">Publications</a>
+    <a href="#patents-sec">Patents</a>
+    <a href="#awards-sec">Awards &amp; Competitions</a>
+  </div>
+</nav>
+
+<div class="stage">
+<div class="wrap">
+
+  <header class="hero">
+    <div class="badge">— Curriculum Vitae —</div>
+    <svg class="hero-title-svg" viewBox="0 0 640 100" xmlns="http://www.w3.org/2000/svg">
+      <text class="path-name" x="320" y="78"
+            text-anchor="middle"
+            font-family="Amiri, serif" font-size="72" font-weight="400"
+            letter-spacing="6">KUO-CHEN <tspan font-style="italic" dx="14">WU</tspan></text>
+    </svg>
+    <div class="subname">吳　國　禎</div>
+    <div class="contact-line">
+      <div class="contact-item">
+        <div class="label">Phone</div>
+        <a href="tel:+886925595900">+886&nbsp;925-595-900</a>
+      </div>
+      <div class="contact-item">
+        <div class="label">Business Email</div>
+        <a href="mailto:d09945002@ntu.edu.tw">d09945002@ntu.edu.tw</a>
+      </div>
+      <div class="contact-item">
+        <div class="label">Personal Email</div>
+        <a href="mailto:robinsixrainbow@gmail.com">robinsixrainbow@gmail.com</a>
+      </div>
+    </div>
+    <svg class="boxline" viewBox="0 0 360 14" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="bl1" x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0%" stop-color="#28efef" stop-opacity="0"/>
+          <stop offset="15%" stop-color="#28efef" stop-opacity="0.55"/>
+          <stop offset="50%" stop-color="#28efef" stop-opacity="1"/>
+          <stop offset="85%" stop-color="#28efef" stop-opacity="0.55"/>
+          <stop offset="100%" stop-color="#28efef" stop-opacity="0"/>
+        </linearGradient>
+        <filter id="blGlow" x="-20%" y="-200%" width="140%" height="500%">
+          <feGaussianBlur stdDeviation="1.2" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <line x1="0" y1="7" x2="360" y2="7" stroke="url(#bl1)" stroke-width="1" filter="url(#blGlow)"/>
+      <circle cx="180" cy="7" r="5.5" fill="rgba(40,239,239,0.3)"/>
+      <circle cx="180" cy="7" r="2.4" fill="#28efef"/>
+      <line x1="2" y1="3" x2="2" y2="11" stroke="rgba(255,255,255,0.5)" stroke-width="0.6"/>
+      <line x1="358" y1="3" x2="358" y2="11" stroke="rgba(255,255,255,0.5)" stroke-width="0.6"/>
+    </svg>
+  </header>
+
+  <section id="education-sec">
+    <div class="sec-ttl">
+      <svg class="sec-svg" viewBox="0 0 400 56" xmlns="http://www.w3.org/2000/svg">
+        <text class="sec-path" x="200" y="42" text-anchor="middle"
+              font-family="Amiri, serif" font-size="38" letter-spacing="4">Education</text>
+      </svg>
+      <span class="sub">academic background</span>
+      <svg class="ttl-line" viewBox="0 0 200 14" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs><linearGradient id="tl1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="0.5" stop-color="#fff" stop-opacity="0.6"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
+        <line x1="0" y1="7" x2="200" y2="7" stroke="url(#tl1)" stroke-width="1"/>
+        <circle cx="100" cy="7" r="2" fill="#28efef"/>
+      </svg>
+    </div>
+    <div id="education"></div>
+  </section>
+
+  <section id="skills-sec">
+    <div class="sec-ttl">
+      <svg class="sec-svg" viewBox="0 0 540 56" xmlns="http://www.w3.org/2000/svg">
+        <text class="sec-path" x="270" y="42" text-anchor="middle"
+              font-family="Amiri, serif" font-size="38" letter-spacing="4">Technical Skills</text>
+      </svg>
+      <span class="sub">tools &amp; expertise</span>
+      <svg class="ttl-line" viewBox="0 0 200 14" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <line x1="0" y1="7" x2="200" y2="7" stroke="url(#tl1)" stroke-width="1"/>
+        <circle cx="100" cy="7" r="2" fill="#28efef"/>
+      </svg>
+    </div>
+    <div class="skill-grid" id="skills"></div>
+  </section>
+
+  <section id="experience-sec">
+    <div class="sec-ttl">
+      <svg class="sec-svg" viewBox="0 0 440 56" xmlns="http://www.w3.org/2000/svg">
+        <text class="sec-path" x="220" y="42" text-anchor="middle"
+              font-family="Amiri, serif" font-size="38" letter-spacing="4">Experience</text>
+      </svg>
+      <span class="sub">professional record</span>
+      <svg class="ttl-line" viewBox="0 0 200 14" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <line x1="0" y1="7" x2="200" y2="7" stroke="url(#tl1)" stroke-width="1"/>
+        <circle cx="100" cy="7" r="2" fill="#28efef"/>
+      </svg>
+    </div>
+    <div class="role-row" id="current-roles"></div>
+    <div id="experience"></div>
+  </section>
+
+  <section id="publications-sec">
+    <div class="sec-ttl">
+      <svg class="sec-svg" viewBox="0 0 480 56" xmlns="http://www.w3.org/2000/svg">
+        <text class="sec-path" x="240" y="42" text-anchor="middle"
+              font-family="Amiri, serif" font-size="38" letter-spacing="4">Publications</text>
+      </svg>
+      <span class="sub">peer-reviewed work</span>
+      <svg class="ttl-line" viewBox="0 0 200 14" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <line x1="0" y1="7" x2="200" y2="7" stroke="url(#tl1)" stroke-width="1"/>
+        <circle cx="100" cy="7" r="2" fill="#28efef"/>
+      </svg>
+    </div>
+    <div class="sub-heading">Journal Papers</div>
+    <div id="journals"></div>
+    <div class="sub-heading">Conference Papers</div>
+    <div id="conferences"></div>
+  </section>
+
+  <section id="patents-sec">
+    <div class="sec-ttl">
+      <svg class="sec-svg" viewBox="0 0 360 56" xmlns="http://www.w3.org/2000/svg">
+        <text class="sec-path" x="180" y="42" text-anchor="middle"
+              font-family="Amiri, serif" font-size="38" letter-spacing="4">Patents</text>
+      </svg>
+      <span class="sub">invention record</span>
+      <svg class="ttl-line" viewBox="0 0 200 14" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <line x1="0" y1="7" x2="200" y2="7" stroke="url(#tl1)" stroke-width="1"/>
+        <circle cx="100" cy="7" r="2" fill="#28efef"/>
+      </svg>
+    </div>
+    <div class="sub-heading">Taiwan</div>
+    <div id="patents-tw"></div>
+    <div class="sub-heading">China</div>
+    <div id="patents-cn"></div>
+    <div class="sub-heading">United States</div>
+    <div id="patents-us"></div>
+  </section>
+
+  <section id="awards-sec">
+    <div class="sec-ttl">
+      <svg class="sec-svg" viewBox="0 0 620 56" xmlns="http://www.w3.org/2000/svg">
+        <text class="sec-path" x="310" y="42" text-anchor="middle"
+              font-family="Amiri, serif" font-size="38" letter-spacing="4">Awards &amp; Competitions</text>
+      </svg>
+      <span class="sub">recognition</span>
+      <svg class="ttl-line" viewBox="0 0 200 14" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <line x1="0" y1="7" x2="200" y2="7" stroke="url(#tl1)" stroke-width="1"/>
+        <circle cx="100" cy="7" r="2" fill="#28efef"/>
+      </svg>
+    </div>
+    <div id="competition"></div>
+  </section>
+
+  <footer class="cv-footer">
+    <div class="tagline">Achieved a 5-Year CJA Score Above 600</div>
+    <div class="meta">Last updated · <span id="last-updated"></span></div>
+  </footer>
+
+</div>
+</div>
+
+<script>
+const CV = {
+  lastUpdated: 'May 2026',
+  education: [
+    { school: 'National Taiwan University', degree: 'Doctor of Biomedical Electronics and Bioinformatics', date: 'Sep. 2020 – Aug. 2025', place: 'Taipei, Taiwan' },
+    { school: 'National Chung Hsing University', degree: 'Master of Computer Science and Engineering', date: 'Sep. 2017 – Jan. 2020', place: 'Taichung, Taiwan' },
+  ],
+  skills: [
+    { ttl: 'AI &amp; Machine Learning', items: ['Medical Image Processing · NLP','Generative AI · RAG · LLM Fine-Tuning','PyTorch · TensorFlow','Radiomics pipelines','Classical CV &amp; segmentation'] },
+    { ttl: 'Programming Languages', items: ['Python (primary)','C# · C / C++','R · Matlab'] },
+    { ttl: 'Web Dev &amp; DevOps', items: ['HTML · CSS · Frontend','GitHub · Travis CI','Continuous Integration'] },
+  ],
+  currentRoles: [
+    { label: 'Supervisor', org: '智富生醫科技股份有限公司' },
+    { label: 'Advisor',    org: '顧芳瑜泌尿科診所' },
+    { label: 'Professor',  org: '國立勤益科技大學' },
+  ],
+  experience: [
+    { role: 'Algorithm Engineer', date: 'Jul. 2020 – Feb. 2026',
+      org: 'China Medical University Hospital · Artificial Intelligence Center',
+      project: 'Project 1: Leadership and Execution of Multiple Medical Imaging AI Projects',
+      star: {
+        S: 'As an Algorithm Engineer at the AI Center, I was tasked with leading key medical imaging AI projects. The core challenge was to apply deep learning techniques to solve complex clinical problems in areas such as pharyngeal cancer, rectal cancer, and coronary artery calcification.',
+        T: 'My objective was to lead and execute these projects, translating pioneering research into tangible academic and technical assets. I was also responsible for representing the Center in external competitions to bolster our technical reputation.',
+        A: 'I successfully applied deep learning techniques to address complex clinical issues related to pharyngeal cancer, rectal cancer, and coronary artery calcification. I systematically translated this research into over 10 high-quality publications in international journals and secured 8 international invention patents as the lead inventor. I actively represented the Center in major competitions to showcase our technical capabilities.',
+        R: 'Published over 10 high-quality papers as the first or key author. Acquired 8 international invention patents as the lead inventor across the U.S., Taiwan, and China. Obtained regulatory clearance from the FDA and secured the 20th National Innovation Award, significantly establishing the Center\u2019s influence in the industry.',
+      } },
+    { role: 'Research Assistant', date: 'Jun. 2018 – Jun. 2019',
+      org: 'Division of Thoracic Surgery · Taipei Veterans General Hospital',
+      project: 'Project 2: Development of Radiomics-Based Analytical Pipelines for Thoracic Tumor Diagnosis',
+      star: {
+        S: 'While working at the Division of Thoracic Surgery, the clinical team required a more precise and quantitative method for evaluating thoracic tumor characteristics and predicting treatment outcomes.',
+        T: 'My primary responsibility was to develop radiomics-based analytical pipelines. The goal was to extract high-dimensional quantitative features from thoracic tumor images, which would then be used to build prognostic models for computer-aided diagnosis (CADx).',
+        A: 'I developed a comprehensive analytical pipeline that successfully extracted high-dimensional quantitative features from medical images. I then utilized these features to build prognostic models designed to assess tumor characteristics and predict treatment response.',
+        R: 'The developed pipeline provided clinicians with objective, data-driven insights, enhancing the accuracy of tumor assessment and aiding in treatment decision-making.',
+      } },
+    { role: 'Research Assistant', date: 'Jun. 2015 – Jun. 2018',
+      org: 'Cancer Center · China Medical University Hospital',
+      project: 'Project 3: Development and Optimization of Automated Tumor Segmentation Algorithms',
+      star: {
+        S: 'The Cancer Center needed to improve the efficiency and consistency of tumor boundary delineation in medical images, as the existing manual annotation process was time-consuming and prone to variability.',
+        T: 'My task was to develop and optimize classical image processing algorithms, such as active contours and region growing, to achieve fully automated segmentation of tumors.',
+        A: 'I focused on developing and refining these algorithms to precisely delineate tumor boundaries automatically. This involved extensive programming and iterative testing to ensure high performance and reliability across different medical images.',
+        R: 'The optimized algorithms successfully replaced time-consuming manual annotation, which significantly improved the efficiency and consistency of quantitative analysis for treatment planning and surgical assessment.',
+      } },
+  ],
+  journals: [
+    { q:'Q2', authors:'<span class="me">Wu, K.-C.</span>, Chen, S.-W., Chang, Y.-Y., ……, &amp; Kao, C.-H. (2025).', title:'Predicting Radiotherapy Outcomes with Deep Learning Models Through Baseline and Adaptive Simulation Computed Tomography in Patients with Pharyngeal Cancer.', journal:'Cancers', vol:'17(21), 3492', doi:'https://doi.org/10.3390/cancers17213492' },
+    { q:'Q2', authors:'<span class="me">Wu, K.-C.</span>, Chew, F. Y., Cheng, K.-L., ……, &amp; Chang, S.-S. (2025).', title:'Adaptive RAG-Assisted MRI Platform (ARAMP) for Brain Metastasis Detection and Reporting: A Retrospective Evaluation Using Post-Contrast T1-Weighted Imaging.', journal:'Bioengineering', vol:'12(7), 698', doi:'https://doi.org/10.3390/bioengineering12070698' },
+    { q:'Q2', authors:'<span class="me">Wu, K. C.</span>, Hsieh, T. C., Hsu, Z. K., ……, &amp; Kao, C. H. (2025).', title:'Application of Deep Learning in Automated Localization and Interpretation of Coronary Artery Calcification in Oncological PET/CT Scans.', journal:'International Journal of Cardiovascular Imaging', vol:'41(3), 453-465', doi:'https://doi.org/10.1007/s10554-025-03327-8' },
+    { q:'Q1', authors:'<span class="me">Wu, K. C.</span>, Chen, S. W., Chang, R. F., ......, &amp; Kao, C. H. (2024).', title:'Early Prediction of Radiotherapy Outcomes in Pharyngeal Cancer Using Deep Learning on Baseline [18F] Fluorodeoxyglucose Positron Emission Tomography/Computed Tomography.', journal:'European Journal of Radiology', vol:'181, 111811', doi:'https://doi.org/10.1016/j.ejrad.2024.111811' },
+    { q:'Q2', authors:'Huang, C. H., Hsiao, H. J., Yeh, P. C., <span class="me">Wu, K. C.</span>, &amp; Kao, C. H. (2024).', title:'Performance of ChatGPT on Stage 1 of the Taiwanese medical licensing exam.', journal:'Digital Health', vol:'10', doi:'https://doi.org/10.1177/20552076241233144' },
+    { q:'Q3', authors:'<span class="me">Wu, K. C.</span>, Chen, S. W., Hsieh, T. C., ……, &amp; Chia-Hung, K. (2023).', title:'Early Prediction of Distant Metastasis in Patients with Uterine Cervical Cancer Treated with Definitive Chemoradiotherapy by Deep Learning Using Pretreatment [18F] Fluorodeoxyglucose Positron Emission Tomography/Computed Tomography.', journal:'Nuclear Medicine Communications', vol:'45(3), 196-202', doi:'https://doi.org/10.1097/MNM.0000000000001799' },
+    { q:'Q2', authors:'Wang, Y. D., Huang, C. P., Yang, Y. R., ……, <span class="me">Wu, K. C.</span>, &amp; Kao, C. H. (2023).', title:'Machine Learning and Radiomics of Bone Scintigraphy: Their Role in Predicting Recurrence of Localized or Locally Advanced Prostate Cancer.', journal:'Diagnostics', vol:'13(21), 3380', doi:'https://doi.org/10.3390/diagnostics13213380' },
+    { q:'Q1', authors:'<span class="me">Wu, K. C.</span>, Chen, S. W., Hsieh, T. C., ……, &amp; Kao, C. H. (2023).', title:'Imaging prediction of KRAS mutation in patients with rectal cancer through deep metric learning by using pretreatment [18F] Fluorodeoxyglucose positron emission tomography/computed tomography.', journal:'British Journal of Radiology', vol:'96(1151), 20230243', doi:'https://doi.org/10.1259/bjr.20230243' },
+    { q:'Q2', authors:'Chiu, P. F., Chang, R. C. H., Lai, Y. C., <span class="me">Wu, K. C.</span>, …..., &amp; Chiu, C.-D. (2023).', title:'Machine Learning Assisting the Prediction of Clinical Outcomes Following Nucleoplasty for Lumbar Degenerative Disc Disease.', journal:'Diagnostics', vol:'13(11), 1863', doi:'https://doi.org/10.3390/diagnostics13111863' },
+    { q:'Q2', authors:'Lai, Y. C., <span class="me">Wu, K. C.</span>, Chang, C. J., …..., &amp; Kao, C. H. (2023).', title:'Predicting Overall Survival with Deep Learning from 18F-FDG PET-CT Images in Patients with Hepatocellular Carcinoma before Liver Transplantation.', journal:'Diagnostics (Basel)', vol:'13(5), 981', doi:'https://doi.org/10.3390/diagnostics13050981' },
+    { q:'Q1', authors:'Lai, Y. C., <span class="me">Wu, K. C.</span>, Tseng, N. C., …... &amp; Kao, C. H. (2022).', title:'Differentiation between Malignant and Benign Pulmonary Nodules by Using Automated 3D High-Resolution Representation Learning with FDG PET/CT.', journal:'Frontiers in Medicine (Lausanne)', vol:'9, 773041', doi:'https://doi.org/10.3389/fmed.2022.773041' },
+    { q:'Q1', authors:'Lin, S. Y., Law, K. M., Yeh, Y. C., <span class="me">Wu, K. C.</span>, ……&amp; Kao. C. H. (2022).', title:'Applying Machine Learning to Carotid Sonographic Features for Recurrent Stroke in Patients with Acute Stroke.', journal:'Frontiers Cardiovascular Medicine', vol:'9, 804410', doi:'https://doi.org/10.3389/fcvm.2022.804410' },
+    { q:'Q1', authors:'<span class="me">Wu, K. C.</span>, Chen, S. W., Hsieh, T. C., ……, &amp; Kao. C. H. (2021).', title:'Prediction of Neoadjuvant Chemoradiotherapy Response in Rectal Cancer with Metric Learning Using Pretreatment 18F-fluorodeoxyglucose Positron Emission Tomography.', journal:'Cancers', vol:'13(24), 6350', doi:'https://doi.org/10.3390/cancers13246350' },
+    { q:'Q2', authors:'Shen, W. C., Chen, S. W., <span class="me">Wu, K. C.</span>, ……, Kao, C. H. (2020).', title:'Predicting pathological complete response in rectal cancer after chemoradiotherapy with a random forest using 18F-fluorodeoxyglucose positron emission tomography and computed tomography radiomics.', journal:'Annals of Translational Medicine', vol:'8(5), 207', doi:'https://doi.org/10.21037/atm.2020.01.107' },
+    { q:'Q1', authors:'Shen, W. C., Chen, S. W., <span class="me">Wu, K. C.</span>, ……, Kao, C. H. (2019).', title:'Prediction of local relapse and distant metastasis in patients with definitive chemoradiotherapy-treated cervical cancer by deep learning from [18F]-fluorodeoxyglucose positron emission tomography/computed tomography.', journal:'European Radiology', vol:'29(12), 6741-6749', doi:'https://doi.org/10.1007/s00330-019-06265-x' },
+  ],
+  conferences: [
+    { venue:'JACC Transcatheter Cardiovascular Therapeutics', meta:'Oct. 2025 · U.S.A.', title:'Comprehensive Evaluation of Coronary Artery and Vessel-Specific Calcification Using Deep Learning on Non-Gated Chest CT.' },
+    { venue:'Society of Nuclear Medicine', meta:'Apr. 2024 · ROC (Taiwan)', invited:true, title:'AI Intensifies the Prediction Performance of Treatment Outcome through 18F-FDG Positron Emission Tomography/Computed Tomography.' },
+    { venue:'Society of Nuclear Medicine', meta:'Apr. 2023 · ROC (Taiwan)', title:'*Predicting KRAS Gene Mutation in Rectal Cancer Patients using Deep Metric Learning and Pre-treatment [18F] FDG PET/CT Imaging.' },
+    { venue:'Society of Nuclear Medicine', meta:'Apr. 2023 · ROC (Taiwan)', title:'*Early Prediction of Distant Metastasis in Cervical Cancer Patients Treated with Definitive Chemoradiotherapy using Deep Learning and Pre-treatment [18F] FDG PET/CT Imaging.' },
+    { venue:'EULAR European Congress of Rheumatology', meta:'May. 2023 · Italy', title:'*Automatic scoring of ultrasound synovial hypertrophy in rheumatoid arthritis through integrating multiple convolutional neural network models.' },
+  ],
+  patents: {
+    tw: [
+      { id:'No. I922383', date:'2026.4.11 ~ 2045.7.31', title:'Aided Detection System, Method and Computer Program Product for Automated Localization and Interpretation of Coronary Artery Calcification.' },
+      { id:'No. M640363', date:'2023.4.21 ~ 2033.2.9',  title:'Artificial Intelligence Recognition Device for Chinese Herbal Medicine Decoction.' },
+      { id:'No. I726459', date:'2021.5.1 ~ 2039.10.24', title:'Transfer Learning Aided Prediction System, Method and Computer Program Product Thereof.' },
+      { id:'No. I723312', date:'2021.4.1 ~ 2038.12.27', title:'Computer-Aided Recognition System for Treatment Response of Rectal Cancer, and Its Method and Computer Program Product.' },
+      { id:'No. I681406', date:'2020.1.1 ~ 2038.12.19', title:'Deep learning of Tumor Image-Aided Prediction of Prognosis of Patients with Uterine Cervical Cancer System, Method and Computer Program Product Thereof.' },
+    ],
+    cn: [
+      { id:'No. CN112712875B', date:'2022.12.2 ~ 2039.10.25', title:'Auxiliary Prediction System and Method for Transfer Learning.' },
+      { id:'No. CN111382756B', date:'2018.12.28 ~ 2038.12.28', title:'Image Computer-Assisted Rectal Cancer Treatment Response Prediction System, Method and Computer Program.' },
+    ],
+    us: [
+      { id:'No. 11,164,676 B2', date:'2021.11.2 ~ 2039.7.11', title:'Computer-Aided Recognition System for Treatment Response of Rectal Cancer, and Computer Program Product.' },
+      { id:'No. 10,896,502 b2', date:'2021.1.19 ~ 2039.5.22', title:'Prediction System, Method and Computer Program Product Thereof.' },
+    ],
+  },
+  competition: [
+    { year:'2026', award:'2nd Place &amp; People\u2019s Choice Award', body:'APSC &amp; TSOC Joint Annual Meeting — <strong>心血管人工智慧落地競賽</strong> (Automated CACS Prediction System)' },
+    { year:'2025', award:'1st Place',                                  body:'新創之星 — <strong>動物眼科 AI 辨識輔助診斷服務</strong>' },
+    { year:'2025', award:'Gold Medal',                                 body:'南方創客基地 創客自造松競賽 — <strong>AI 科技新農數位轉型 (埔里茭白筍)</strong>' },
+    { year:'2025', award:'2nd Place',                                  body:'第一屆全國「<strong>浪浪回家路</strong>」科技 × 行銷創新創意競賽' },
+    { year:'2025', award:'Outstanding Doctoral Dissertation',          body:'National Taiwan University · BEBI' },
+    { year:'2025', award:'Silver Medal',                               body:'臺灣數創大賞 - 智慧+組' },
+    { year:'2025', award:'Outstanding Student Research Award',         body:'National Taiwan University · BEBI' },
+    { year:'2024', award:'Invited Speaker',                            body:'Society of Nuclear Medicine Annual Meeting' },
+    { year:'2023', award:'Honorable Mention',                          body:'臺灣數創大賞 - 智慧+組' },
+    { year:'2023', award:'Clinical Innovation Award',                  body:'第二十屆國家新創獎' },
+    { year:'2022', award:'Gold Medal',                                 body:'AI CUP - 農地作物現況調查影像辨識競賽 (秋季賽)' },
+    { year:'2022', award:'Honorable Mention',                          body:'AI CUP - 農地作物現況調查影像辨識競賽 (春季賽)' },
+    { year:'2022', award:'Pre-employment Award',                       body:'T-Brain · 趨勢科技 T-brain 預聘獎' },
+    { year:'2021', award:'Benchmark Award',                            body:'T-Brain - Tomofun 狗音辨識 AI 百萬挑戰賽' },
+    { year:'2019', award:'Benchmark Award',                            body:'AI CUP - 人工智慧論文機器閱讀競賽之論文分類' },
+    { year:'2018', award:'1st Place',                                  body:'Nvidia GTC Taiwan - Poster Contest Award' },
+  ],
+};
+
+const $ = id => document.getElementById(id);
+const edges = '<span class="edge edge-t"></span><span class="edge edge-l"></span><span class="edge edge-r"></span><span class="edge edge-b"></span>';
+
+$('education').innerHTML = CV.education.map(e=>`
+  <div class="edu-item">
+    <div>
+      <div class="edu-school">${e.school}</div>
+      <div class="edu-degree">${e.degree}</div>
+    </div>
+    <div class="edu-meta">${e.date}<span class="place">${e.place}</span></div>
+  </div>`).join('');
+
+$('skills').innerHTML = CV.skills.map(s=>`
+  <div class="skill-card">${edges}
+    <h3>${s.ttl}</h3>
+    <ul>${s.items.map(i=>`<li>${i}</li>`).join('')}</ul>
+  </div>`).join('');
+
+$('current-roles').innerHTML = CV.currentRoles.map(r=>`
+  <div class="role-cell">${edges}
+    <div class="role-label">${r.label}</div>
+    <div class="role-org">${r.org}</div>
+  </div>`).join('');
+
+$('experience').innerHTML = CV.experience.map((x, i)=>`
+  <div class="exp-block">
+    <div class="exp-episode">
+      <div class="crcl">${String(i+1).padStart(2,'0')}</div>
+      <div class="line"></div>
+      <div class="txt">— Episode ${String(i+1).padStart(2,'0')}</div>
+    </div>
+    <div class="exp-head">
+      <div class="exp-role">${x.role}</div>
+      <div class="exp-date">${x.date}</div>
+    </div>
+    <div class="exp-org">${x.org}</div>
+    <div class="exp-project">${x.project}</div>
+    <div class="star-block">
+      <div class="star-line"><span class="label">Situation:</span>${x.star.S}</div>
+      <div class="star-line"><span class="label">Task:</span>${x.star.T}</div>
+      <div class="star-line"><span class="label">Action:</span>${x.star.A}</div>
+      <div class="star-line"><span class="label">Result:</span>${x.star.R}</div>
+    </div>
+  </div>`).join('');
+
+$('journals').innerHTML = CV.journals.map(j=>`
+  <div class="pub-entry">
+    <div class="q-tag ${j.q.toLowerCase()}">${j.q}</div>
+    <div class="pub-body">${j.authors} ${j.title} <em>${j.journal}</em>, ${j.vol}. <a href="${j.doi}" target="_blank" rel="noopener">${j.doi}</a></div>
+  </div>`).join('');
+
+$('conferences').innerHTML = CV.conferences.map(c=>`
+  <div class="conf-entry">
+    <div class="conf-head"><div class="conf-venue">${c.venue}</div><div class="conf-meta">${c.meta}</div></div>
+    <div class="conf-title">${c.invited?'<span class="invited">Invited Speaker</span>':''}${c.title}</div>
+  </div>`).join('');
+
+const ptpl = arr => arr.map(p=>`
+  <div class="patent-entry">
+    <div class="patent-head"><span class="patent-id">${p.id}</span><span class="patent-date">${p.date}</span></div>
+    <div class="patent-title">${p.title}</div>
+  </div>`).join('');
+$('patents-tw').innerHTML = ptpl(CV.patents.tw);
+$('patents-cn').innerHTML = ptpl(CV.patents.cn);
+$('patents-us').innerHTML = ptpl(CV.patents.us);
+
+$('competition').innerHTML = CV.competition.map(c=>`
+  <div class="comp-entry">
+    <span class="comp-year">${c.year}</span>
+    <span class="comp-award">${c.award}</span>
+    <span class="comp-body">${c.body}</span>
+  </div>`).join('');
+
+$('last-updated').textContent = CV.lastUpdated;
+
+/* parallax */
+(function() {
+  const l1 = document.querySelector('.bgs .layer1');
+  const l2 = document.querySelector('.bgs .layer2');
+  const l3 = document.querySelector('.bgs .layer3');
+  if (!l1) return;
+  let ticking = false;
+  function update() {
+    const y = window.scrollY || window.pageYOffset;
+    l1.style.transform = `translateY(${-y * 0.04}px)`;
+    l2.style.transform = `translateY(${-y * 0.06}px)`;
+    l3.style.transform = `translateY(${-y * 0.10}px)`;
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking) { requestAnimationFrame(update); ticking = true; }
+  }, { passive: true });
+})();
+
+/* Profile nav link → smooth scroll to absolute top */
+(function() {
+  document.querySelectorAll('.topnav a.nav-home').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+})();
+
+/* section title stroke on scroll into view */
+(function() {
+  const titles = document.querySelectorAll('.sec-ttl');
+  if (!titles.length) return;
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); } });
+  }, { threshold: 0.25 });
+  titles.forEach(t => io.observe(t));
+})();
+
+/* starfield emitter */
+(function() {
+  const cvs = document.getElementById('starfield');
+  if (!cvs) return;
+  const ctx = cvs.getContext('2d');
+  const DPR = Math.min(window.devicePixelRatio || 1, 2);
+  let w = 0, h = 0, stars = [];
+  const palette = [
+    { r:255, g:255, b:255 }, { r:255, g:255, b:255 }, { r:255, g:255, b:255 },
+    { r:210, g:240, b:255 }, { r:170, g:230, b:255 }, { r: 40, g:239, b:239 },
+  ];
+  function rand(a, b) { return a + Math.random() * (b - a); }
+  function makeStar(seedY) {
+    const c = palette[Math.floor(Math.random() * palette.length)];
+    return {
+      x: Math.random() * w,
+      y: seedY !== undefined ? seedY : Math.random() * h,
+      r: rand(0.4, 1.7),
+      baseAlpha: rand(0.3, 0.95),
+      period: rand(2200, 6500),
+      phase: rand(0, Math.PI * 2),
+      vy: rand(0.01, 0.07),
+      vx: rand(-0.02, 0.02),
+      glow: Math.random() < 0.07,
+      c,
+      life: 0,
+      maxLife: rand(8000, 18000),
+    };
+  }
+  function resize() {
+    w = window.innerWidth; h = window.innerHeight;
+    cvs.width = w * DPR; cvs.height = h * DPR;
+    cvs.style.width = w + 'px'; cvs.style.height = h + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    seed();
+  }
+  function seed() {
+    const density = Math.min(220, Math.floor((w * h) / 7200));
+    stars = [];
+    for (let i = 0; i < density; i++) stars.push(makeStar());
+  }
+  let last = performance.now();
+  function frame(t) {
+    const dt = Math.min(50, t - last); last = t;
+    ctx.clearRect(0, 0, w, h);
+    for (let i = 0; i < stars.length; i++) {
+      const s = stars[i];
+      s.life += dt;
+      let env = 1;
+      if (s.life < 1200) env = s.life / 1200;
+      else if (s.life > s.maxLife - 1500) env = Math.max(0, (s.maxLife - s.life) / 1500);
+      const tw = 0.55 + 0.45 * Math.sin((t / s.period) * Math.PI * 2 + s.phase);
+      const a = s.baseAlpha * tw * env;
+      const { r, g, b } = s.c;
+      if (s.glow) {
+        const grd = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 6);
+        grd.addColorStop(0, `rgba(${r},${g},${b},${a * 0.95})`);
+        grd.addColorStop(0.4, `rgba(${r},${g},${b},${a * 0.3})`);
+        grd.addColorStop(1, `rgba(${r},${g},${b},0)`);
+        ctx.fillStyle = grd;
+        ctx.beginPath(); ctx.arc(s.x, s.y, s.r * 6, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.fillStyle = `rgba(${r},${g},${b},${a})`;
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2); ctx.fill();
+      s.x += s.vx; s.y += s.vy;
+      if (s.x < -3) s.x = w + 3; else if (s.x > w + 3) s.x = -3;
+      if (s.y > h + 3) s.y = -3;
+      if (s.life >= s.maxLife) stars[i] = makeStar(-5);
+    }
+    requestAnimationFrame(frame);
+  }
+  resize();
+  let resizeTO;
+  window.addEventListener('resize', () => { clearTimeout(resizeTO); resizeTO = setTimeout(resize, 150); });
+  requestAnimationFrame(frame);
+})();
+</script>
+
+</body>
+</html>
