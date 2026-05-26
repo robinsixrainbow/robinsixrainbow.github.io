@@ -328,14 +328,6 @@ section { margin-top: 80px; position: relative; }
   width: 1px; height: 20px;
   background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.1));
 }
-.exp-episode .txt {
-  position: absolute; left: -38px; top: 100px; width: 130px;
-  font-family: var(--serif); font-style: italic;
-  font-size: 14px; color: var(--text-dim);
-  letter-spacing: 4px; text-align: right;
-  transform: rotate(-90deg); transform-origin: right top;
-  white-space: nowrap;
-}
 .exp-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; flex-wrap: wrap; }
 .exp-role {
   font-family: var(--serif); font-style: italic; font-weight: 700;
@@ -594,7 +586,6 @@ section { scroll-margin-top: 80px; }
   .skill-card li::before, .edu-item::before, .exp-org::after { background: #2a5d7a !important; box-shadow: none !important; }
   .exp-project { border-left-color: #2a5d7a !important; }
   .exp-episode .crcl { background: #fff !important; color: #0a1424 !important; border-color: #2a5d7a !important; box-shadow: none !important; text-shadow: none !important; }
-  .exp-episode .txt { color: #555 !important; }
   .exp-episode .line { background: #aaa !important; }
   .q-tag.q1 { background: #2a5d7a !important; color: #fff !important; border-color: #2a5d7a !important; text-shadow: none !important; }
   .q-tag.q2 { color: #2a5d7a !important; border-color: #2a5d7a !important; text-shadow: none !important; }
@@ -621,7 +612,6 @@ section { scroll-margin-top: 80px; }
   .hero-title-svg { height: 80px; }
   .skill-grid, .role-row { grid-template-columns: 1fr; gap: 16px; }
   .exp-block { padding-left: 60px; }
-  .exp-episode .txt { display: none; }
   .comp-entry { flex-wrap: wrap; }
   .comp-award { min-width: 0; }
   .hero .subname { font-size: 18px; letter-spacing: 12px; padding-left: 12px; }
@@ -1006,7 +996,6 @@ $('experience').innerHTML = CV.experience.map((x, i)=>`
     <div class="exp-episode">
       <div class="crcl">${String(i+1).padStart(2,'0')}</div>
       <div class="line"></div>
-      <div class="txt">— Episode ${String(i+1).padStart(2,'0')}</div>
     </div>
     <div class="exp-head">
       <div class="exp-role">${x.role}</div>
