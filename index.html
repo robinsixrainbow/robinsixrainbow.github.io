@@ -309,10 +309,10 @@ section { margin-top: 80px; position: relative; }
 }
 .role-cell .role-org { font-size: 14px; color: var(--white); position: relative; z-index: 2; }
 
-/* ===== Experience: episode circle ===== */
-.exp-block { position: relative; padding-left: 80px; margin-bottom: 60px; }
+/* ===== Experience: episode circle + rotated Episode label ===== */
+.exp-block { position: relative; padding-left: 110px; margin-bottom: 60px; }
 .exp-block:last-child { margin-bottom: 0; }
-.exp-episode { position: absolute; left: 0; top: 0; width: 60px; height: 100%; }
+.exp-episode { position: absolute; left: 30px; top: 0; width: 60px; height: 100%; }
 .exp-episode .crcl {
   position: absolute; left: 0; top: 0;
   width: 40px; height: 40px;
@@ -327,6 +327,36 @@ section { margin-top: 80px; position: relative; }
   position: absolute; left: 19px; top: 50px;
   width: 1px; height: 20px;
   background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.1));
+}
+/* "Episode 01" rotated label, left of the circle, reading bottom-to-top.
+   Geometry:
+   - Circle: y = 0 to 40
+   - Line:   y = 50 to 70
+   - Label needs to fit roughly within y = 0 to 70 (circle + line span)
+   - Rotated text length: ~70px (font 10px × ~7 chars + letter-spacing + connector)
+   - With transform-origin: 0 0 and rotate(-90deg), pivot at top: 72px means
+     text extends UPWARD from y=72 to ~y=2, sitting cleanly beside the circle. */
+.exp-episode .txt {
+  position: absolute;
+  left: -4px;
+  top: 72px;
+  font-family: var(--serif); font-style: italic;
+  font-size: 10px;
+  color: var(--text-faint);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: rotate(-90deg);
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+.exp-episode .txt::before {
+  content: '';
+  display: inline-block;
+  width: 10px; height: 1px;
+  background: rgba(255,255,255,0.4);
+  vertical-align: middle;
+  margin-right: 6px;
 }
 .exp-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; flex-wrap: wrap; }
 .exp-role {
@@ -586,6 +616,8 @@ section { scroll-margin-top: 80px; }
   .skill-card li::before, .edu-item::before, .exp-org::after { background: #2a5d7a !important; box-shadow: none !important; }
   .exp-project { border-left-color: #2a5d7a !important; }
   .exp-episode .crcl { background: #fff !important; color: #0a1424 !important; border-color: #2a5d7a !important; box-shadow: none !important; text-shadow: none !important; }
+  .exp-episode .txt { color: #555 !important; }
+  .exp-episode .txt::before { background: #aaa !important; }
   .exp-episode .line { background: #aaa !important; }
   .q-tag.q1 { background: #2a5d7a !important; color: #fff !important; border-color: #2a5d7a !important; text-shadow: none !important; }
   .q-tag.q2 { color: #2a5d7a !important; border-color: #2a5d7a !important; text-shadow: none !important; }
@@ -612,6 +644,8 @@ section { scroll-margin-top: 80px; }
   .hero-title-svg { height: 80px; }
   .skill-grid, .role-row { grid-template-columns: 1fr; gap: 16px; }
   .exp-block { padding-left: 60px; }
+  .exp-episode { left: 0; }
+  .exp-episode .txt { display: none; }
   .comp-entry { flex-wrap: wrap; }
   .comp-award { min-width: 0; }
   .hero .subname { font-size: 18px; letter-spacing: 12px; padding-left: 12px; }
@@ -996,6 +1030,7 @@ $('experience').innerHTML = CV.experience.map((x, i)=>`
     <div class="exp-episode">
       <div class="crcl">${String(i+1).padStart(2,'0')}</div>
       <div class="line"></div>
+      <div class="txt">Episode ${String(i+1).padStart(2,'0')}</div>
     </div>
     <div class="exp-head">
       <div class="exp-role">${x.role}</div>
