@@ -129,7 +129,7 @@ html, body {
 /* ===== Hero ===== */
 .hero {
   text-align: center; padding: 40px 0 50px; position: relative;
-  min-height: 420px;
+  min-height: 500px;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
 }
 .hero .badge {
@@ -139,8 +139,8 @@ html, body {
   opacity: 0; animation: heroFadeUp 1s ease-out 3.8s forwards;
 }
 .hero-title-svg {
-  display: block; width: 640px; max-width: 90vw; height: 130px;
-  margin: 20px auto 8px; overflow: visible;
+  display: block; width: 820px; max-width: 94vw; height: 180px;
+  margin: 24px auto 10px; overflow: visible;
 }
 .hero-title-svg .path-name {
   stroke: var(--white); fill: rgba(255,255,255,0);
@@ -218,9 +218,9 @@ html, body {
 }
 
 /* ===== Section titles ===== */
-section { margin-top: 80px; position: relative; }
-.sec-ttl { text-align: center; margin-bottom: 44px; position: relative; padding-top: 8px; }
-.sec-ttl .sec-svg { display: block; margin: 0 auto 14px; height: 56px; max-width: 100%; overflow: visible; }
+section { margin-top: 104px; position: relative; }
+.sec-ttl { text-align: center; margin-bottom: 48px; position: relative; padding-top: 8px; }
+.sec-ttl .sec-svg { display: block; margin: 0 auto 18px; height: 118px; max-width: 100%; overflow: visible; }
 .sec-ttl .sec-svg .sec-path {
   stroke: var(--white); fill: rgba(255,255,255,0);
   stroke-width: 0.5;
@@ -393,19 +393,31 @@ section { margin-top: 80px; position: relative; }
 }
 
 /* ===== Pubs/patents/sub-headings ===== */
+/* sub-heading — planetarian info_img_ttl style: a slanted cyan band.
+   The ::before is a skewed gradient slab behind the text (skew applied only to
+   the pseudo-element, so the text stays upright). Robust across renderers —
+   no clip-path on negative-z pseudo-elements. */
 .sub-heading {
+  position: relative; display: inline-block;
+  padding: 8px 56px 8px 30px;
   font-family: var(--serif); font-style: italic;
-  font-size: 18px; color: var(--cyan); letter-spacing: 4px;
-  margin: 30px 0 14px; padding: 8px 0 12px 8px;
-  position: relative; text-shadow: var(--glow-text);
+  font-size: 16px; letter-spacing: 4px; color: #fff;
+  text-shadow: 0 0 5px rgba(0,0,0,0.7), 0 0 2px rgba(0,0,0,0.6);
+  margin: 34px 0 18px;
+  z-index: 0;
 }
-.sub-heading::before, .sub-heading::after {
-  content: ''; position: absolute; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, transparent 0%, var(--cyan) 15%, rgba(40,239,239,0.4) 50%, var(--cyan) 85%, transparent 100%);
-  filter: blur(0.4px); opacity: 0.45;
+.sub-heading::before {
+  content: ''; position: absolute; top: 0; bottom: 0; left: 6px; right: 0; z-index: -1;
+  background: linear-gradient(95deg,
+    rgba(40,239,239,0.95) 0%,
+    rgba(34,200,255,0.82) 50%,
+    rgba(40,239,239,0.45) 78%,
+    rgba(40,239,239,0.10) 100%);
+  transform: skewX(-14deg);
+  transform-origin: bottom left;
+  box-shadow: 0 0 16px rgba(40,239,239,0.5), inset 0 0 12px rgba(255,255,255,0.10);
+  border-radius: 1px;
 }
-.sub-heading::before { top: 0; }
-.sub-heading::after { bottom: 0; }
 .sub-heading:first-child { margin-top: 0; }
 
 .pub-entry {
@@ -603,12 +615,13 @@ section { scroll-margin-top: 80px; }
   .hero .boxline { display: none; }
   section { margin-top: 22px; page-break-inside: avoid; }
   .sec-ttl { margin-bottom: 14px; }
+  .sec-ttl .sec-svg { height: 52px !important; margin-bottom: 8px !important; }
   .sec-ttl .sec-svg .sec-path { stroke: #0a1424 !important; fill: #0a1424 !important; filter: none !important; stroke-dashoffset: 0 !important; animation: none !important; }
   .sec-ttl .sub { color: #2a5d7a !important; text-shadow: none !important; }
   .sec-ttl .ttl-line { display: none; }
   .edu-school, .role-cell .role-org { color: #0a1424 !important; }
   .edu-degree, .edu-meta, .role-cell .role-label, .skill-card h3, .exp-role, .exp-project,
-  .sub-heading, .patent-id, .comp-year, .conf-meta, .exp-date { color: #1a4d6e !important; text-shadow: none !important; }
+  .patent-id, .comp-year, .conf-meta, .exp-date { color: #1a4d6e !important; text-shadow: none !important; }
   .edu-meta .place, .exp-org, .star-line, .conf-title, .patent-title, .comp-body, .pub-body { color: #333 !important; }
   .conf-venue { color: #0a1424 !important; }
   .skill-card, .role-cell { background: #f5f8fa !important; outline: 1px solid #d0d6dc !important; animation: none !important; }
@@ -630,7 +643,8 @@ section { scroll-margin-top: 80px; }
     background: transparent !important; padding-left: 6px !important;
   }
   .pub-entry::before { display: none !important; }
-  .sub-heading::before, .sub-heading::after { background: #2a5d7a !important; opacity: 0.6 !important; height: 1px !important; }
+  .sub-heading { color: #fff !important; text-shadow: none !important; padding: 5px 40px 5px 26px !important; }
+  .sub-heading::before { background: #2a5d7a !important; box-shadow: none !important; transform: skewX(-14deg) !important; }
   .cv-footer { border-top-color: #aaa !important; margin-top: 30px; }
   .cv-footer::before, .cv-footer::after { background: #2a5d7a !important; box-shadow: none !important; }
   .cv-footer .tagline { color: #0a1424 !important; text-shadow: none !important; font-size: 13pt; }
@@ -640,8 +654,9 @@ section { scroll-margin-top: 80px; }
 
 @media (max-width: 800px) {
   .wrap { padding: 70px 30px 80px; }
-  .hero { min-height: 320px; padding: 20px 0 30px; }
-  .hero-title-svg { height: 80px; }
+  .hero { min-height: 380px; padding: 20px 0 30px; }
+  .hero-title-svg { height: 96px; }
+  .sec-ttl .sec-svg { height: 74px; }
   .skill-grid, .role-row { grid-template-columns: 1fr; gap: 16px; }
   .exp-block { padding-left: 60px; }
   .exp-episode { left: 0; }
@@ -983,7 +998,6 @@ const CV = {
   },
   competition: [
     { year:'2026', award:'2nd Place &amp; People\u2019s Choice Award', body:'APSC &amp; TSOC Joint Annual Meeting — 心血管人工智慧落地競賽 (Automated CACS Prediction System)' },
-    { year:'2026', award:'Selected Team (Social Enterprise Track)',    body:' U-start 創新創業計畫 (Ministry of Education) — Code Green：跨物種 AI 遷移學習協議' },
     { year:'2025', award:'1st Place',                                  body:'新創之星 — 動物眼科 AI 辨識輔助診斷服務' },
     { year:'2025', award:'Gold Medal',                                 body:'南方創客基地 創客自造松競賽 —AI 科技新農數位轉型 (埔里茭白筍)' },
     { year:'2025', award:'2nd Place',                                  body:'第一屆全國「浪浪回家路」科技 × 行銷創新創意競賽' },
@@ -1078,23 +1092,44 @@ $('competition').innerHTML = CV.competition.map(c=>`
 
 $('last-updated').textContent = CV.lastUpdated;
 
-/* parallax */
+/* parallax — continuous lerp easing (mimics planetarian's TweenMax 0.6s float).
+   Each layer chases its target offset; current position eases toward target
+   every frame at a fixed fraction, so motion lags and glides rather than
+   snapping 1:1 to scroll. */
 (function() {
   const l1 = document.querySelector('.bgs .layer1');
   const l2 = document.querySelector('.bgs .layer2');
   const l3 = document.querySelector('.bgs .layer3');
   if (!l1) return;
-  let ticking = false;
-  function update() {
+
+  const layers = [
+    { el: l1, factor: 0.04, cur: 0 },
+    { el: l2, factor: 0.06, cur: 0 },
+    { el: l3, factor: 0.10, cur: 0 },
+  ];
+  const EASE = 0.085;      // approach fraction per frame (~0.6s settle @60fps)
+  let running = false;
+
+  function tick() {
     const y = window.scrollY || window.pageYOffset;
-    l1.style.transform = `translateY(${-y * 0.04}px)`;
-    l2.style.transform = `translateY(${-y * 0.06}px)`;
-    l3.style.transform = `translateY(${-y * 0.10}px)`;
-    ticking = false;
+    let moving = false;
+    for (const L of layers) {
+      const target = -y * L.factor;
+      L.cur += (target - L.cur) * EASE;
+      if (Math.abs(target - L.cur) > 0.05) moving = true;
+      L.el.style.transform = `translate3d(0, ${L.cur.toFixed(2)}px, 0)`;
+    }
+    if (moving) {
+      requestAnimationFrame(tick);
+    } else {
+      running = false;
+    }
   }
-  window.addEventListener('scroll', () => {
-    if (!ticking) { requestAnimationFrame(update); ticking = true; }
-  }, { passive: true });
+  function kick() {
+    if (!running) { running = true; requestAnimationFrame(tick); }
+  }
+  window.addEventListener('scroll', kick, { passive: true });
+  window.addEventListener('resize', kick, { passive: true });
 })();
 
 /* Profile nav link → smooth scroll to absolute top */
