@@ -740,7 +740,7 @@ body.theater .langbar { opacity: 0 !important; pointer-events: none !important; 
 @media (max-width: 1180px) { .newsbox { display: none; } }
 @media (max-width: 900px) {
   /* bottom-center: clear of theater-btn (left), print-btn (right), pagetop (right,76) */
-  .langbar { top: auto; bottom: 14px; right: auto; left: 50%; transform: translateX(-50%); gap: 10px; }
+  .langbar { top: auto; bottom: 72px; right: auto; left: 50%; transform: translateX(-50%); gap: 10px; }
   .lang-switch { padding: 3px 8px 6px; }
   .ls-stop { width: 38px; }
   .lang-switch[data-pos="0"] .ls-knob { transform: translateX(9px); }
@@ -761,8 +761,15 @@ body.theater .plm { opacity: 1; visibility: visible; }
 .plm-plate { font-size: 11px; font-weight: 300; color: rgba(234,247,248,0.65);
   display: flex; gap: 18px; letter-spacing: 0; }
 .plm-jena { color: rgba(255,255,255,0.42); }
+.plm-row { display: flex; align-items: flex-end; gap: 16px; pointer-events: auto; }
 .plm-modes { display: flex; border: 1px solid rgba(255,255,255,0.28); border-radius: 3px;
-  overflow: hidden; background: rgba(0,0,0,0.5); pointer-events: auto; }
+  overflow: hidden; background: rgba(0,0,0,0.5); pointer-events: auto; align-self: center; }
+.plm-flow .ls-stop { width: 40px; }
+.plm-flow[data-pos="0"] .ls-knob { transform: translateX(9px); }
+.plm-flow[data-pos="1"] .ls-knob { transform: translateX(49px); }
+.plm-flow[data-pos="2"] .ls-knob { transform: translateX(89px); }
+.plm-flow[data-pos="3"] .ls-knob { transform: translateX(129px); }
+@media (max-width: 800px) { .plm-row { flex-direction: column; align-items: center; gap: 8px; } }
 .plm-mode { background: none; border: none; cursor: pointer; padding: 6px 16px;
   font-family: var(--sans); font-weight: 300; font-size: 12px; color: rgba(255,255,255,0.6);
   transition: all 0.3s ease-out; }
@@ -961,9 +968,22 @@ body.theater .theater-hint { animation: hintPulse 5.5s ease 1.2s forwards; }
       <span class="plm-jena">PROJ · GENTLE JENA</span>
       <span id="plm-time"></span>
     </div>
-    <div class="plm-modes">
-      <button class="plm-mode" data-mode="now"   id="plm-now"></button>
-      <button class="plm-mode active" data-mode="epoch" id="plm-epoch"></button>
+    <div class="plm-row">
+      <div class="plm-modes">
+        <button class="plm-mode" data-mode="now"   id="plm-now"></button>
+        <button class="plm-mode active" data-mode="epoch" id="plm-epoch"></button>
+      </div>
+      <div class="lang-switch plm-flow" data-pos="0" aria-label="Time flow">
+        <span class="ls-ttl" id="plm-flow-ttl">FLOW</span>
+        <div class="ls-track">
+          <button class="ls-stop active" data-speed="1"><span class="ls-lamp"></span><span class="ls-lab">×1</span></button>
+          <button class="ls-stop" data-speed="60"><span class="ls-lamp"></span><span class="ls-lab">×60</span></button>
+          <button class="ls-stop" data-speed="600"><span class="ls-lamp"></span><span class="ls-lab">×600</span></button>
+          <button class="ls-stop" data-speed="6000"><span class="ls-lamp"></span><span class="ls-lab">×6k</span></button>
+          <div class="ls-groove" aria-hidden="true"></div>
+          <div class="ls-knob" aria-hidden="true"></div>
+        </div>
+      </div>
     </div>
     <div class="plm-note" id="plm-note"></div>
   </div>
@@ -1281,7 +1301,7 @@ const I18N = {
     news: "WHAT'S NEW",
     plm: { site: "Former Matsubishi Site, Hamamatsu", now: "LIVE SKY", epoch: "YUMEMI EPOCH",
            cardinal: ["N","E","S","W"], tri: ["VEGA","DENEB","ALTAIR"], locale: "en-GB",
-           bodies: { sun:"Sun", moon:"Moon", me:"Mercury", ve:"Venus", ma:"Mars", ju:"Jupiter", sa:"Saturn" }, rain: "RAIN",
+           bodies: { sun:"Sun", moon:"Moon", me:"Mercury", ve:"Venus", ma:"Mars", ju:"Jupiter", sa:"Saturn" }, rain: "RAIN", flow: "TIME FLOW",
            note: "HYG stars · VSOP87/ELP Sun·Moon·planets (<0.011°, verified) · refraction incl. · planet brightness representative" },
     education: [
       { school: "National Taiwan University", degree: "Doctor of Biomedical Electronics and Bioinformatics", date: "Sep. 2020 – Aug. 2025", place: "Taipei, Taiwan" },
@@ -1352,7 +1372,7 @@ const I18N = {
     news: "最新動態",
     plm: { site: "濱松・旧松菱街區上空", now: "即時星空", epoch: "ゆめみの曆元",
            cardinal: ["北","東","南","西"], tri: ["織女一","天津四","河鼓二"], locale: "zh-TW",
-           bodies: { sun:"太陽", moon:"月", me:"水星", ve:"金星", ma:"火星", ju:"木星", sa:"土星" }, rain: "雨聲",
+           bodies: { sun:"太陽", moon:"月", me:"水星", ve:"金星", ma:"火星", ju:"木星", sa:"土星" }, rain: "雨聲", flow: "時間流速",
            note: "HYG 恆星 · VSOP87/ELP 太陽月亮行星（<0.011°，已對完整級數驗證）· 含大氣折射與月相 · 行星亮度為代表值" },
     education: [
       { school: "國立臺灣大學", degree: "生醫電子與資訊學 博士", date: "2020.09 – 2025.08", place: "臺灣・臺北" },
@@ -1423,7 +1443,7 @@ const I18N = {
     news: "新着情報",
     plm: { site: "浜松・旧松菱街区の空", now: "現在の星空", epoch: "ゆめみの暦元",
            cardinal: ["北","東","南","西"], tri: ["ベガ","デネブ","アルタイル"], locale: "ja-JP",
-           bodies: { sun:"太陽", moon:"月", me:"水星", ve:"金星", ma:"火星", ju:"木星", sa:"土星" }, rain: "雨音",
+           bodies: { sun:"太陽", moon:"月", me:"水星", ve:"金星", ma:"火星", ju:"木星", sa:"土星" }, rain: "雨音", flow: "時の流れ",
            note: "HYG 恒星 · VSOP87/ELP 太陽・月・惑星（<0.011°、完全級数で検証済）· 大気差・月相含む · 惑星光度は代表値" },
     education: [
       { school: "国立台湾大学", degree: "生体医工学・バイオインフォマティクス 博士", date: "2020年9月 – 2025年8月", place: "台湾・台北" },
@@ -1788,6 +1808,9 @@ const PLM = (function(){
   const SITE = { lat: 34.704856, lon: 137.731155 };
   const EPOCH_MS = Date.UTC(2034,6,7,14,24,39);           // 2034-07-07 23:24:39 JST
   let mode = 'epoch';                                      // 'epoch' | 'now'
+  let simMs = EPOCH_MS, speed = 1, lastTs = null;
+  let beamT0 = 0;
+  const meteors = [];
   let canvas=null, ctx=null, raf=0, W=0, H=0, R=0, CX=0, CY=0;
 
   // --- astronomy ---
@@ -1942,7 +1965,8 @@ const PLM = (function(){
       if (alt<0) continue;
       const p=project(alt,az);
       const s=Math.max(0.4, 2.6-0.45*mag);
-      const a=Math.max(0.25, Math.min(1, 1.15-0.16*mag));
+      let a=Math.max(0.25, Math.min(1, 1.15-0.16*mag));
+      if (mag<2.8) a*=0.84+0.16*Math.sin(performance.now()*0.0045+(ra*7+dec*3));
       if (mag<1.5){
         ctx.fillStyle=`rgba(140,230,240,${a*0.28})`;
         ctx.beginPath(); ctx.arc(p[0],p[1],s*3,0,7); ctx.fill();
@@ -2031,10 +2055,56 @@ const PLM = (function(){
     if (el) el.textContent = jstr + ' JST';
   }
 
-  function loop(){
-    const ms = (mode==='epoch') ? EPOCH_MS : Date.now();
-    draw(ms);
+  function loop(ts){
+    if (lastTs===null) lastTs=ts;
+    const dt = Math.min(ts-lastTs, 100); lastTs=ts;
+    if (mode==='now' && speed===1) simMs = Date.now();
+    else simMs += dt*speed;
+    draw(simMs);
+    fx(ts);
     raf = requestAnimationFrame(loop);
+  }
+  // ---- real-time effects layer: twinkle handled in draw; meteors + entry beam here ----
+  function fx(ts){
+    // meteors — spawn ~every 9s of real time
+    if (Math.random() < (ts-(fx._t||ts))/9000) spawnMeteor();
+    fx._t = ts;
+    ctx.save(); ctx.beginPath(); ctx.arc(CX,CY,R,0,7); ctx.clip();
+    for (let i=meteors.length-1;i>=0;i--){
+      const m=meteors[i], k=(ts-m.t0)/m.dur;
+      if (k>=1){ meteors.splice(i,1); continue; }
+      const hx=m.x0+Math.cos(m.a)*m.len*k, hy=m.y0+Math.sin(m.a)*m.len*k;
+      const tail=m.len*0.45;
+      const g=ctx.createLinearGradient(hx-Math.cos(m.a)*tail,hy-Math.sin(m.a)*tail,hx,hy);
+      const A=m.bright*(1-k)*(k<0.15?k/0.15:1);
+      g.addColorStop(0,'rgba(180,235,245,0)');
+      g.addColorStop(1,`rgba(230,250,252,${A.toFixed(3)})`);
+      ctx.strokeStyle=g; ctx.lineWidth=m.bright>0.8?1.8:1.2;
+      ctx.beginPath();
+      ctx.moveTo(hx-Math.cos(m.a)*tail, hy-Math.sin(m.a)*tail);
+      ctx.lineTo(hx,hy); ctx.stroke();
+    }
+    // entry beam — one 1.4s sweep when the projector powers on
+    const bt=(ts-beamT0)/1400;
+    if (bt>=0 && bt<1){
+      const th=-Math.PI/2 + bt*bt*(3-2*bt)*2*Math.PI;
+      const g=ctx.createConicGradient ? null : null;
+      ctx.save(); ctx.translate(CX,CY); ctx.rotate(th);
+      const grd=ctx.createLinearGradient(0,0,R,0);
+      grd.addColorStop(0,`rgba(160,230,245,${0.10*(1-bt)})`);
+      grd.addColorStop(1,'rgba(160,230,245,0)');
+      ctx.fillStyle=grd;
+      ctx.beginPath(); ctx.moveTo(0,0); ctx.arc(0,0,R,-0.05,0.05); ctx.closePath(); ctx.fill();
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+  function spawnMeteor(){
+    const ang=Math.random()*Math.PI*2, rr=Math.random()*R*0.8;
+    meteors.push({ x0:CX+Math.cos(ang)*rr, y0:CY+Math.sin(ang)*rr,
+                   a:Math.random()*Math.PI*2, len:50+Math.random()*70,
+                   t0:performance.now(), dur:450+Math.random()*380,
+                   bright:Math.random()<0.18?1.0:0.55 });
   }
   function resize(){
     const dpr = Math.min(window.devicePixelRatio||1, 2);
@@ -2046,13 +2116,19 @@ const PLM = (function(){
   return {
     i18n: { cardinal:['N','E','S','W'], tri:['Vega','Deneb','Altair'], locale:'en-GB' },
     setMode(m){ mode=m;
+      simMs = (m==='epoch') ? EPOCH_MS : Date.now();
       document.querySelectorAll('.plm-mode').forEach(b=>b.classList.toggle('active',b.dataset.mode===m)); },
+    setSpeed(v){ speed=v;
+      document.querySelectorAll('.plm-flow .ls-stop').forEach(b=>b.classList.toggle('active',+b.dataset.speed===v));
+      const sw=document.querySelector('.plm-flow');
+      if (sw) sw.dataset.pos={1:0,60:1,600:2,6000:3}[v]; },
     start(){
       canvas=document.getElementById('plm-canvas');
       if(!canvas) return;
       ctx=canvas.getContext('2d');
       resize(); window.addEventListener('resize', resize);
-      cancelAnimationFrame(raf); loop();
+      lastTs=null; beamT0=performance.now();
+      cancelAnimationFrame(raf); raf=requestAnimationFrame(loop);
     },
     stop(){ cancelAnimationFrame(raf); },
   };
@@ -2076,6 +2152,7 @@ function applyLang(lang){
     const st=document.getElementById('plm-site');  if (st) st.textContent = CV.plm.site;
     const bn=document.getElementById('plm-now');   if (bn) bn.textContent = CV.plm.now;
     const be=document.getElementById('plm-epoch'); if (be) be.textContent = CV.plm.epoch;
+    const ft=document.getElementById('plm-flow-ttl'); if (ft) ft.textContent = CV.plm.flow || 'FLOW';
     const nt=document.getElementById('plm-note');  if (nt) nt.textContent = CV.plm.note + '　·　' + CV.theater.hint;
   }
 }
@@ -2364,6 +2441,9 @@ window.RAIN=(function(){
   btns.forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); if (!on) enter(); }));
   document.querySelectorAll('.plm-mode').forEach(b=>{
     b.addEventListener('click', (e)=>{ e.stopPropagation(); PLM.setMode(b.dataset.mode); });
+  });
+  document.querySelectorAll('.plm-flow .ls-stop').forEach(b=>{
+    b.addEventListener('click', (e)=>{ e.stopPropagation(); PLM.setSpeed(+b.dataset.speed); });
   });
   document.addEventListener('click', () => { if (on && !guard) exit(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && on) exit(); });
