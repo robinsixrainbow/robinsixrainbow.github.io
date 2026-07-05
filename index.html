@@ -1655,7 +1655,7 @@ $('last-updated').textContent = CV.lastUpdated;
   const nb = document.querySelector('.newsbox .nb-ttl'); if (nb) nb.innerHTML = t.news.replace(/\s+/, '<br>');
   document.querySelectorAll('.controllers .ctl-ttl').forEach((el,i)=> el.textContent = [t.ctl.pdfTtl, t.ctl.modeTtl, 'BGM'][i]);
   const bb=document.getElementById('bgm-btn');
-  if (bb && window.RAIN) bb.textContent = (t.plm.rain||'RAIN') + ' · ' + (RAIN.isOn()?'ON':'OFF');
+  if (bb && window.RAIN) bb.textContent = (RAIN.kind()==='file' ? 'BGM' : (t.plm.rain||'RAIN')) + ' · ' + (RAIN.isOn()?'ON':'OFF');
   const pdfBtn = document.querySelector('.controllers .boxSuper:first-child .ctl-con');
   if (pdfBtn) pdfBtn.textContent = t.ctl.pdf;
 })();
@@ -2138,36 +2138,89 @@ applyLang(LANG);
 /* RAIN — the sealed city's thirty-year rain, synthesized (no asset).
    Pink-ish noise through a lowpass; ducks to 22% while the projection runs. */
 window.RAIN=(function(){
-  let ctx=null,gain=null,on=false,duck=false;
-  function build(){
-    ctx=new (window.AudioContext||window.webkitAudioContext)();
-    const len=2*ctx.sampleRate, buf=ctx.createBuffer(1,len,ctx.sampleRate);
+  /* BGM controller — file first (bgm/bgm.ogg → bgm/bgm.mp3), synthesized
+     thirty-year rain as fallback. Lazy: nothing loads until first toggle. */
+  const FILES=['bgm/bgm.ogg','bgm/bgm.mp3'];
+  let kind='unknown';                 // 'file' | 'rain' | 'unknown'
+  let on=false, duck=false;
+  // --- rain synth ---
+  let actx=null, gain=null;
+  function buildRain(){
+    actx=new (window.AudioContext||window.webkitAudioContext)();
+    const len=2*actx.sampleRate, buf=actx.createBuffer(1,len,actx.sampleRate);
     const d=buf.getChannelData(0); let b0=0,b1=0,b2=0;
     for(let i=0;i<len;i++){ const w=Math.random()*2-1;
       b0=0.997*b0+0.029*w; b1=0.985*b1+0.032*w; b2=0.95*b2+0.048*w;
       d[i]=(b0+b1+b2+w*0.05)*0.6; }
-    const src=ctx.createBufferSource(); src.buffer=buf; src.loop=true;
-    const lp=ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=1400; lp.Q.value=0.4;
-    gain=ctx.createGain(); gain.gain.value=0;
-    src.connect(lp); lp.connect(gain); gain.connect(ctx.destination); src.start();
+    const src=actx.createBufferSource(); src.buffer=buf; src.loop=true;
+    const lp=actx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=1400; lp.Q.value=0.4;
+    gain=actx.createGain(); gain.gain.value=0;
+    src.connect(lp); lp.connect(gain); gain.connect(actx.destination); src.start();
   }
-  function level(){ return on ? (duck?0.032:0.15) : 0; }
-  function apply(){ if(gain) gain.gain.setTargetAtTime(level(), ctx.currentTime, 1.2); }
+  // --- file playback ---
+  let audio=null, ramp=null;
+  function rampTo(t){
+    if (!audio) return;
+    clearInterval(ramp);
+    ramp=setInterval(()=>{
+      const d=t-audio.volume;
+      if (Math.abs(d)<0.012){ audio.volume=t; clearInterval(ramp);
+        if (t===0 && !on) audio.pause(); return; }
+      audio.volume+=d*0.12;
+    },50);
+  }
+  function probe(i,done){
+    if (i>=FILES.length) return done(null);
+    const a=new Audio();
+    let settled=false;
+    const ok=()=>{ if(settled)return; settled=true; done(a); };
+    const ng=()=>{ if(settled)return; settled=true; done(null,i); };
+    a.addEventListener('canplaythrough', ok, {once:true});
+    a.addEventListener('error', ()=>probe(i+1,done), {once:true});
+    a.preload='auto'; a.loop=true; a.volume=0; a.src=FILES[i];
+    setTimeout(()=>{ if(!settled && a.readyState<3) probe(i+1,done); }, 4000);
+  }
+  function level(){ return on ? (duck ? (kind==='file'?0.09:0.032)
+                                       : (kind==='file'?0.38:0.15)) : 0; }
+  function apply(){
+    if (kind==='file' && audio){ if (on && audio.paused) audio.play(); rampTo(level()); }
+    else if (kind==='rain' && gain){ if(actx.state==='suspended') actx.resume();
+      gain.gain.setTargetAtTime(level(), actx.currentTime, 1.2); }
+  }
+  function resolveThen(fn){
+    if (kind!=='unknown') return fn();
+    probe(0,(a)=>{
+      if (a){ kind='file'; audio=a; }
+      else { kind='rain'; buildRain(); }
+      fn();
+    });
+  }
   return {
-    toggle(){ if(!ctx) build(); if(ctx.state==='suspended') ctx.resume();
-      on=!on; apply(); return on; },
+    toggle(cb){
+      resolveThen(()=>{
+        on=!on;
+        if (kind==='rain' && actx && actx.state==='suspended') actx.resume();
+        apply();
+        if (cb) cb(on, kind);
+      });
+      return !on; /* provisional; real state arrives via cb */
+    },
     duck(v){ duck=v; apply(); },
-    isOn(){ return on; }
+    isOn(){ return on; },
+    kind(){ return kind; }
   };
 })();
 (function(){
   const b=document.getElementById('bgm-btn'); if(!b) return;
+  const word=k=> k==='file' ? 'BGM' : (CV.plm&&CV.plm.rain?CV.plm.rain:'RAIN');
   b.addEventListener('click', ()=>{
-    const on=RAIN.toggle();
-    b.textContent=(CV.plm&&CV.plm.rain?CV.plm.rain:'RAIN')+' · '+(on?'ON':'OFF');
-    b.classList.toggle('on',on);
+    b.textContent='…';
+    RAIN.toggle((on,k)=>{
+      b.textContent=word(k)+' · '+(on?'ON':'OFF');
+      b.classList.toggle('on',on);
+    });
   });
-  if (window.CV && CV.plm) b.textContent = CV.plm.rain + ' · OFF';
+  if (window.CV && CV.plm) b.textContent = word(RAIN.kind()) + ' · OFF';
 })();
 
 /* pagetop — appears after scrolling past the hero */
