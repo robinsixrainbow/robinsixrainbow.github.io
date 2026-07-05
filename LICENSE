@@ -1,0 +1,24 @@
+Copyright (c) 2026 Kuo-Chen Wu (吳國禎). All Rights Reserved.
+
+The design, source code, textual content, and the "Yumemi epoch"
+(J2034.5136) astrometric composition of this website are original
+works of the author. No part may be reproduced, redistributed, or
+republished, in original or modified form, without prior written
+permission. Viewing and personal reference are permitted.
+
+To request permission: d09945002@ntu.edu.tw
+
+────────────────────────────────────────────────────────────
+THIRD-PARTY DATA & FONTS (used under their respective licenses;
+these portions are NOT covered by the all-rights-reserved terms):
+
+• Star catalog: HYG Database v3.8 (David Nash, astronexus.com)
+  — CC BY-SA. The embedded PLM_STARS array is derived from it.
+• Constellation lines: d3-celestial data (Olaf Frohn) — BSD-3-Clause.
+• Planetary theory: VSOP87 (Bretagnon & Francou, Bureau des
+  Longitudes) — freely usable scientific data; series truncated
+  and verified by the author. Lunar theory terms after Meeus.
+• Fonts: Amiri (SIL OFL 1.1), Noto Sans (SIL OFL 1.1) via CDN.
+
+planetarian is a work of VisualArt's/Key. This personal site is an
+unofficial homage; no assets from the original work are included.
