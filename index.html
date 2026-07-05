@@ -676,6 +676,7 @@ section { margin-top: 104px; position: relative; }
   font-family: var(--sans); font-weight: 300; font-size: 12px; color: #FFF;
   transition: all 0.3s ease-out; }
 .controllers .ctl-con:hover { opacity: 0.6; }
+.controllers .ctl-con.on { color: var(--cyan); text-shadow: 0 0 8px var(--glow); }
 @media (max-width: 1180px) { .newsbox { display: none; } }
 @media (max-width: 900px) { .controllers { display: none; } }
 @media (min-width: 901px) { .print-btn, .theater-btn { display: none; } }
@@ -694,6 +695,83 @@ section { margin-top: 104px; position: relative; }
 .pagetop:hover { background-color: #106060; border-color: #106060; }
 @media (max-width: 900px) { .pagetop { right: 16px; bottom: 76px; } }
 body.theater .pagetop { opacity: 0 !important; pointer-events: none !important; }
+
+
+/* ===== Language switch + card download (top-right, controller grammar) ===== */
+.langbar { position: fixed; top: 66px; right: 32px; z-index: 46; display: flex; align-items: center; gap: 14px;
+  opacity: 0; animation: navFadeIn 1s ease-out 3.1s forwards; }
+/* three-position projector-console switch */
+.lang-switch { display: flex; flex-direction: column; align-items: flex-start;
+  background: rgba(3,8,16,0.72); border: 1px solid rgba(255,255,255,0.28); border-radius: 3px;
+  padding: 4px 10px 7px; }
+.ls-ttl { font-size: 9px; font-weight: 300; color: rgba(255,255,255,0.5); line-height: 1.2; margin-bottom: 2px; }
+.ls-track { position: relative; display: flex; }
+.ls-groove { position: absolute; left: 8px; right: 8px; top: 68%; height: 2px;
+  background: rgba(0,0,0,0.8); border-top: 1px solid rgba(255,255,255,0.18); border-radius: 1px; }
+.ls-stop { position: relative; z-index: 2; width: 44px; background: none; border: none; cursor: pointer;
+  padding: 1px 0 12px; display: flex; flex-direction: column; align-items: center; gap: 2px;
+  font-family: var(--sans); }
+.ls-lamp { width: 4px; height: 4px; border-radius: 50%;
+  background: rgba(255,255,255,0.22); transition: all 0.3s ease-out; }
+.ls-stop.active .ls-lamp { background: var(--cyan); box-shadow: 0 0 7px var(--glow), 0 0 2px var(--glow); }
+.ls-lab { font-size: 11px; font-weight: 300; color: rgba(255,255,255,0.5); transition: all 0.3s ease-out; }
+.ls-stop:hover .ls-lab { color: #FFF; }
+.ls-stop.active .ls-lab { color: #FFF; }
+.ls-knob { position: absolute; z-index: 3; top: calc(68% - 8px); left: 8px;
+  width: 12px; height: 18px; border-radius: 2px;
+  background: linear-gradient(180deg, rgba(234,247,248,0.95), rgba(150,165,168,0.9));
+  border: 1px solid rgba(0,0,0,0.55); box-shadow: 0 1px 3px rgba(0,0,0,0.6);
+  transition: transform 0.3s ease-out; pointer-events: none; }
+.ls-knob::after { content: ''; position: absolute; left: 50%; top: 3px; bottom: 3px; width: 1px;
+  transform: translateX(-50%); background: rgba(0,0,0,0.35); }
+.lang-switch[data-pos="0"] .ls-knob { transform: translateX(10px); }
+.lang-switch[data-pos="1"] .ls-knob { transform: translateX(54px); }
+.lang-switch[data-pos="2"] .ls-knob { transform: translateX(98px); }
+.card-dl { display: inline-flex; align-items: center; gap: 6px; text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.6); border-radius: 18px; padding: 5px 14px;
+  font-family: var(--sans); font-weight: 300; font-size: 12px; color: #FFF; transition: all 0.3s ease-out; }
+.card-dl:hover { background-color: #106060; border-color: #106060; }
+.card-dl .ico { font-size: 13px; }
+body.theater .langbar { opacity: 0 !important; pointer-events: none !important; }
+.langbar { transition: opacity 1.4s ease; }
+/* The controllers group (PDF/MODE) sat top-right too — move it left of the langbar to avoid overlap */
+.controllers { right: auto; left: 32px; top: 66px; }
+.newsbox { top: 128px; }
+@media (max-width: 1180px) { .newsbox { display: none; } }
+@media (max-width: 900px) {
+  /* bottom-center: clear of theater-btn (left), print-btn (right), pagetop (right,76) */
+  .langbar { top: auto; bottom: 14px; right: auto; left: 50%; transform: translateX(-50%); gap: 10px; }
+  .lang-switch { padding: 3px 8px 6px; }
+  .ls-stop { width: 38px; }
+  .lang-switch[data-pos="0"] .ls-knob { transform: translateX(9px); }
+  .lang-switch[data-pos="1"] .ls-knob { transform: translateX(47px); }
+  .lang-switch[data-pos="2"] .ls-knob { transform: translateX(85px); }
+  .card-dl .lab { display: none; }
+  .controllers { display: none; }
+}
+
+
+/* ===== Planetarium ===== */
+.plm { position: fixed; inset: 0; z-index: 60; opacity: 0; visibility: hidden;
+  transition: opacity 1.6s ease; background: radial-gradient(circle at 50% 46%, #08101f 0%, #050b16 70%, #030710 100%); }
+body.theater .plm { opacity: 1; visibility: visible; }
+#plm-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.plm-console { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px; pointer-events: none; }
+.plm-plate { font-size: 11px; font-weight: 300; color: rgba(234,247,248,0.65);
+  display: flex; gap: 18px; letter-spacing: 0; }
+.plm-jena { color: rgba(255,255,255,0.42); }
+.plm-modes { display: flex; border: 1px solid rgba(255,255,255,0.28); border-radius: 3px;
+  overflow: hidden; background: rgba(0,0,0,0.5); pointer-events: auto; }
+.plm-mode { background: none; border: none; cursor: pointer; padding: 6px 16px;
+  font-family: var(--sans); font-weight: 300; font-size: 12px; color: rgba(255,255,255,0.6);
+  transition: all 0.3s ease-out; }
+.plm-mode:not(:last-child) { border-right: 1px solid rgba(255,255,255,0.16); }
+.plm-mode:hover { color: #FFF; }
+.plm-mode.active { color: var(--bg-deep); background: var(--cyan); }
+.plm-note { font-size: 10px; color: rgba(255,255,255,0.38); }
+@media (max-width: 800px) { .plm-plate { flex-direction: column; gap: 2px; align-items: center; } }
+@media print { .plm { display: none !important; } }
 
 html { scroll-behavior: smooth; }
 section { scroll-margin-top: 80px; }
@@ -873,6 +951,24 @@ body.theater .theater-hint { animation: hintPulse 5.5s ease 1.2s forwards; }
 <!-- Opening logo: "Wu KC" with subtle hairline ornament beneath -->
 <div class="loader" aria-hidden="true"><div class="progressbar"></div></div>
 
+
+<!-- ===== Planetarium (theater mode projection) ===== -->
+<div class="plm" id="plm" aria-hidden="true">
+  <canvas id="plm-canvas"></canvas>
+  <div class="plm-console">
+    <div class="plm-plate">
+      <span class="plm-loc">34°42′N 137°44′E · <span id="plm-site"></span></span>
+      <span class="plm-jena">PROJ · GENTLE JENA</span>
+      <span id="plm-time"></span>
+    </div>
+    <div class="plm-modes">
+      <button class="plm-mode" data-mode="now"   id="plm-now"></button>
+      <button class="plm-mode active" data-mode="epoch" id="plm-epoch"></button>
+    </div>
+    <div class="plm-note" id="plm-note"></div>
+  </div>
+</div>
+
 <div class="opening-logo" aria-hidden="true">
   <svg viewBox="0 0 480 130" xmlns="http://www.w3.org/2000/svg">
     <defs>
@@ -930,6 +1026,21 @@ body.theater .theater-hint { animation: hintPulse 5.5s ease 1.2s forwards; }
 
 <button class="print-btn" onclick="window.print()">⤓ EXPORT PDF</button>
 
+<div class="langbar" aria-label="Language">
+  <div class="lang-switch" id="lang-switch" data-pos="0" role="radiogroup" aria-label="Language">
+    <span class="ls-ttl">LANG</span>
+    <div class="ls-track">
+      <button class="lang-btn ls-stop" data-lang="en" role="radio" aria-label="English"><span class="ls-lamp"></span><span class="ls-lab">EN</span></button>
+      <button class="lang-btn ls-stop" data-lang="zh" role="radio" aria-label="繁體中文"><span class="ls-lamp"></span><span class="ls-lab">中</span></button>
+      <button class="lang-btn ls-stop" data-lang="ja" role="radio" aria-label="日本語"><span class="ls-lamp"></span><span class="ls-lab">日</span></button>
+      <div class="ls-groove" aria-hidden="true"></div>
+      <div class="ls-knob" aria-hidden="true"></div>
+    </div>
+  </div>
+  <a class="card-dl" id="card-dl" href="#" download>
+    <span class="ico">⤓</span><span class="lab">Card</span>
+  </a>
+</div>
 <nav class="topnav" aria-label="Section navigation">
   <div class="topnav-inner">
     <a href="#" class="nav-home">Profile</a>
@@ -960,6 +1071,11 @@ body.theater .theater-hint { animation: hintPulse 5.5s ease 1.2s forwards; }
   <div class="boxSuper">
     <div class="boxline-h top"></div>
     <div class="ctl-inner"><span class="ctl-ttl">MODE</span><button class="ctl-con" id="theater-btn2">THEATER &#10022;</button></div>
+    <div class="boxline-h bottom"></div>
+  </div>
+  <div class="boxSuper">
+    <div class="boxline-h top"></div>
+    <div class="ctl-inner"><span class="ctl-ttl" id="bgm-ttl">BGM</span><button class="ctl-con" id="bgm-btn">RAIN · OFF</button></div>
     <div class="boxline-h bottom"></div>
   </div>
 </div>
@@ -1141,52 +1257,223 @@ body.theater .theater-hint { animation: hintPulse 5.5s ease 1.2s forwards; }
 <div class="theater-hint">クリックで戻る — click anywhere to return</div>
 
 <script>
-const CV = {
-  lastUpdated: 'July 2026',
-  education: [
-    { school: 'National Taiwan University', degree: 'Doctor of Biomedical Electronics and Bioinformatics', date: 'Sep. 2020 – Aug. 2025', place: 'Taipei, Taiwan' },
-    { school: 'National Chung Hsing University', degree: 'Master of Computer Science and Engineering', date: 'Sep. 2017 – Jan. 2020', place: 'Taichung, Taiwan' },
-  ],
-  skills: [
-    { ttl: 'AI &amp; Machine Learning', items: ['Medical Image Processing · NLP','Generative AI · RAG · LLM Fine-Tuning','PyTorch · TensorFlow','Radiomics pipelines','Classical CV &amp; segmentation'] },
-    { ttl: 'Programming Languages', items: ['Python (primary)','C# · C / C++','R · Matlab'] },
-    { ttl: 'Web Dev &amp; DevOps', items: ['HTML · CSS · Frontend','GitHub · Travis CI','Continuous Integration'] },
-  ],
-  currentRoles: [
-    { label: 'CTO',        org: '智富生醫科技股份有限公司' },
-    { label: 'Postdoc',    org: '國立臺灣師範大學' },
-    { label: 'Advisor',    org: '顧芳瑜泌尿科診所' },
-    { label: 'Professor',  org: '國立勤益科技大學' },
-  ],
-  experience: [
-    { role: 'Algorithm Engineer', date: 'Jul. 2020 – Feb. 2026',
-      org: 'China Medical University Hospital · Artificial Intelligence Center',
-      project: 'Project 1: Leadership and Execution of Multiple Medical Imaging AI Projects',
-      star: {
-        S: 'As an Algorithm Engineer at the AI Center, I was tasked with leading key medical imaging AI projects. The core challenge was to apply deep learning techniques to solve complex clinical problems in areas such as pharyngeal cancer, rectal cancer, and coronary artery calcification.',
-        T: 'My objective was to lead and execute these projects, translating pioneering research into tangible academic and technical assets. I was also responsible for representing the Center in external competitions to bolster our technical reputation.',
-        A: 'I successfully applied deep learning techniques to address complex clinical issues related to pharyngeal cancer, rectal cancer, and coronary artery calcification. I systematically translated this research into over 10 high-quality publications in international journals and secured 8 international invention patents as the lead inventor. I actively represented the Center in major competitions to showcase our technical capabilities.',
-        R: 'Published over 10 high-quality papers as the first or key author. Acquired 8 international invention patents as the lead inventor across the U.S., Taiwan, and China. Obtained regulatory clearance from the FDA and secured the 20th National Innovation Award, significantly establishing the Center\u2019s influence in the industry.',
-      } },
-    { role: 'Research Assistant', date: 'Jun. 2018 – Jun. 2019',
-      org: 'Division of Thoracic Surgery · Taipei Veterans General Hospital',
-      project: 'Project 2: Development of Radiomics-Based Analytical Pipelines for Thoracic Tumor Diagnosis',
-      star: {
-        S: 'While working at the Division of Thoracic Surgery, the clinical team required a more precise and quantitative method for evaluating thoracic tumor characteristics and predicting treatment outcomes.',
-        T: 'My primary responsibility was to develop radiomics-based analytical pipelines. The goal was to extract high-dimensional quantitative features from thoracic tumor images, which would then be used to build prognostic models for computer-aided diagnosis (CADx).',
-        A: 'I developed a comprehensive analytical pipeline that successfully extracted high-dimensional quantitative features from medical images. I then utilized these features to build prognostic models designed to assess tumor characteristics and predict treatment response.',
-        R: 'The developed pipeline provided clinicians with objective, data-driven insights, enhancing the accuracy of tumor assessment and aiding in treatment decision-making.',
-      } },
-    { role: 'Research Assistant', date: 'Jun. 2015 – Jun. 2018',
-      org: 'Cancer Center · China Medical University Hospital',
-      project: 'Project 3: Development and Optimization of Automated Tumor Segmentation Algorithms',
-      star: {
-        S: 'The Cancer Center needed to improve the efficiency and consistency of tumor boundary delineation in medical images, as the existing manual annotation process was time-consuming and prone to variability.',
-        T: 'My task was to develop and optimize classical image processing algorithms, such as active contours and region growing, to achieve fully automated segmentation of tumors.',
-        A: 'I focused on developing and refining these algorithms to precisely delineate tumor boundaries automatically. This involved extensive programming and iterative testing to ensure high performance and reliability across different medical images.',
-        R: 'The optimized algorithms successfully replaced time-consuming manual annotation, which significantly improved the efficiency and consistency of quantitative analysis for treatment planning and surgical assessment.',
-      } },
-  ],
+// i18n dictionary — EN / ZH-Hant / JA. Hand-translated; medical terminology verified.
+const I18N = {
+  en: {
+    _label: "EN", _name: "English",
+    badge: "— Curriculum Vitae —",
+    subname: "吳　國　禎",
+    card: { label: "Business Card", file: "cards/card_en.pdf" },
+    contact: { phone: "Phone", bmail: "Business Email", pmail: "Personal Email" },
+    sec: {
+      edu:  ["Education", "academic background"],
+      skill:["Technical Skills", "tools & expertise"],
+      exp:  ["Experience", "professional record"],
+      pub:  ["Publications", "peer-reviewed work"],
+      pat:  ["Patents", "invention record"],
+      comp: ["Competitions & Awards", "recognition"],
+    },
+    tag: { invited: "INVITED" },
+    closing: "Achieved a 5-Year CJA Score Above 600",
+    updated: "Last updated",
+    theater: { enter: "THEATER ✦", hint: "click anywhere to exit" },
+    ctl: { pdf: "EXPORT ⤓", pdfTtl: "PDF", modeTtl: "MODE" },
+    news: "WHAT'S NEW",
+    plm: { site: "Former Matsubishi Site, Hamamatsu", now: "LIVE SKY", epoch: "YUMEMI EPOCH",
+           cardinal: ["N","E","S","W"], tri: ["VEGA","DENEB","ALTAIR"], locale: "en-GB",
+           bodies: { sun:"Sun", moon:"Moon", me:"Mercury", ve:"Venus", ma:"Mars", ju:"Jupiter", sa:"Saturn" }, rain: "RAIN",
+           note: "HYG stars · VSOP87/ELP Sun·Moon·planets (<0.011°, verified) · refraction incl. · planet brightness representative" },
+    education: [
+      { school: "National Taiwan University", degree: "Doctor of Biomedical Electronics and Bioinformatics", date: "Sep. 2020 – Aug. 2025", place: "Taipei, Taiwan" },
+      { school: "National Chung Hsing University", degree: "Master of Computer Science and Engineering", date: "Sep. 2017 – Jan. 2020", place: "Taichung, Taiwan" },
+    ],
+    skills: [
+      { ttl: "AI & Machine Learning", items: ["Medical Image Processing · NLP","Generative AI · RAG · LLM Fine-Tuning","PyTorch · TensorFlow","Radiomics pipelines","Classical CV & segmentation"] },
+      { ttl: "Programming Languages", items: ["Python (primary)","C# · C / C++","R · Matlab"] },
+      { ttl: "Web Dev & DevOps", items: ["HTML · CSS · Frontend","GitHub · Travis CI","Continuous Integration"] },
+    ],
+    currentRoles: [
+      { label: "CTO", org: "智富生醫科技股份有限公司" },
+      { label: "Postdoc", org: "國立臺灣師範大學" },
+      { label: "Advisor", org: "顧芳瑜泌尿科診所" },
+      { label: "Professor", org: "國立勤益科技大學" },
+    ],
+    experience: [
+      { role: "Algorithm Engineer", date: "Jul. 2020 – Feb. 2026",
+        org: "China Medical University Hospital · Artificial Intelligence Center",
+        project: "Project 1: Leadership and Execution of Multiple Medical Imaging AI Projects",
+        star: {
+          S: "As an Algorithm Engineer at the AI Center, I was tasked with leading key medical imaging AI projects. The core challenge was to apply deep learning techniques to solve complex clinical problems in areas such as pharyngeal cancer, rectal cancer, and coronary artery calcification.",
+          T: "My objective was to lead and execute these projects, translating pioneering research into tangible academic and technical assets. I was also responsible for representing the Center in external competitions to bolster our technical reputation.",
+          A: "I successfully applied deep learning techniques to address complex clinical issues related to pharyngeal cancer, rectal cancer, and coronary artery calcification. I systematically translated this research into over 10 high-quality publications in international journals and secured 8 international invention patents as the lead inventor. I actively represented the Center in major competitions to showcase our technical capabilities.",
+          R: "Published over 10 high-quality papers as the first or key author. Acquired 8 international invention patents as the lead inventor across the U.S., Taiwan, and China. Obtained regulatory clearance from the FDA and secured the 20th National Innovation Award, significantly establishing the Center\u2019s influence in the industry.",
+        } },
+      { role: "Research Assistant", date: "Jun. 2018 – Jun. 2019",
+        org: "Division of Thoracic Surgery · Taipei Veterans General Hospital",
+        project: "Project 2: Development of Radiomics-Based Analytical Pipelines for Thoracic Tumor Diagnosis",
+        star: {
+          S: "While working at the Division of Thoracic Surgery, the clinical team required a more precise and quantitative method for evaluating thoracic tumor characteristics and predicting treatment outcomes.",
+          T: "My primary responsibility was to develop radiomics-based analytical pipelines. The goal was to extract high-dimensional quantitative features from thoracic tumor images, which would then be used to build prognostic models for computer-aided diagnosis (CADx).",
+          A: "I developed a comprehensive analytical pipeline that successfully extracted high-dimensional quantitative features from medical images. I then utilized these features to build prognostic models designed to assess tumor characteristics and predict treatment response.",
+          R: "The developed pipeline provided clinicians with objective, data-driven insights, enhancing the accuracy of tumor assessment and aiding in treatment decision-making.",
+        } },
+      { role: "Research Assistant", date: "Jun. 2015 – Jun. 2018",
+        org: "Cancer Center · China Medical University Hospital",
+        project: "Project 3: Development and Optimization of Automated Tumor Segmentation Algorithms",
+        star: {
+          S: "The Cancer Center needed to improve the efficiency and consistency of tumor boundary delineation in medical images, as the existing manual annotation process was time-consuming and prone to variability.",
+          T: "My task was to develop and optimize classical image processing algorithms, such as active contours and region growing, to achieve fully automated segmentation of tumors.",
+          A: "I focused on developing and refining these algorithms to precisely delineate tumor boundaries automatically. This involved extensive programming and iterative testing to ensure high performance and reliability across different medical images.",
+          R: "The optimized algorithms successfully replaced time-consuming manual annotation, which significantly improved the efficiency and consistency of quantitative analysis for treatment planning and surgical assessment.",
+        } },
+    ],
+    starKey: { S: "Situation", T: "Task", A: "Action", R: "Result" },
+  },
+
+  zh: {
+    _label: "中", _name: "繁體中文",
+    badge: "— 履　歷 —",
+    subname: "吳　國　禎",
+    card: { label: "名片下載", file: "cards/card_zh.pdf" },
+    contact: { phone: "電話", bmail: "公務信箱", pmail: "個人信箱" },
+    sec: {
+      edu:  ["學歷", "學術背景"],
+      skill:["專業技能", "工具與專長"],
+      exp:  ["工作經歷", "職涯紀錄"],
+      pub:  ["學術論文", "同儕審查著作"],
+      pat:  ["發明專利", "發明紀錄"],
+      comp: ["競賽與獲獎", "獲獎紀錄"],
+    },
+    tag: { invited: "邀請演講" },
+    closing: "五年 CJA 積分逾 600",
+    updated: "最後更新",
+    theater: { enter: "劇場模式 ✦", hint: "點擊任意處退出" },
+    ctl: { pdf: "匯出 ⤓", pdfTtl: "PDF", modeTtl: "模式" },
+    news: "最新動態",
+    plm: { site: "濱松・旧松菱街區上空", now: "即時星空", epoch: "ゆめみの曆元",
+           cardinal: ["北","東","南","西"], tri: ["織女一","天津四","河鼓二"], locale: "zh-TW",
+           bodies: { sun:"太陽", moon:"月", me:"水星", ve:"金星", ma:"火星", ju:"木星", sa:"土星" }, rain: "雨聲",
+           note: "HYG 恆星 · VSOP87/ELP 太陽月亮行星（<0.011°，已對完整級數驗證）· 含大氣折射與月相 · 行星亮度為代表值" },
+    education: [
+      { school: "國立臺灣大學", degree: "生醫電子與資訊學 博士", date: "2020.09 – 2025.08", place: "臺灣・臺北" },
+      { school: "國立中興大學", degree: "資訊科學與工程學 碩士", date: "2017.09 – 2020.01", place: "臺灣・臺中" },
+    ],
+    skills: [
+      { ttl: "人工智慧與機器學習", items: ["醫學影像處理 · 自然語言處理","生成式 AI · RAG · 大模型微調","PyTorch · TensorFlow","放射組學流程","傳統電腦視覺與影像分割"] },
+      { ttl: "程式語言", items: ["Python（主力）","C# · C / C++","R · Matlab"] },
+      { ttl: "網頁開發與維運", items: ["HTML · CSS · 前端","GitHub · Travis CI","持續整合"] },
+    ],
+    currentRoles: [
+      { label: "技術長", org: "智富生醫科技股份有限公司" },
+      { label: "博士後研究員", org: "國立臺灣師範大學" },
+      { label: "顧問", org: "顧芳瑜泌尿科診所" },
+      { label: "教授", org: "國立勤益科技大學" },
+    ],
+    experience: [
+      { role: "演算法工程師", date: "2020.07 – 2026.02",
+        org: "中國醫藥大學附設醫院 · 人工智慧中心",
+        project: "專案一：多項醫學影像 AI 專案之領導與執行",
+        star: {
+          S: "身為 AI 中心的演算法工程師，我負責主導重點醫學影像 AI 專案。核心挑戰在於運用深度學習技術，解決咽癌、直腸癌、冠狀動脈鈣化等領域的複雜臨床問題。",
+          T: "我的目標是領導並執行這些專案，將前沿研究轉化為具體的學術與技術資產；同時代表中心參與外部競賽，以提升本中心的技術聲譽。",
+          A: "我成功運用深度學習技術，處理咽癌、直腸癌與冠狀動脈鈣化相關的複雜臨床問題，並有系統地將研究成果轉化為 10 篇以上刊登於國際期刊的高品質論文，以第一發明人身分取得 8 項國際發明專利。我亦積極代表中心參與重要競賽，展現我方的技術實力。",
+          R: "以第一或主要作者發表 10 篇以上高品質論文；以第一發明人身分取得橫跨美國、臺灣、中國的 8 項國際發明專利。通過美國 FDA 醫療器材審查，並榮獲第 20 屆國家新創獎，大幅奠定中心在產業界的影響力。",
+        } },
+      { role: "研究助理", date: "2018.06 – 2019.06",
+        org: "臺北榮民總醫院 · 胸腔外科",
+        project: "專案二：胸腔腫瘤診斷之放射組學分析流程開發",
+        star: {
+          S: "於胸腔外科任職期間，臨床團隊需要一套更精準、可量化的方法，以評估胸腔腫瘤特徵並預測治療成效。",
+          T: "我的主要職責是開發以放射組學（radiomics）為基礎的分析流程，目標是從胸腔腫瘤影像萃取高維度量化特徵，據以建立電腦輔助診斷（CADx）的預後模型。",
+          A: "我開發出一套完整的分析流程，成功從醫學影像萃取高維度量化特徵，並運用這些特徵建立預後模型，用以評估腫瘤特徵、預測治療反應。",
+          R: "此流程為臨床醫師提供客觀、以數據為本的判讀依據，提升了腫瘤評估的準確度，並輔助治療決策。",
+        } },
+      { role: "研究助理", date: "2015.06 – 2018.06",
+        org: "中國醫藥大學附設醫院 · 癌症中心",
+        project: "專案三：自動化腫瘤分割演算法之開發與最佳化",
+        star: {
+          S: "癌症中心既有的人工標註流程耗時且結果易有差異，亟需提升醫學影像中腫瘤邊界描繪的效率與一致性。",
+          T: "我的任務是開發並最佳化主動輪廓（active contours）、區域成長（region growing）等傳統影像處理演算法，以達成腫瘤的全自動分割。",
+          A: "我專注於開發與精進這些演算法，以自動且精準地描繪腫瘤邊界。此工作包含大量程式撰寫與反覆測試，以確保在不同醫學影像上皆具備高效能與可靠度。",
+          R: "最佳化後的演算法成功取代耗時的人工標註，大幅提升治療規劃與手術評估之量化分析的效率與一致性。",
+        } },
+    ],
+    starKey: { S: "情境", T: "任務", A: "行動", R: "成果" },
+  },
+
+  ja: {
+    _label: "日", _name: "日本語",
+    badge: "— 履 歴 書 —",
+    subname: "呉　国禎",
+    card: { label: "名刺 DL", file: "cards/card_ja.pdf" },
+    contact: { phone: "電話", bmail: "業務用メール", pmail: "個人用メール" },
+    sec: {
+      edu:  ["学歴", "学術的背景"],
+      skill:["専門スキル", "ツールと専門知識"],
+      exp:  ["職歴", "キャリア記録"],
+      pub:  ["学術論文", "査読付き論文"],
+      pat:  ["特許", "発明記録"],
+      comp: ["受賞歴", "表彰記録"],
+    },
+    tag: { invited: "招待講演" },
+    closing: "5年間の CJA スコア 600 点超を達成",
+    updated: "最終更新",
+    theater: { enter: "シアターモード ✦", hint: "どこでもクリックで終了" },
+    ctl: { pdf: "書き出し ⤓", pdfTtl: "PDF", modeTtl: "モード" },
+    news: "新着情報",
+    plm: { site: "浜松・旧松菱街区の空", now: "現在の星空", epoch: "ゆめみの暦元",
+           cardinal: ["北","東","南","西"], tri: ["ベガ","デネブ","アルタイル"], locale: "ja-JP",
+           bodies: { sun:"太陽", moon:"月", me:"水星", ve:"金星", ma:"火星", ju:"木星", sa:"土星" }, rain: "雨音",
+           note: "HYG 恒星 · VSOP87/ELP 太陽・月・惑星（<0.011°、完全級数で検証済）· 大気差・月相含む · 惑星光度は代表値" },
+    education: [
+      { school: "国立台湾大学", degree: "生体医工学・バイオインフォマティクス 博士", date: "2020年9月 – 2025年8月", place: "台湾・台北" },
+      { school: "国立中興大学", degree: "コンピュータ科学工学 修士", date: "2017年9月 – 2020年1月", place: "台湾・台中" },
+    ],
+    skills: [
+      { ttl: "AI・機械学習", items: ["医用画像処理 · 自然言語処理","生成 AI · RAG · LLM ファインチューニング","PyTorch · TensorFlow","ラジオミクス・パイプライン","古典的 CV・領域分割"] },
+      { ttl: "プログラミング言語", items: ["Python（主力）","C# · C / C++","R · Matlab"] },
+      { ttl: "Web 開発・DevOps", items: ["HTML · CSS · フロントエンド","GitHub · Travis CI","継続的インテグレーション"] },
+    ],
+    currentRoles: [
+      { label: "最高技術責任者", org: "智富生醫科技股份有限公司" },
+      { label: "博士研究員", org: "国立台湾師範大学" },
+      { label: "顧問", org: "顧芳瑜泌尿器科クリニック" },
+      { label: "教授", org: "国立勤益科技大学" },
+    ],
+    experience: [
+      { role: "アルゴリズムエンジニア", date: "2020年7月 – 2026年2月",
+        org: "中国医薬大学附設病院 · 人工知能センター",
+        project: "プロジェクト1：複数の医用画像 AI プロジェクトの統括と遂行",
+        star: {
+          S: "AI センターのアルゴリズムエンジニアとして、主要な医用画像 AI プロジェクトの統括を担いました。中核となる課題は、深層学習技術を用いて咽頭がん・直腸がん・冠動脈石灰化などの領域における複雑な臨床課題を解決することでした。",
+          T: "私の目標は、これらのプロジェクトを統括・遂行し、先端研究を具体的な学術的・技術的資産へと転換することでした。あわせて、センターを代表して外部の競技会に出場し、技術的評価を高める役割も担いました。",
+          A: "深層学習技術を咽頭がん・直腸がん・冠動脈石灰化に関わる複雑な臨床課題へ適用し、その研究成果を国際学術誌における10報以上の高品質論文へ体系的に結実させ、筆頭発明者として8件の国際発明特許を取得しました。また主要な競技会にセンター代表として積極的に出場し、当方の技術力を示しました。",
+          R: "筆頭または主要著者として10報以上の高品質論文を発表。筆頭発明者として米国・台湾・中国にまたがる8件の国際発明特許を取得。米国 FDA の医療機器認可を取得し、第20回国家イノベーション賞を受賞、業界におけるセンターの影響力を大きく確立しました。",
+        } },
+      { role: "研究助手", date: "2018年6月 – 2019年6月",
+        org: "台北栄民総合病院 · 胸部外科",
+        project: "プロジェクト2：胸部腫瘍診断のためのラジオミクス解析パイプラインの開発",
+        star: {
+          S: "胸部外科に在籍中、臨床チームは胸部腫瘍の性状評価と治療成績予測のために、より精密で定量的な手法を必要としていました。",
+          T: "私の主たる責務は、ラジオミクスに基づく解析パイプラインの開発でした。胸部腫瘍画像から高次元の定量的特徴を抽出し、それをもとにコンピュータ支援診断（CADx）の予後モデルを構築することが目標でした。",
+          A: "医用画像から高次元の定量的特徴を抽出する包括的な解析パイプラインを開発し、それらの特徴を用いて腫瘍の性状評価と治療反応予測のための予後モデルを構築しました。",
+          R: "本パイプラインは臨床医に客観的かつデータに基づく知見を提供し、腫瘍評価の精度を高め、治療方針の決定を支援しました。",
+        } },
+      { role: "研究助手", date: "2015年6月 – 2018年6月",
+        org: "中国医薬大学附設病院 · がんセンター",
+        project: "プロジェクト3：自動腫瘍分割アルゴリズムの開発と最適化",
+        star: {
+          S: "がんセンターでは、従来の手動アノテーションが時間を要し結果にばらつきが生じやすかったため、医用画像における腫瘍境界描出の効率と一貫性の向上が求められていました。",
+          T: "私の任務は、能動輪郭（active contours）や領域拡張（region growing）といった古典的画像処理アルゴリズムを開発・最適化し、腫瘍の全自動分割を実現することでした。",
+          A: "これらのアルゴリズムの開発と改良に注力し、腫瘍境界を自動かつ精密に描出しました。多様な医用画像において高い性能と信頼性を確保するため、綿密なプログラミングと反復的な検証を重ねました。",
+          R: "最適化されたアルゴリズムは時間を要する手動アノテーションを置き換え、治療計画と手術評価に向けた定量解析の効率と一貫性を大幅に向上させました。",
+        } },
+    ],
+    starKey: { S: "状況", T: "課題", A: "行動", R: "成果" },
+  },
+};
+
+const CV_DATA = {
   journals: [
     { q:'Q2', authors:'<span class="me">Wu, K.-C.</span>, Chen, S.-W., Chang, Y.-Y., ……, &amp; Kao, C.-H. (2025).', title:'Predicting Radiotherapy Outcomes with Deep Learning Models Through Baseline and Adaptive Simulation Computed Tomography in Patients with Pharyngeal Cancer.', journal:'Cancers', vol:'17(21), 3492', doi:'https://doi.org/10.3390/cancers17213492' },
     { q:'Q2', authors:'<span class="me">Wu, K.-C.</span>, Chew, F. Y., Cheng, K.-L., ……, &amp; Chang, S.-S. (2025).', title:'Adaptive RAG-Assisted MRI Platform (ARAMP) for Brain Metastasis Detection and Reporting: A Retrospective Evaluation Using Post-Contrast T1-Weighted Imaging.', journal:'Bioengineering', vol:'12(7), 698', doi:'https://doi.org/10.3390/bioengineering12070698' },
@@ -1211,23 +1498,6 @@ const CV = {
     { venue:'Society of Nuclear Medicine', meta:'Apr. 2023 · ROC (Taiwan)', title:'*Early Prediction of Distant Metastasis in Cervical Cancer Patients Treated with Definitive Chemoradiotherapy using Deep Learning and Pre-treatment [18F] FDG PET/CT Imaging.' },
     { venue:'EULAR European Congress of Rheumatology', meta:'May. 2023 · Italy', title:'*Automatic scoring of ultrasound synovial hypertrophy in rheumatoid arthritis through integrating multiple convolutional neural network models.' },
   ],
-  patents: {
-    tw: [
-      { id:'No. I922383', date:'2026.4.11 ~ 2045.7.31', title:'Aided Detection System, Method and Computer Program Product for Automated Localization and Interpretation of Coronary Artery Calcification.' },
-      { id:'No. M640363', date:'2023.4.21 ~ 2033.2.9',  title:'Artificial Intelligence Recognition Device for Chinese Herbal Medicine Decoction.' },
-      { id:'No. I726459', date:'2021.5.1 ~ 2039.10.24', title:'Transfer Learning Aided Prediction System, Method and Computer Program Product Thereof.' },
-      { id:'No. I723312', date:'2021.4.1 ~ 2038.12.27', title:'Computer-Aided Recognition System for Treatment Response of Rectal Cancer, and Its Method and Computer Program Product.' },
-      { id:'No. I681406', date:'2020.1.1 ~ 2038.12.19', title:'Deep learning of Tumor Image-Aided Prediction of Prognosis of Patients with Uterine Cervical Cancer System, Method and Computer Program Product Thereof.' },
-    ],
-    cn: [
-      { id:'No. CN112712875B', date:'2022.12.2 ~ 2039.10.25', title:'Auxiliary Prediction System and Method for Transfer Learning.' },
-      { id:'No. CN111382756B', date:'2018.12.28 ~ 2038.12.28', title:'Image Computer-Assisted Rectal Cancer Treatment Response Prediction System, Method and Computer Program.' },
-    ],
-    us: [
-      { id:'No. 11,164,676 B2', date:'2021.11.2 ~ 2039.7.11', title:'Computer-Aided Recognition System for Treatment Response of Rectal Cancer, and Computer Program Product.' },
-      { id:'No. 10,896,502 b2', date:'2021.1.19 ~ 2039.5.22', title:'Prediction System, Method and Computer Program Product Thereof.' },
-    ],
-  },
   competition: [
     { year:'2026', award:'2nd Place &amp; People\u2019s Choice Award', body:'APSC &amp; TSOC Joint Annual Meeting — 心血管人工智慧落地競賽 (Automated CACS Prediction System)' },
     { year:'2025', award:'1st Place',                                  body:'新創之星 — 動物眼科 AI 辨識輔助診斷服務' },
@@ -1247,11 +1517,40 @@ const CV = {
     { year:'2019', award:'Benchmark Award',                            body:'AI CUP - 人工智慧論文機器閱讀競賽之論文分類' },
     { year:'2018', award:'1st Place',                                  body:'Nvidia GTC Taiwan - Poster Contest Award' },
   ],
+  patents: {
+    tw: [
+      { id:'No. I922383', date:'2026.4.11 ~ 2045.7.31', title:'Aided Detection System, Method and Computer Program Product for Automated Localization and Interpretation of Coronary Artery Calcification.' },
+      { id:'No. M640363', date:'2023.4.21 ~ 2033.2.9',  title:'Artificial Intelligence Recognition Device for Chinese Herbal Medicine Decoction.' },
+      { id:'No. I726459', date:'2021.5.1 ~ 2039.10.24', title:'Transfer Learning Aided Prediction System, Method and Computer Program Product Thereof.' },
+      { id:'No. I723312', date:'2021.4.1 ~ 2038.12.27', title:'Computer-Aided Recognition System for Treatment Response of Rectal Cancer, and Its Method and Computer Program Product.' },
+      { id:'No. I681406', date:'2020.1.1 ~ 2038.12.19', title:'Deep learning of Tumor Image-Aided Prediction of Prognosis of Patients with Uterine Cervical Cancer System, Method and Computer Program Product Thereof.' },
+    ],
+    cn: [
+      { id:'No. CN112712875B', date:'2022.12.2 ~ 2039.10.25', title:'Auxiliary Prediction System and Method for Transfer Learning.' },
+      { id:'No. CN111382756B', date:'2018.12.28 ~ 2038.12.28', title:'Image Computer-Assisted Rectal Cancer Treatment Response Prediction System, Method and Computer Program.' },
+    ],
+    us: [
+      { id:'No. 11,164,676 B2', date:'2021.11.2 ~ 2039.7.11', title:'Computer-Aided Recognition System for Treatment Response of Rectal Cancer, and Computer Program Product.' },
+      { id:'No. 10,896,502 b2', date:'2021.1.19 ~ 2039.5.22', title:'Prediction System, Method and Computer Program Product Thereof.' },
+    ],
+  }
 };
+
+let LANG = (function(){
+  const saved = localStorage.getItem('cv_lang');
+  if (saved && I18N[saved]) return saved;
+  const n = (navigator.language||'en').toLowerCase();
+  if (n.startsWith('zh')) return 'zh';
+  if (n.startsWith('ja')) return 'ja';
+  return 'en';
+})();
+let CV = Object.assign({}, CV_DATA, I18N[LANG]);
+;
 
 const $ = id => document.getElementById(id);
 const edges = '<span class="edge edge-t"></span><span class="edge edge-l"></span><span class="edge edge-r"></span><span class="edge edge-b"></span>';
 
+function renderCV(){
 $('education').innerHTML = CV.education.map(e=>`
   <div class="edu-item">
     <div>
@@ -1287,10 +1586,10 @@ $('experience').innerHTML = CV.experience.map((x, i)=>`
     <div class="exp-org">${x.org}</div>
     <div class="exp-project">${x.project}</div>
     <div class="star-block">
-      <div class="star-line"><span class="label">Situation:</span>${x.star.S}</div>
-      <div class="star-line"><span class="label">Task:</span>${x.star.T}</div>
-      <div class="star-line"><span class="label">Action:</span>${x.star.A}</div>
-      <div class="star-line"><span class="label">Result:</span>${x.star.R}</div>
+      <div class="star-line"><span class="label">${CV.starKey.S}:</span>${x.star.S}</div>
+      <div class="star-line"><span class="label">${CV.starKey.T}:</span>${x.star.T}</div>
+      <div class="star-line"><span class="label">${CV.starKey.A}:</span>${x.star.A}</div>
+      <div class="star-line"><span class="label">${CV.starKey.R}:</span>${x.star.R}</div>
     </div>
   </div>`).join('');
 
@@ -1303,7 +1602,7 @@ $('journals').innerHTML = CV.journals.map((j,i)=>`
 $('conferences').innerHTML = CV.conferences.map(c=>`
   <div class="conf-entry">
     <div class="conf-head"><div class="conf-venue">${c.venue}</div><div class="conf-meta">${c.meta}</div></div>
-    <div class="conf-title">${c.invited?'<span class="invited">Invited Speaker</span>':''}${c.title}</div>
+    <div class="conf-title">${c.invited?`<span class="invited">${CV.tag.invited}</span>`:''}${c.title}</div>
   </div>`).join('');
 
 const ptpl = arr => `<table class="dataTable"><thead><tr>
@@ -1330,6 +1629,461 @@ $('last-updated').textContent = CV.lastUpdated;
   nb.innerHTML = CV.competition.slice(0,3).map((c,i)=>`
     <li>${i===0?'<span class="new-tag">NEW</span>':''}<span class="date">${c.year}.</span>${c.award} — ${c.body}</li>`).join('');
 })();
+// --- static UI text bound to active language ---
+(function(){
+  const t = CV;
+  const set = (sel, val) => { const el = document.querySelector(sel); if (el != null && val != null) el.textContent = val; };
+  set('.hero .badge', t.badge);
+  set('.hero .subname', t.subname);
+  document.querySelectorAll('.contact-item').forEach((el,i)=>{
+    const lab = el.querySelector('.label');
+    if (lab) lab.textContent = [t.contact.phone, t.contact.bmail, t.contact.pmail][i];
+  });
+  const secMap = [['education-sec','edu'],['skills-sec','skill'],['experience-sec','exp'],
+                  ['publications-sec','pub'],['patents-sec','pat'],['awards-sec','comp']];
+  secMap.forEach(([id,key])=>{
+    const sec = document.getElementById(id); if(!sec) return;
+    const svg = sec.querySelector('.sec-svg .sec-path'); const sub = sec.querySelector('.sec-ttl .sub');
+    // SVG art title stays English (Amiri design token, no CJK glyphs); sub line carries language
+    if (sub) sub.textContent = t.sec[key][1];
+  });
+  set('.cv-closing .tagline', t.closing);
+  const ug = document.querySelector('.site-footer .updated');
+  if (ug) ug.innerHTML = t.updated + ' · <span id="last-updated"></span>';
+  document.querySelectorAll('.theater-btn').forEach(b=> b.textContent = t.theater.enter);
+  const th = document.querySelector('.theater-hint'); if (th) th.textContent = t.theater.hint;
+  const nb = document.querySelector('.newsbox .nb-ttl'); if (nb) nb.innerHTML = t.news.replace(/\s+/, '<br>');
+  document.querySelectorAll('.controllers .ctl-ttl').forEach((el,i)=> el.textContent = [t.ctl.pdfTtl, t.ctl.modeTtl, 'BGM'][i]);
+  const bb=document.getElementById('bgm-btn');
+  if (bb && window.RAIN) bb.textContent = (t.plm.rain||'RAIN') + ' · ' + (RAIN.isOn()?'ON':'OFF');
+  const pdfBtn = document.querySelector('.controllers .boxSuper:first-child .ctl-con');
+  if (pdfBtn) pdfBtn.textContent = t.ctl.pdf;
+})();
+
+}
+
+// Star catalog: HYG v3.8 (mag<=5.0), constellation lines: d3-celestial
+const PLM_STARS=[[0.0,0.0,-26.7],[101.29,-16.72,-1.4],[95.99,-52.7,-0.6],[213.92,19.18,-0.1],[219.91,-60.83,-0.0],[279.23,38.78,0.0],[79.17,46.0,0.1],[78.63,-8.2,0.2],[114.83,5.22,0.4],[24.43,-57.24,0.5],[88.79,7.41,0.5],[210.96,-60.37,0.6],[186.65,-63.1,0.8],[297.7,8.87,0.8],[68.98,16.51,0.9],[201.3,-11.16,1.0],[79.17,46.0,1.0],[247.35,-26.43,1.1],[116.33,28.03,1.2],[191.93,-59.69,1.2],[310.36,45.28,1.2],[344.41,-29.62,1.2],[152.09,11.97,1.4],[219.91,-60.84,1.4],[104.66,-28.97,1.5],[81.28,6.35,1.6],[81.57,28.61,1.6],[113.65,31.89,1.6],[187.79,-57.11,1.6],[263.4,-37.1,1.6],[84.05,-1.2,1.7],[85.19,-1.94,1.7],[138.3,-69.72,1.7],[332.06,-46.96,1.7],[51.08,49.86,1.8],[107.1,-26.39,1.8],[122.38,-47.34,1.8],[165.93,61.75,1.8],[193.51,55.96,1.8],[276.04,-34.38,1.8],[89.88,44.95,1.9],[99.43,16.4,1.9],[125.63,-59.51,1.9],[131.18,-54.71,1.9],[206.89,49.31,1.9],[252.17,-69.03,1.9],[264.33,-43.0,1.9],[306.41,-56.74,1.9],[10.9,-17.99,2.0],[31.79,23.46,2.0],[37.95,89.26,2.0],[95.67,-17.96,2.0],[141.9,-8.66,2.0],[154.99,19.84,2.0],[283.82,-26.3,2.0],[2.1,29.09,2.1],[14.18,60.72,2.1],[17.43,35.62,2.1],[30.97,42.33,2.1],[47.04,40.96,2.1],[86.94,-9.67,2.1],[177.26,14.57,2.1],[211.67,-36.37,2.1],[222.68,74.16,2.1],[263.73,12.56,2.1],[340.67,-46.88,2.1],[10.13,56.54,2.2],[83.0,-0.3,2.2],[120.9,-40.0,2.2],[137.0,-43.43,2.2],[139.27,-59.28,2.2],[190.38,-48.96,2.2],[200.98,54.93,2.2],[233.67,26.71,2.2],[269.15,51.49,2.2],[305.56,40.26,2.2],[2.29,59.15,2.3],[165.46,56.38,2.3],[204.97,-53.47,2.3],[218.88,-42.16,2.3],[220.48,-47.39,2.3],[240.08,-22.62,2.3],[252.54,-34.29,2.3],[6.57,-42.31,2.4],[178.46,53.69,2.4],[221.25,27.07,2.4],[257.59,-15.72,2.4],[265.62,-39.03,2.4],[326.05,9.88,2.4],[345.94,28.08,2.4],[45.57,4.09,2.5],[111.02,-29.3,2.5],[140.53,-55.01,2.5],[208.89,-47.29,2.5],[249.29,-10.57,2.5],[311.55,33.97,2.5],[319.64,62.59,2.5],[346.19,15.21,2.5],[28.66,20.81,2.6],[83.18,-17.82,2.6],[84.91,-34.07,2.6],[89.93,37.21,2.6],[168.53,20.52,2.6],[182.09,-50.72,2.6],[183.95,-17.54,2.6],[188.6,-23.4,2.6],[229.25,-9.38,2.6],[236.07,6.43,2.6],[241.36,-19.81,2.6],[285.65,-29.88,2.6],[21.45,60.24,2.7],[74.25,33.17,2.7],[109.29,-37.1,2.7],[160.74,-64.39,2.7],[161.69,-49.42,2.7],[189.3,-69.14,2.7],[190.42,-1.45,2.7],[208.67,18.4,2.7],[224.63,-43.13,2.7],[243.59,-3.69,2.7],[246.0,61.51,2.7],[262.69,-37.3,2.7],[275.25,-29.83,2.7],[296.56,10.61,2.7],[3.31,15.18,2.8],[6.42,-77.25,2.8],[58.53,31.88,2.8],[76.96,-5.09,2.8],[82.06,-20.76,2.8],[83.86,-5.91,2.8],[121.89,-24.3,2.8],[183.79,-58.75,2.8],[200.15,-36.71,2.8],[222.72,-16.04,2.8],[233.79,-41.17,2.8],[238.79,-63.43,2.8],[247.56,21.49,2.8],[248.97,-28.22,2.8],[250.32,31.6,2.8],[258.66,14.39,2.8],[261.32,-55.53,2.8],[262.61,52.3,2.8],[262.96,-49.88,2.8],[265.87,4.57,2.8],[276.99,-25.42,2.8],[29.69,-61.57,2.9],[44.57,-40.3,2.9],[46.2,53.51,2.9],[56.87,24.11,2.9],[59.46,40.01,2.9],[95.74,22.51,2.9],[102.48,-50.61,2.9],[111.79,8.29,2.9],[146.78,-65.07,2.9],[187.47,-16.52,2.9],[194.01,38.32,2.9],[195.54,10.96,2.9],[229.73,-68.68,2.9],[239.71,-26.11,2.9],[245.3,-25.59,2.9],[287.44,-21.02,2.9],[296.24,45.13,2.9],[322.89,-5.57,2.9],[326.76,-16.13,2.9],[334.63,-60.26,2.9],[340.75,30.22,2.9],[113.65,31.89,2.9],[32.39,34.99,3.0],[55.73,47.79,3.0],[59.51,-13.51,3.0],[75.49,43.82,3.0],[84.41,21.14,3.0],[95.08,-30.06,3.0],[105.76,-23.83,3.0],[146.46,23.77,3.0],[167.42,44.5,3.0],[182.53,-22.62,3.0],[191.57,-68.11,3.0],[199.73,-23.17,3.0],[218.02,38.31,3.0],[230.18,71.83,3.0],[252.97,-38.05,3.0],[266.9,-40.13,3.0],[271.45,-30.42,3.0],[286.35,13.86,3.0],[292.68,27.96,3.0],[305.25,-14.78,3.0],[328.48,-37.36,3.0],[331.45,-0.32,3.0],[87.74,-35.77,3.1],[100.98,25.13,3.1],[133.85,5.95,3.1],[134.8,48.04,3.1],[140.26,34.39,3.1],[155.58,41.5,3.1],[162.41,-16.19,3.1],[173.95,-63.02,3.1],[224.79,-42.1,3.1],[254.66,-55.99,3.1],[258.76,24.84,3.1],[274.41,-36.76,3.1],[288.14,67.66,3.1],[309.39,-47.29,3.1],[72.46,6.96,3.2],[76.37,-22.37,3.2],[76.63,41.23,3.2],[99.44,-43.2,3.2],[102.05,-61.94,3.2],[112.31,-43.3,3.2],[142.81,-57.03,3.2],[143.22,51.68,3.2],[211.59,-26.68,3.2],[220.63,-64.98,3.2],[226.02,-25.28,3.2],[230.34,-40.65,3.2],[244.58,-4.69,3.2],[254.42,9.38,3.2],[257.2,65.71,3.2],[258.76,36.81,3.2],[267.46,-37.04,3.2],[275.33,-2.9,3.2],[281.41,-26.99,3.2],[284.74,32.69,3.2],[302.83,-0.82,3.2],[318.23,30.23,3.2],[322.16,70.56,3.2],[354.84,77.63,3.2],[9.83,30.86,3.3],[16.52,-46.72,3.3],[46.29,38.84,3.3],[56.81,-74.24,3.3],[63.61,-62.47,3.3],[68.5,-55.04,3.3],[78.23,-16.21,3.3],[93.72,22.51,3.3],[117.32,-24.86,3.3],[153.43,-70.04,3.3],[158.01,-61.69,3.3],[168.56,15.43,3.3],[183.86,57.03,3.3],[231.23,58.97,3.3],[258.04,-43.24,3.3],[260.5,-25.0,3.3],[261.35,-56.38,3.3],[269.76,-9.77,3.3],[286.74,-27.67,3.3],[343.66,-15.82,3.3],[22.09,-43.32,3.4],[28.27,29.58,3.4],[28.6,63.67,3.4],[60.17,12.49,3.4],[67.17,15.87,3.4],[81.12,-2.4,3.4],[83.78,9.93,3.4],[101.32,12.9,3.4],[127.57,60.72,3.4],[131.69,6.42,3.4],[137.74,-58.97,3.4],[154.17,23.42,3.4],[154.27,-61.33,3.4],[193.9,3.4,3.4],[203.67,-0.6,3.4],[207.38,-41.69,3.4],[228.07,-52.1,3.4],[230.67,-44.69,3.4],[240.03,-38.4,3.4],[266.61,27.72,3.4],[286.56,-4.88,3.4],[291.37,3.11,3.4],[311.24,-66.2,3.4],[311.32,61.84,3.4],[332.71,58.2,3.4],[340.37,10.83,3.4],[257.59,-15.73,3.4],[12.27,57.82,3.5],[17.15,-10.18,3.5],[26.02,-15.94,3.5],[40.83,3.24,3.5],[55.81,-9.76,3.5],[64.47,-33.8,3.5],[67.15,19.18,3.5],[86.74,-14.82,3.5],[102.46,-32.51,3.5],[105.43,-27.93,3.5],[110.03,21.98,3.5],[119.19,-52.98,3.5],[124.13,9.19,3.5],[145.29,9.89,3.5],[149.22,-54.57,3.5],[151.83,16.76,3.5],[154.27,42.91,3.5],[169.62,33.09,3.5],[173.25,-31.86,3.5],[207.4,-42.47,3.5],[214.85,-46.06,3.5],[225.49,40.39,3.5],[228.88,33.31,3.5],[237.41,-3.43,3.5],[250.72,38.92,3.5],[264.4,-15.4,3.5],[275.26,72.73,3.5],[276.74,-45.97,3.5],[282.52,33.36,3.5],[284.43,-21.11,3.5],[299.69,19.49,3.5],[302.18,-66.18,3.5],[332.55,6.2,3.5],[342.14,-51.32,3.5],[342.42,66.2,3.5],[342.5,24.6,3.5],[190.41,-1.45,3.5],[4.86,-8.82,3.6],[21.01,-8.18,3.6],[22.87,15.35,3.6],[24.5,48.63,3.6],[34.13,-51.51,3.6],[42.5,27.26,3.6],[51.2,9.03,3.6],[57.29,24.05,3.6],[64.95,15.63,3.6],[79.4,-6.84,3.6],[86.12,-22.45,3.6],[103.2,33.96,3.6],[109.52,16.54,3.6],[116.11,24.4,3.6],[116.31,-37.97,3.6],[130.07,-52.92,3.6],[135.91,47.16,3.6],[142.68,-40.47,3.6],[142.88,63.06,3.6],[152.65,-12.35,3.6],[169.84,-14.78,3.6],[176.4,-66.73,3.6],[177.67,1.76,3.6],[185.34,-60.4,3.6],[195.57,-71.55,3.6],[217.96,30.37,3.6],[230.45,-36.26,3.6],[234.26,-28.14,3.6],[236.55,15.42,3.6],[253.08,-38.02,3.6],[253.65,-42.36,3.6],[262.77,-60.68,3.6],[266.43,-64.72,3.6],[271.66,-50.09,3.6],[304.51,-12.54,3.6],[309.39,14.6,3.6],[337.21,-0.02,3.6],[345.48,42.33,3.6],[9.24,53.9,3.7],[27.87,-10.34,3.7],[28.99,-51.61,3.7],[49.88,-21.76,3.7],[51.79,9.73,3.7],[53.23,-9.46,3.7],[56.22,24.11,3.7],[72.8,5.61,3.7],[73.56,2.44,3.7],[75.62,41.08,3.7],[89.1,-14.17,3.7],[89.88,54.28,3.7],[118.05,-40.58,3.7],[130.9,-33.19,3.7],[146.31,-62.51,3.7],[176.51,47.78,3.7],[211.1,64.38,3.7],[221.56,1.89,3.7],[231.96,29.11,3.7],[234.66,-29.78,3.7],[237.7,4.48,3.7],[245.48,19.15,3.7],[268.38,56.87,3.7],[269.44,29.25,3.7],[271.84,9.56,3.7],[296.85,18.53,3.7],[298.83,6.41,3.7],[313.7,-58.45,3.7],[316.23,43.93,3.7],[318.7,38.05,3.7],[325.02,-16.66,3.7],[325.37,-77.39,3.7],[343.15,-7.58,3.7],[347.36,-21.17,3.7],[349.29,3.28,3.7],[30.51,2.76,3.8],[42.67,55.9,3.8],[47.37,44.86,3.8],[48.02,-28.99,3.8],[56.05,-64.81,3.8],[56.08,32.29,3.8],[56.3,42.58,3.8],[65.73,17.54,3.8],[67.14,15.96,3.8],[68.89,-30.56,3.8],[83.41,-62.49,3.8],[84.69,-2.6,3.8],[87.83,-20.88,3.8],[97.2,-7.03,3.8],[107.19,-70.5,3.8],[111.43,27.8,3.8],[114.71,-26.8,3.8],[126.43,-66.14,3.8],[130.16,-46.65,3.8],[133.76,-60.64,3.8],[136.04,-47.1,3.8],[139.71,36.8,3.8],[147.75,59.04,3.8],[156.52,-16.84,3.8],[156.97,-58.74,3.8],[158.2,9.31,3.8],[159.33,-48.23,3.8],[163.33,34.21,3.8],[163.37,-58.85,3.8],[172.85,69.33,3.8],[188.12,-72.13,3.8],[209.57,-42.1,3.8],[220.29,13.73,3.8],[221.97,-79.04,3.8],[233.7,10.54,3.8],[235.69,26.3,3.8],[247.73,1.98,3.8],[252.45,-59.04,3.8],[264.87,46.01,3.8],[266.97,2.71,3.8],[271.89,28.76,3.8],[273.44,-21.06,3.8],[286.17,-21.74,3.8],[289.28,53.37,3.8],[292.43,51.73,3.8],[297.04,70.27,3.8],[303.41,46.74,3.8],[309.91,15.91,3.8],[311.92,-9.5,3.8],[321.67,-22.41,3.8],[331.75,25.35,3.8],[337.82,50.28,3.8],[354.39,46.46,3.8],[2.35,-45.75,3.9],[6.55,-43.68,3.9],[14.19,38.5,3.9],[17.1,-55.25,3.9],[22.81,-49.07,3.9],[28.38,19.29,3.9],[43.56,52.76,3.9],[44.11,-8.9,3.9],[56.46,24.37,3.9],[60.79,5.99,3.9],[63.5,-42.29,3.9],[69.08,-3.35,3.9],[69.55,-14.3,3.9],[82.8,-35.47,3.9],[86.82,-51.07,3.9],[95.53,-33.44,3.9],[103.53,-24.18,3.9],[115.31,-9.55,3.9],[115.46,-72.61,3.9],[115.95,-28.95,3.9],[126.42,-3.91,3.9],[131.17,18.15,3.9],[131.51,-46.04,3.9],[138.59,2.31,3.9],[144.96,-1.14,3.9],[148.19,26.01,3.9],[153.68,-42.12,3.9],[167.15,-58.98,3.9],[170.25,-54.49,3.9],[184.98,-0.67,3.9],[187.01,-50.23,3.9],[188.37,69.79,3.9],[189.43,-48.54,3.9],[202.76,-39.41,3.9],[209.67,-44.8,3.9],[220.77,-5.66,3.9],[226.28,-47.05,3.9],[227.98,-48.74,3.9],[233.88,-14.79,3.9],[239.11,15.66,3.9],[239.22,-29.21,3.9],[241.7,-20.67,3.9],[243.86,-63.69,3.9],[244.94,46.31,3.9],[248.36,-78.9,3.9],[255.07,30.93,3.9],[269.06,37.25,3.9],[270.16,2.93,3.9],[275.92,21.77,3.9],[278.8,-8.24,3.9],[290.42,-17.85,3.9],[298.12,1.01,3.9],[299.08,35.08,3.9],[314.29,41.17,3.9],[318.96,5.25,3.9],[335.41,-1.39,3.9],[347.59,-45.25,3.9],[25.92,50.69,4.0],[30.0,-21.08,4.0],[30.86,72.42,4.0],[34.33,33.85,4.0],[47.27,49.61,4.0],[59.74,35.79,4.0],[62.17,47.71,4.0],[62.97,-6.84,4.0],[66.01,-34.02,4.0],[71.38,-3.25,4.0],[75.85,60.44,4.0],[87.87,39.15,4.0],[89.79,-42.82,4.0],[93.71,-6.27,4.0],[99.17,-19.26,4.0],[106.03,20.57,4.0],[108.7,-26.77,4.0],[109.21,-67.96,4.0],[124.63,-76.92,4.0],[130.03,-35.31,4.0],[131.1,-42.65,4.0],[131.67,28.76,4.0],[132.63,-27.71,4.0],[135.16,41.78,4.0],[135.61,-66.4,4.0],[137.82,-62.32,4.0],[156.1,-74.03,4.0],[170.28,6.03,4.0],[170.98,10.53,4.0],[176.46,6.53,4.0],[182.1,-24.73,4.0],[182.91,-52.37,4.0],[193.65,-57.18,4.0],[201.31,54.99,4.0],[207.37,15.8,4.0],[215.14,-37.89,4.0],[216.3,51.85,4.0],[219.47,-49.43,4.0],[220.49,-37.79,4.0],[237.74,-33.63,4.0],[240.47,58.57,4.0],[243.0,-19.46,4.0],[244.96,-50.16,4.0],[271.36,2.5,4.0],[280.76,-71.43,4.0],[284.91,15.07,4.0],[285.42,-5.74,4.0],[290.66,-44.46,4.0],[290.97,-40.62,4.0],[300.15,-72.91,4.0],[303.87,47.71,4.0],[307.35,30.37,4.0],[308.3,11.3,4.0],[323.5,45.59,4.0],[337.32,-43.5,4.0],[338.84,-0.12,4.0],[341.63,23.57,4.0],[342.4,-13.59,4.0],[349.36,-58.24,4.0],[350.74,-20.1,4.0],[359.83,6.86,4.0],[200.98,54.92,4.0],[11.83,24.27,4.1],[24.2,41.41,4.1],[35.44,-68.66,4.1],[39.87,0.33,4.1],[39.9,-68.27,4.1],[40.17,-39.86,4.1],[41.05,49.23,4.1],[45.6,-23.62,4.1],[52.72,12.94,4.1],[56.58,23.95,4.1],[63.72,48.41,4.1],[74.09,13.51,4.1],[80.99,-7.81,4.1],[84.23,9.29,4.1],[90.6,9.65,4.1],[97.24,20.21,4.1],[103.55,-12.04,4.1],[105.94,-15.63,4.1],[113.98,26.9,4.1],[117.31,-46.37,4.1],[129.41,-42.99,4.1],[129.41,5.7,4.1],[143.61,-59.23,4.1],[147.87,-14.85,4.1],[158.87,-78.61,4.1],[164.94,-18.3,4.1],[171.22,-17.68,4.1],[176.63,-61.18,4.1],[181.3,8.73,4.1],[181.72,-64.61,4.1],[184.39,-67.96,4.1],[184.61,-64.0,4.1],[214.0,-6.0,4.1],[220.91,-35.17,4.1],[227.21,-45.28,4.1],[229.38,-58.8,4.1],[233.23,31.36,4.1],[234.18,-66.32,4.1],[237.18,18.14,4.1],[238.46,-16.73,4.1],[239.4,26.88,4.1],[254.9,-53.16,4.1],[277.21,-49.07,4.1],[283.83,43.95,4.1],[287.37,-37.9,4.1],[287.51,-39.34,4.1],[298.82,-41.87,4.1],[311.52,-25.27,4.1],[312.96,-26.92,4.1],[316.49,-17.23,4.1],[320.52,19.8,4.1],[326.16,25.65,4.1],[333.99,37.75,4.1],[337.29,58.42,4.1],[337.44,-43.75,4.1],[341.52,-81.38,4.1],[345.22,-52.75,4.1],[354.99,5.63,4.1],[5.01,-64.87,4.2],[8.25,62.93,4.2],[17.18,86.26,4.2],[18.94,-68.88,4.2],[36.75,-47.7,4.2],[41.03,-13.86,4.2],[42.65,38.32,4.2],[52.27,59.94,4.2],[56.71,-23.25,4.2],[57.36,-36.2,4.2],[61.65,50.35,4.2],[66.34,22.29,4.2],[68.91,10.16,4.2],[69.17,41.26,4.2],[77.29,-8.75,4.2],[82.7,5.95,4.2],[91.03,23.26,4.2],[107.97,-0.49,4.2],[112.28,31.78,4.2],[115.83,28.88,4.2],[118.33,-48.1,4.2],[119.21,-22.88,4.2],[125.71,43.19,4.2],[156.97,36.71,4.2],[184.59,-79.31,4.2],[188.44,41.36,4.2],[193.36,-40.18,4.2],[197.97,27.88,4.2],[206.42,-33.04,4.2],[207.36,-34.45,4.2],[210.41,1.54,4.2],[213.22,-10.27,4.2],[214.1,46.09,4.2],[216.88,75.7,4.2],[241.65,-36.8,4.2],[242.19,44.93,4.2],[246.76,-18.46,4.2],[247.85,-34.7,4.2],[248.53,42.44,4.2],[249.09,-35.26,4.2],[250.77,-77.52,4.2],[251.49,82.04,4.2],[260.92,37.15,4.2],[261.59,-24.18,4.2],[265.35,-12.88,4.2],[275.19,71.34,4.2],[281.42,20.55,4.2],[281.79,-4.75,4.2],[283.05,-62.19,4.2],[283.63,36.9,4.2],[286.6,-37.06,4.2],[307.4,62.99,4.2],[311.42,30.72,4.2],[319.35,39.39,4.2],[321.61,-65.37,4.2],[325.88,58.78,4.2],[326.36,61.12,4.2],[326.7,49.31,4.2],[333.76,57.04,4.2],[334.21,-7.78,4.2],[340.16,-27.04,4.2],[341.67,12.17,4.2],[343.99,-32.54,4.2],[348.58,-6.05,4.2],[348.97,-9.09,4.2],[355.1,44.33,4.2],[9.22,33.72,4.3],[9.64,29.31,4.3],[14.65,-29.36,4.3],[15.74,7.89,4.3],[17.38,47.24,4.3],[17.78,55.15,4.3],[26.35,9.16,4.3],[37.04,8.46,4.3],[41.24,10.11,4.3],[47.91,19.73,4.3],[49.98,-43.07,4.3],[53.45,-21.63,4.3],[54.12,48.19,4.3],[54.22,0.4,4.3],[56.3,24.47,4.3],[57.15,-37.62,4.3],[63.88,8.89,4.3],[64.01,-51.49,4.3],[66.37,17.93,4.3],[66.58,22.81,4.3],[69.54,12.51,4.3],[70.11,-19.67,4.3],[70.56,22.96,4.3],[72.65,8.9,4.3],[73.51,66.34,4.3],[79.89,-13.18,4.3],[83.05,18.59,4.3],[86.19,-65.74,4.3],[89.98,45.94,4.3],[93.84,29.5,4.3],[97.96,-23.42,4.3],[98.74,-52.98,4.3],[104.32,58.42,4.3],[112.04,8.93,4.3],[121.98,-68.62,4.3],[125.16,-77.48,4.3],[130.15,-59.76,4.3],[130.81,3.4,4.3],[131.59,-13.55,4.3],[132.11,5.84,4.3],[134.62,11.86,4.3],[139.05,-57.54,4.3],[142.93,22.97,4.3],[144.21,-49.36,4.3],[144.27,81.33,4.3],[156.79,-31.07,4.3],[159.83,-55.6,4.3],[163.9,24.75,4.3],[174.24,-0.82,4.3],[177.42,-63.79,4.3],[178.23,-33.91,4.3],[180.76,-63.31,4.3],[186.73,28.27,4.3],[188.02,-16.2,4.3],[193.28,-48.94,4.3],[196.73,-49.91,4.3],[197.5,17.53,4.3],[207.96,-32.99,4.3],[210.43,-45.6,4.3],[215.08,-56.39,4.3],[216.55,-45.38,4.3],[216.73,-83.67,4.3],[222.91,-43.58,4.3],[229.46,-30.15,4.3],[229.63,-47.88,4.3],[231.12,37.38,4.3],[234.51,-42.57,4.3],[236.01,77.79,4.3],[241.85,-20.87,4.3],[247.78,-16.61,4.3],[258.84,-26.6,4.3],[260.21,-12.85,4.3],[261.63,4.14,4.3],[261.84,-29.87,4.3],[263.05,86.59,4.3],[264.14,-38.64,4.3],[270.38,21.6,4.3],[272.14,-63.67,4.3],[274.97,36.06,4.3],[275.81,-61.49,4.3],[281.19,37.61,4.3],[281.76,18.18,4.3],[289.09,38.13,4.3],[290.8,-44.8,4.3],[303.35,56.57,4.3],[304.41,-12.51,4.3],[309.58,-1.11,4.3],[311.66,16.12,4.3],[320.56,-16.83,4.3],[326.13,17.35,4.3],[326.24,-33.03,4.3],[330.95,64.63,4.3],[331.61,-13.87,4.3],[332.5,33.18,4.3],[337.38,47.71,4.3],[337.88,-32.35,4.3],[346.72,-43.52,4.3],[351.99,6.38,4.3],[354.53,43.27,4.3],[169.55,31.53,4.3],[0.49,-6.01,4.4],[3.66,-18.93,4.4],[7.89,-62.96,4.4],[10.84,-57.46,4.4],[12.17,7.59,4.4],[14.3,23.42,4.4],[28.41,-46.3,4.4],[33.25,8.85,4.4],[52.64,48.0,4.4],[56.54,-12.1,4.4],[57.38,65.53,4.4],[61.17,22.08,4.4],[63.82,-7.65,4.4],[64.12,-59.3,4.4],[70.14,-41.86,4.4],[73.22,-5.45,4.4],[74.32,53.75,4.4],[78.31,-12.94,4.4],[83.71,9.49,4.4],[88.6,20.28,4.4],[89.38,-35.28,4.4],[91.89,14.77,4.4],[94.14,-35.14,4.4],[94.91,59.01,4.4],[95.94,4.59,4.4],[99.47,-18.24,4.4],[102.46,-53.62,4.4],[104.03,-17.05,4.4],[107.78,30.25,4.4],[108.38,-44.64,4.4],[108.56,-26.35,4.4],[109.68,-24.95,4.4],[113.51,-22.3,4.4],[117.02,-25.94,4.4],[120.57,2.33,4.4],[122.15,-2.98,4.4],[122.26,-19.25,4.4],[122.84,-39.62,4.4],[123.51,-40.35,4.4],[124.64,-36.66,4.4],[151.98,10.0,4.4],[165.04,-42.23,4.4],[165.58,20.18,4.4],[197.49,-5.54,4.4],[211.51,-41.18,4.4],[215.76,-39.51,4.4],[218.15,-50.46,4.4],[222.57,-27.96,4.4],[225.73,2.09,4.4],[236.61,7.35,4.4],[253.5,10.17,4.4],[260.25,-21.11,4.4],[262.68,26.11,4.4],[269.63,30.19,4.4],[270.44,1.31,4.4],[272.19,20.81,4.4],[284.24,-67.23,4.4],[288.44,39.15,4.4],[292.18,24.66,4.4],[294.18,-1.29,4.4],[295.02,18.01,4.4],[295.26,17.48,4.4],[299.93,-35.28,4.4],[300.66,-27.71,4.4],[302.22,77.71,4.4],[305.97,32.19,4.4],[310.86,15.07,4.4],[311.93,-5.03,4.4],[319.48,34.9,4.4],[319.97,-53.45,4.4],[329.48,-54.99,4.4],[335.89,52.23,4.4],[346.97,75.39,4.4],[349.48,-9.18,4.4],[349.71,-32.53,4.4],[351.34,23.4,4.4],[351.51,-20.64,4.4],[353.24,-37.82,4.4],[0.93,-17.34,4.5],[4.58,36.79,4.5],[7.89,-62.97,4.5],[11.18,48.28,4.5],[12.45,41.08,4.5],[17.92,30.09,4.5],[25.36,5.49,4.5],[30.49,70.91,4.5],[37.27,67.4,4.5],[41.28,-18.57,4.5],[41.98,29.25,4.5],[42.27,-32.41,4.5],[50.08,29.05,4.5],[52.48,58.88,4.5],[58.57,-2.95,4.5],[60.22,-62.16,4.5],[66.59,15.62,4.5],[68.38,-29.77,4.5],[74.64,1.71,4.5],[76.1,-35.48,4.5],[78.07,-11.87,4.5],[78.32,2.86,4.5],[79.54,33.37,4.5],[84.8,4.12,4.5],[87.29,39.18,4.5],[87.46,-56.17,4.5],[90.01,-3.07,4.5],[92.98,14.21,4.5],[97.04,-32.58,4.5],[98.23,7.33,4.5],[98.76,-22.96,4.5],[101.0,13.23,4.5],[101.97,2.41,4.5],[105.02,76.98,4.5],[108.14,-46.76,4.5],[112.45,12.01,4.5],[114.34,-34.97,4.5],[118.16,-38.86,4.5],[119.56,-49.24,4.5],[129.69,3.34,4.5],[131.68,-56.77,4.5],[135.02,-41.25,4.5],[136.29,-72.6,4.5],[137.22,51.6,4.5],[141.16,26.18,4.5],[142.31,-35.95,4.5],[143.0,-1.18,4.5],[143.56,36.4,4.5],[143.62,69.83,4.5],[143.71,52.05,4.5],[144.84,-61.33,4.5],[148.03,54.06,4.5],[151.86,35.24,4.5],[151.98,-0.37,4.5],[155.23,-56.04,4.5],[158.9,-57.56,4.5],[161.45,-80.54,4.5],[167.91,-22.83,4.5],[169.17,-3.65,4.5],[177.0,20.22,4.5],[177.79,-45.17,4.5],[182.02,-50.66,4.5],[200.66,-60.99,4.5],[201.0,-64.54,4.5],[206.82,17.46,4.5],[213.37,51.79,4.5],[214.78,-13.37,4.5],[218.67,29.75,4.5],[220.18,16.42,4.5],[222.85,19.1,4.5],[224.3,-4.35,4.5],[226.11,26.95,4.5],[228.06,-19.79,4.5],[230.79,-36.86,4.5],[230.84,-59.32,4.5],[233.97,-44.96,4.5],[235.39,19.67,4.5],[245.16,-24.17,4.5],[246.03,-20.04,4.5],[246.8,-47.55,4.5],[248.03,-21.47,4.5],[261.66,-5.09,4.5],[266.89,-27.83,4.5],[272.02,-28.46,4.5],[272.81,-45.95,4.5],[288.89,73.36,4.5],[290.43,-15.96,4.5],[293.52,7.38,4.5],[294.11,50.22,4.5],[299.24,-27.17,4.5],[300.7,67.87,4.5],[303.94,27.81,4.5],[311.01,-51.92,4.5],[311.34,57.58,4.5],[311.85,36.49,4.5],[316.78,-25.01,4.5],[317.4,-11.37,4.5],[318.62,10.01,4.5],[322.18,-21.81,4.5],[322.49,23.64,4.5],[324.27,-19.47,4.5],[325.48,71.31,4.5],[326.04,28.74,4.5],[331.53,-39.54,4.5],[332.1,-32.99,4.5],[333.47,39.71,4.5],[335.26,46.54,4.5],[336.13,49.48,4.5],[336.83,-64.97,4.5],[337.62,43.12,4.5],[340.13,44.28,4.5],[343.13,-32.88,4.5],[345.97,3.82,4.5],[346.67,-23.74,4.5],[346.75,9.41,4.5],[348.14,49.41,4.5],[352.29,12.76,4.5],[355.51,1.78,4.5],[355.68,-14.54,4.5],[358.6,57.5,4.5],[359.98,-65.58,4.5],[1.33,-5.71,4.6],[4.27,38.68,4.6],[10.33,-46.09,4.6],[14.17,59.18,4.6],[28.39,3.19,4.6],[42.88,35.06,4.6],[44.8,21.34,4.6],[47.82,39.61,4.6],[54.27,-40.27,4.6],[55.71,-37.31,4.6],[57.59,71.33,4.6],[58.43,-24.61,4.6],[59.69,-61.4,4.6],[59.98,-24.02,4.6],[64.56,50.3,4.6],[73.72,10.15,4.6],[75.77,21.59,4.6],[81.71,3.1,4.6],[82.98,-7.3,4.6],[83.85,-4.84,4.6],[88.33,27.61,4.6],[90.98,20.14,4.6],[111.68,49.21,4.6],[115.88,-28.41,4.6],[118.27,-49.61,4.6],[119.97,-18.4,4.6],[130.05,64.33,4.6],[130.92,-7.23,4.6],[136.63,38.45,4.6],[137.01,-25.86,4.6],[138.94,-37.41,4.6],[142.29,-2.77,4.6],[147.92,-46.55,4.6],[151.28,-13.06,4.6],[154.9,-55.03,4.6],[160.88,-60.57,4.6],[164.18,-37.14,4.6],[166.25,7.34,4.6],[166.64,-62.42,4.6],[168.15,-60.32,4.6],[168.8,23.1,4.6],[173.69,-54.26,4.6],[189.97,-39.99,4.6],[191.59,-56.49,4.6],[193.66,-59.15,4.6],[198.07,-59.92,4.6],[205.18,54.68,4.6],[206.66,-51.43,4.6],[207.86,64.72,4.6],[216.53,-45.22,4.6],[221.31,16.96,4.6],[224.4,65.93,4.6],[231.33,-38.73,4.6],[233.54,-10.06,4.6],[234.84,36.64,4.6],[235.3,-44.66,4.6],[237.4,26.07,4.6],[237.74,-25.75,4.6],[238.17,42.45,4.6],[238.4,-25.33,4.6],[240.88,-57.78,4.6],[243.08,-27.93,4.6],[246.35,14.03,4.6],[246.4,-23.45,4.6],[246.95,-8.37,4.6],[252.46,-10.78,4.6],[259.42,37.29,4.6],[263.91,-46.51,4.6],[264.46,-8.12,4.6],[265.48,72.15,4.6],[270.12,-3.69,4.6],[271.83,8.73,4.6],[277.84,-62.28,4.6],[278.38,-42.31,4.6],[281.09,39.61,4.6],[282.8,59.39,4.6],[283.69,22.65,4.6],[284.05,4.2,4.6],[287.09,-40.5,4.6],[290.17,65.71,4.6],[291.63,0.34,4.6],[294.18,-24.88,4.6],[298.37,24.08,4.6],[308.48,35.25,4.6],[308.83,14.67,4.6],[313.03,27.1,4.6],[316.65,47.65,4.6],[339.34,51.55,4.6],[346.05,50.05,4.6],[350.16,23.74,4.6],[357.23,-28.13,4.6],[359.44,25.14,4.6],[7.94,54.52,4.7],[17.86,21.03,4.7],[18.44,24.58,4.7],[19.87,27.26,4.7],[21.48,68.13,4.7],[23.48,59.23,4.7],[27.4,-10.69,4.7],[28.73,-67.65,4.7],[31.12,-29.3,4.7],[36.41,50.28,4.7],[38.02,-15.24,4.7],[39.95,-42.89,4.7],[40.86,27.71,4.7],[44.69,39.66,4.7],[44.93,8.91,4.7],[50.0,65.65,4.7],[52.34,49.51,4.7],[52.34,-62.94,4.7],[52.65,-5.08,4.7],[63.72,40.48,4.7],[66.65,14.71,4.7],[68.46,14.84,4.7],[69.82,15.92,4.7],[73.13,14.25,4.7],[76.14,15.4,4.7],[76.38,-57.47,4.7],[79.78,40.1,4.7],[80.11,-21.24,4.7],[80.44,-0.38,4.7],[82.43,-1.09,4.7],[83.18,32.19,4.7],[87.76,37.31,4.7],[88.52,-63.09,4.7],[91.54,-14.94,4.7],[92.57,-54.97,4.7],[100.24,9.9,4.7],[103.66,13.18,4.7],[103.91,-20.14,4.7],[109.15,-27.88,4.7],[109.58,-36.73,4.7],[112.68,-30.96,4.7],[113.85,-28.37,4.7],[114.58,-25.36,4.7],[117.08,-47.08,4.7],[120.31,-1.39,4.7],[122.25,-61.3,4.7],[122.82,-12.93,4.7],[122.86,-42.99,4.7],[123.05,17.65,4.7],[130.3,-47.32,4.7],[130.82,21.47,4.7],[134.08,-52.72,4.7],[135.64,67.63,4.7],[136.41,-70.54,4.7],[137.73,63.51,4.7],[140.37,-25.97,4.7],[140.8,-28.83,4.7],[141.83,-22.34,4.7],[144.61,4.65,4.7],[150.05,8.04,4.7],[156.48,33.8,4.7],[156.85,-57.64,4.7],[157.58,-71.99,4.7],[158.31,40.43,4.7],[159.68,31.98,4.7],[159.69,-59.18,4.7],[163.49,43.19,4.7],[165.46,-2.48,4.7],[174.17,-9.8,4.7],[175.05,-34.74,4.7],[176.19,-18.35,4.7],[180.22,6.61,4.7],[181.08,-63.17,4.7],[185.18,17.79,4.7],[189.81,-8.0,4.7],[190.65,-48.81,4.7],[191.41,-60.98,4.7],[196.57,-48.46,4.7],[199.39,40.57,4.7],[199.6,-18.31,4.7],[202.99,-6.26,4.7],[203.61,49.02,4.7],[209.41,-63.69,4.7],[212.48,-53.44,4.7],[234.94,-34.41,4.7],[237.82,20.98,4.7],[240.7,46.04,4.7],[240.8,-49.23,4.7],[241.62,-45.17,4.7],[242.24,36.49,4.7],[245.09,-78.7,4.7],[253.5,-42.36,4.7],[259.15,-0.45,4.7],[269.95,-23.82,4.7],[270.01,16.75,4.7],[271.26,-29.58,4.7],[274.51,-27.04,4.7],[275.91,-8.93,4.7],[277.3,-14.57,4.7],[280.57,-9.05,4.7],[281.08,39.67,4.7],[285.78,-42.1,4.7],[292.94,34.45,4.7],[293.09,69.66,4.7],[294.84,30.15,4.7],[298.56,8.46,4.7],[298.96,-26.3,4.7],[300.28,27.75,4.7],[313.16,-8.98,4.7],[314.96,47.52,4.7],[315.32,-32.26,4.7],[317.59,10.13,4.7],[319.48,-32.17,4.7],[324.44,-7.85,4.7],[325.52,51.19,4.7],[325.66,-18.87,4.7],[330.83,-56.79,4.7],[330.83,-2.16,4.7],[340.9,-18.83,4.7],[343.6,84.35,4.7],[347.48,-22.46,4.7],[353.32,-20.91,4.7],[353.77,-42.62,4.7],[354.46,-45.49,4.7],[142.68,-40.47,4.7],[0.4,-77.07,4.8],[3.65,20.21,4.8],[7.85,-48.8,4.8],[10.52,50.51,4.8],[11.05,-10.61,4.8],[13.25,-1.14,4.8],[13.27,61.12,4.8],[13.75,58.97,4.8],[21.91,45.41,4.8],[22.55,6.14,4.8],[29.29,-47.39,4.8],[29.48,23.6,4.8],[32.12,37.86,4.8],[33.31,44.23,4.8],[34.26,34.22,4.8],[39.89,-11.87,4.8],[41.39,-67.62,4.8],[42.62,-75.07,4.8],[42.76,-21.0,4.8],[46.39,56.71,4.8],[47.98,74.39,4.8],[48.96,-8.82,4.8],[49.68,34.22,4.8],[49.84,3.37,4.8],[56.51,63.35,4.8],[63.48,9.26,4.8],[65.39,46.5,4.8],[66.02,17.44,4.8],[67.64,16.19,4.8],[73.16,36.7,4.8],[74.98,-12.54,4.8],[75.36,-7.17,4.8],[77.42,15.6,4.8],[78.36,38.48,4.8],[78.44,-67.19,4.8],[79.37,-34.9,4.8],[83.76,-6.0,4.8],[84.72,-7.21,4.8],[85.32,16.53,4.8],[88.11,1.86,4.8],[89.5,25.95,4.8],[94.71,69.32,4.8],[99.82,-14.15,4.8],[99.83,42.49,4.8],[101.83,8.04,4.8],[103.39,-20.22,4.8],[107.21,-39.66,4.8],[108.66,-48.27,4.8],[109.15,-23.32,4.8],[112.46,-23.02,4.8],[113.45,-14.52,4.8],[114.86,-38.31,4.8],[119.42,-30.33,4.8],[120.08,-63.57,4.8],[122.11,51.51,4.8],[123.37,-35.9,4.8],[125.35,-33.05,4.8],[125.63,-48.49,4.8],[128.83,-58.01,4.8],[130.61,-53.11,4.8],[137.6,67.13,4.8],[139.05,54.02,4.8],[139.94,-11.97,4.8],[140.12,-9.56,4.8],[140.24,-62.4,4.8],[143.77,39.62,4.8],[145.32,-23.59,4.8],[146.05,-27.77,4.8],[152.23,-51.81,4.8],[154.93,19.47,4.8],[155.58,-41.65,4.8],[157.66,55.98,4.8],[160.56,-64.47,4.8],[161.03,-63.96,4.8],[165.14,3.62,4.8],[169.78,38.19,4.8],[171.15,-10.86,4.8],[172.58,-3.0,4.8],[176.32,8.26,4.8],[177.06,-66.81,4.8],[185.63,25.85,4.8],[186.01,51.56,4.8],[186.63,-51.45,4.8],[188.71,22.63,4.8],[193.59,-9.54,4.8],[194.73,17.41,4.8],[195.89,-49.53,4.8],[196.79,27.62,4.8],[198.01,-37.8,4.8],[198.81,-67.89,4.8],[199.4,5.47,4.8],[201.86,-15.97,4.8],[204.37,36.29,4.8],[207.95,34.44,4.8],[208.3,-31.93,4.8],[212.21,77.55,4.8],[212.6,25.09,4.8],[214.04,51.37,4.8],[214.5,35.51,4.8],[214.94,16.31,4.8],[215.18,-45.19,4.8],[215.65,-58.46,4.8],[215.77,-27.75,4.8],[217.05,-2.23,4.8],[220.86,26.53,4.8],[225.53,25.01,4.8],[225.95,47.65,4.8],[228.21,-44.5,4.8],[229.41,-63.61,4.8],[235.49,-19.68,4.8],[235.67,-34.71,4.8],[237.81,35.66,4.8],[240.57,22.8,4.8],[244.57,-28.61,4.8],[245.52,1.03,4.8],[247.16,41.88,4.8],[247.55,-25.12,4.8],[248.15,11.49,4.8],[250.23,64.59,4.8],[251.32,56.78,4.8],[252.31,45.98,4.8],[255.27,-4.22,4.8],[256.21,-34.12,4.8],[259.33,33.1,4.8],[260.5,-67.77,4.8],[262.85,-23.96,4.8],[264.24,68.76,4.8],[265.1,-49.42,4.8],[267.29,-31.7,4.8],[267.55,-40.09,4.8],[269.2,-44.34,4.8],[270.07,4.37,4.8],[270.77,-8.18,4.8],[275.22,3.38,4.8],[276.34,-20.54,4.8],[276.5,65.56,4.8],[278.14,57.05,4.8],[281.36,-64.87,4.8],[281.52,26.66,4.8],[283.6,71.3,4.8],[284.27,-5.85,4.8],[284.62,-52.94,4.8],[284.68,-37.11,4.8],[289.05,21.39,4.8],[299.74,-26.2,4.8],[300.89,-37.94,4.8],[303.33,46.82,4.8],[303.82,25.59,4.8],[304.45,38.03,4.8],[305.17,-12.76,4.8],[307.22,-17.81,4.8],[308.9,-60.58,4.8],[309.63,21.2,4.8],[312.23,46.11,4.8],[313.31,44.39,4.8],[316.1,-19.85,4.8],[320.19,-40.81,4.8],[324.48,62.08,4.8],[332.45,72.34,4.8],[333.9,-41.35,4.8],[335.33,28.33,4.8],[335.38,12.21,4.8],[336.32,1.38,4.8],[336.96,4.7,4.8],[337.66,-10.68,4.8],[340.44,29.31,4.8],[340.87,-41.41,4.8],[341.41,-53.5,4.8],[341.87,83.15,4.8],[346.65,59.42,4.8],[346.78,25.47,4.8],[349.44,49.02,4.8],[349.66,68.11,4.8],[355.44,-17.82,4.8],[169.55,31.53,4.8],[241.09,-11.37,4.8],[2.82,-15.47,4.9],[6.98,-33.01,4.9],[12.21,50.97,4.9],[20.59,45.53,4.9],[21.41,-14.6,4.9],[29.17,-22.53,4.9],[33.09,30.3,4.9],[36.49,-12.29,4.9],[38.97,5.59,4.9],[40.56,40.19,4.9],[44.77,35.18,4.9],[48.73,21.04,4.9],[49.59,-22.51,4.9],[62.71,-41.99,4.9],[63.6,-10.26,4.9],[64.32,20.58,4.9],[65.1,34.57,4.9],[67.97,-0.04,4.9],[72.48,37.49,4.9],[74.81,37.89,4.9],[75.36,-20.05,4.9],[76.86,18.65,4.9],[81.19,1.85,4.9],[81.91,21.94,4.9],[85.62,1.47,4.9],[87.25,24.57,4.9],[87.39,12.65,4.9],[88.28,-33.8,4.9],[90.46,-10.6,4.9],[91.25,-16.48,4.9],[95.0,-2.94,4.9],[96.22,49.29,4.9],[101.56,59.44,4.9],[104.07,-48.72,4.9],[104.4,45.09,4.9],[105.97,-49.58,4.9],[107.56,-4.24,4.9],[107.91,39.32,4.9],[108.31,-45.18,4.9],[109.67,-24.56,4.9],[110.56,-19.02,4.9],[112.77,82.41,4.9],[113.92,-52.53,4.9],[114.79,34.58,4.9],[115.75,58.71,4.9],[116.53,18.51,4.9],[119.93,-3.68,4.9],[120.88,27.79,4.9],[129.93,-29.56,4.9],[130.43,-15.94,4.9],[132.45,-45.31,4.9],[133.88,-27.68,4.9],[134.24,-59.23,4.9],[138.9,-38.57,4.9],[145.56,-23.92,4.9],[148.55,-25.93,4.9],[148.72,-19.01,4.9],[156.03,65.57,4.9],[157.76,-73.22,4.9],[157.84,-53.72,4.9],[158.77,75.71,4.9],[159.31,-27.41,4.9],[159.39,-13.38,4.9],[159.65,-16.88,4.9],[161.71,-64.38,4.9],[166.33,-27.29,4.9],[173.07,-29.26,4.9],[175.22,-62.09,4.9],[176.63,-40.5,4.9],[177.96,-65.21,4.9],[179.91,-78.22,4.9],[184.09,23.95,4.9],[186.6,27.27,4.9],[190.47,10.24,4.9],[190.49,-59.69,4.9],[192.67,-34.0,4.9],[192.92,27.54,4.9],[193.32,21.24,4.9],[195.07,30.79,4.9],[195.18,56.37,4.9],[197.26,-23.12,4.9],[198.43,40.15,4.9],[198.56,-59.1,4.9],[199.3,-66.78,4.9],[203.53,3.66,4.9],[203.7,37.18,4.9],[207.43,21.26,4.9],[212.71,-16.3,4.9],[214.56,-81.01,4.9],[215.84,8.45,4.9],[220.41,8.16,4.9],[221.25,-35.19,4.9],[222.75,-2.3,4.9],[225.24,-8.52,4.9],[226.83,24.87,4.9],[228.66,-31.52,4.9],[231.05,-10.32,4.9],[240.85,-38.6,4.9],[241.36,-19.8,4.9],[243.0,-10.06,4.9],[245.52,30.89,4.9],[247.0,68.77,4.9],[247.12,-70.08,4.9],[248.52,-44.05,4.9],[249.69,48.93,4.9],[250.39,-17.74,4.9],[254.01,65.13,4.9],[256.33,54.47,4.9],[256.34,12.74,4.9],[263.04,55.18,4.9],[263.07,55.17,4.9],[265.86,-21.68,4.9],[269.45,-41.72,4.9],[271.71,-43.43,4.9],[275.07,21.96,4.9],[277.94,-45.91,4.9],[280.88,-8.28,4.9],[281.08,-35.64,4.9],[283.31,50.71,4.9],[283.54,-22.74,4.9],[285.0,32.15,4.9],[288.89,-25.26,4.9],[289.41,-18.95,4.9],[293.8,-48.1,4.9],[294.22,-7.03,4.9],[296.07,37.35,4.9],[296.59,-19.76,4.9],[297.77,22.61,4.9],[298.91,52.44,4.9],[301.85,-52.88,4.9],[302.36,36.84,4.9],[303.57,15.2,4.9],[303.63,36.81,4.9],[307.41,-2.89,4.9],[307.51,48.95,4.9],[309.18,-2.55,4.9],[309.4,-61.53,4.9],[311.22,25.27,4.9],[311.79,34.37,4.9],[312.37,-46.23,4.9],[312.49,-33.78,4.9],[323.69,38.53,4.9],[331.42,5.06,4.9],[332.54,-32.55,4.9],[338.25,-61.98,4.9],[339.82,39.05,4.9],[343.81,8.82,4.9],[349.21,-7.73,4.9],[352.51,58.55,4.9],[356.0,29.36,4.9],[356.76,58.65,4.9],[359.67,-3.56,4.9],[359.75,55.75,4.9],[1.13,-10.51,5.0],[10.87,47.02,5.0],[18.8,-45.53,5.0],[20.02,58.23,5.0],[25.15,40.58,5.0],[25.45,42.61,5.0],[25.68,-3.69,5.0],[29.0,68.69,5.0],[30.58,54.49,5.0],[32.36,25.94,5.0],[38.46,-28.23,5.0],[44.7,-64.07,5.0],[50.36,43.33,5.0],[52.01,49.06,5.0],[55.56,-31.94,5.0],[55.59,33.97,5.0],[59.28,61.11,5.0],[59.36,63.07,5.0],[60.33,-61.08,5.0],[61.11,59.16,5.0],[65.09,27.35,5.0],[67.11,16.36,5.0],[69.72,-12.12,5.0],[76.67,51.6,5.0],[79.82,22.1,5.0],[80.71,3.54,5.0],[81.11,17.38,5.0],[83.82,-5.39,5.0],[83.85,-5.42,5.0],[85.21,-1.13,5.0],[88.71,55.71,5.0],[88.87,-37.12,5.0],[91.88,-37.25,5.0],[93.01,16.13,5.0],[93.94,-13.72,5.0],[102.69,41.78,5.0],[102.72,-34.37,5.0],[104.03,-14.04,5.0],[105.73,-4.24,5.0],[109.63,49.46,5.0],[111.41,9.28,5.0],[115.1,-15.26,5.0],[118.37,26.77,5.0],[123.33,-15.79,5.0],[130.01,-12.48,5.0],[136.49,5.09,5.0],[137.77,-44.87,5.0],[142.99,11.3,5.0],[144.3,6.84,5.0],[155.74,-66.9,5.0],[165.19,6.1,5.0],[170.71,43.48,5.0],[170.8,-36.16,5.0],[171.98,2.86,5.0],[175.88,-62.49,5.0],[177.49,-70.23,5.0],[184.13,33.06,5.0],[185.09,3.31,5.0],[186.75,26.83,5.0],[188.68,70.02,5.0],[202.11,13.78,5.0],[205.44,-54.56,5.0],[207.47,-18.13,5.0],[213.07,2.41,5.0],[217.04,-29.49,5.0],[230.53,-47.93,5.0],[230.8,30.29,5.0],[232.85,77.35,5.0],[232.95,40.9,5.0],[235.07,-23.82,5.0],[239.45,54.75,5.0],[239.55,-14.28,5.0],[239.88,-41.74,5.0],[240.36,29.85,5.0],[240.84,-25.87,5.0],[242.02,17.05,5.0],[243.37,-54.63,5.0],[244.25,-50.07,5.0],[244.38,75.76,5.0],[255.78,14.09,5.0],[269.77,-30.25,5.0],[271.51,22.22,5.0],[271.87,43.46,5.0],[272.93,-23.7,5.0],[272.98,31.41,5.0],[273.47,64.4,5.0],[275.98,58.8,5.0],[283.78,-22.67,5.0],[284.06,4.2,5.0],[285.36,46.93,5.0],[288.48,57.71,5.0],[290.14,-5.42,5.0],[291.03,29.62,5.0],[293.65,19.77,5.0],[296.61,33.73,5.0],[298.97,38.49,5.0],[298.98,58.85,5.0],[300.44,-59.38,5.0],[301.08,-32.06,5.0],[332.11,-34.04,5.0],[343.01,43.31,5.0],[344.11,49.73,5.0],[349.74,-9.61,5.0],[351.21,62.28,5.0],[351.73,1.26,5.0],[353.49,31.33,5.0],[354.95,-14.22,5.0],[356.51,46.42,5.0],[356.6,3.49,5.0],[359.4,-64.3,5.0],[131.17,-54.71,5.0],[241.09,-11.37,5.0],[286.6,-37.06,5.0]];
+const PLM_LINES=[[[31.0,42.3],[17.4,35.6],[9.8,30.9],[2.1,29.1]],[[14.3,23.4],[11.8,24.3],[9.6,29.3],[9.8,30.9],[9.2,33.7],[354.5,43.3],[345.5,42.3]],[[354.5,43.3],[355.1,44.3],[354.4,46.5]],[[17.4,35.6],[14.2,38.5],[12.5,41.1],[17.4,47.2],[24.5,48.6]],[[355.1,44.3],[356.5,46.4]],[[142.3,-36.0],[156.8,-31.1],[164.2,-37.1]],[[222.0,-79.0],[245.1,-78.7],[250.8,-77.5],[248.4,-78.9]],[[311.9,-9.5],[313.2,-9.0],[322.9,-5.6],[331.4,-0.3],[335.4,-1.4],[337.2,-0.0],[338.8,-0.1],[343.2,-7.6],[349.5,-9.2],[347.4,-21.2]],[[322.9,-5.6],[331.6,-13.9]],[[331.4,-0.3],[334.2,-7.8]],[[337.2,-0.0],[336.3,1.4]],[[350.7,-20.1],[349.5,-9.2],[355.4,-17.8]],[[296.6,10.6],[297.7,8.9],[298.8,6.4],[302.8,-0.8],[298.1,1.0],[291.4,3.1],[286.4,13.9],[297.7,8.9],[291.4,3.1],[286.6,-4.9]],[[261.3,-56.4],[262.8,-60.7],[252.4,-59.0],[254.7,-56.0],[254.9,-53.2],[263.0,-49.9],[261.3,-55.5]],[[42.5,27.3],[31.8,23.5],[28.7,20.8],[28.4,19.3]],[[89.9,44.9],[79.2,46.0],[76.6,41.2],[74.2,33.2],[81.6,28.6],[89.9,37.2],[89.9,44.9],[89.9,54.3],[79.2,46.0],[75.5,43.8],[75.6,41.1]],[[206.8,17.5],[208.7,18.4],[213.9,19.2],[218.0,30.4],[218.0,38.3],[225.5,40.4],[228.9,33.3],[221.2,27.1],[213.9,19.2],[220.3,13.7]],[[218.0,38.3],[214.1,46.1],[213.4,51.8],[216.3,51.9],[214.1,46.1]],[[67.7,-45.0],[70.1,-41.9],[70.5,-37.1],[76.1,-35.5]],[[74.3,53.8],[75.9,60.4],[73.5,66.3],[57.6,71.3],[57.4,65.5],[52.3,59.9]],[[73.5,66.3],[94.7,69.3],[105.0,77.0]],[[134.6,11.9],[131.2,18.2],[130.8,21.5],[131.7,28.8]],[[131.2,18.2],[124.1,9.2]],[[194.0,38.3],[188.4,41.4]],[[95.7,-18.0],[101.3,-16.7],[105.8,-23.8],[107.1,-26.4],[105.4,-27.9],[104.7,-29.0],[95.1,-30.1]],[[111.0,-29.3],[107.1,-26.4]],[[101.3,-16.7],[104.0,-17.1],[105.9,-15.6],[103.5,-12.0],[104.0,-17.1]],[[114.8,5.2],[111.8,8.3]],[[304.4,-12.5],[305.3,-14.8],[307.2,-17.8],[311.5,-25.3],[313.0,-26.9],[321.7,-22.4],[326.8,-16.1],[325.0,-16.7],[320.6,-16.8],[316.5,-17.2],[304.4,-12.5]],[[99.4,-43.2],[96.0,-52.7],[138.3,-69.7],[153.4,-70.0],[160.7,-64.4],[158.0,-61.7],[154.3,-61.3],[139.3,-59.3],[125.6,-59.5],[119.2,-53.0],[122.4,-47.3],[131.2,-54.7],[139.3,-59.3]],[[160.7,-64.4],[166.6,-62.4],[167.1,-61.9],[168.2,-60.3],[167.1,-59.0],[163.4,-58.9],[158.0,-61.7]],[[28.6,63.7],[21.5,60.2],[14.2,60.7],[10.1,56.5],[2.3,59.1]],[[170.3,-54.5],[182.1,-50.7],[187.0,-50.2],[190.4,-49.0],[205.0,-53.5],[208.9,-47.3],[207.4,-42.5],[207.4,-41.7],[211.7,-36.4],[218.9,-42.2],[224.8,-42.1]],[[207.4,-41.7],[200.1,-36.7]],[[219.9,-60.8],[205.0,-53.5],[211.0,-60.4]],[[187.0,-50.2],[182.9,-52.4],[172.9,-59.4]],[[307.4,63.0],[311.3,61.8],[319.6,62.6],[325.9,58.8],[333.8,57.0],[332.7,58.2],[337.3,58.4],[342.4,66.2],[354.8,77.6],[322.2,70.6],[319.6,62.6]],[[322.2,70.6],[342.4,66.2]],[[40.8,3.2],[39.0,5.6],[37.0,8.5],[41.2,10.1],[44.9,8.9],[45.6,4.1],[40.8,3.2],[39.9,0.3],[34.8,-3.0],[27.9,-10.3],[26.0,-15.9],[10.9,-18.0],[4.9,-8.8],[17.1,-10.2],[21.0,-8.2],[27.9,-10.3]],[[124.6,-76.9],[158.9,-78.6],[161.3,-80.5],[184.6,-79.3],[179.9,-78.2],[158.9,-78.6]],[[229.4,-58.8],[220.6,-65.0],[230.8,-59.3]],[[95.5,-33.4],[87.7,-35.8],[84.9,-34.1],[82.8,-35.5]],[[87.7,-35.8],[89.8,-42.8]],[[197.5,17.5],[198.0,27.9],[186.7,28.3]],[[284.7,-37.1],[286.6,-37.1],[287.4,-37.9],[287.5,-39.3],[287.1,-40.5],[285.8,-42.1],[282.4,-43.4],[278.4,-42.3]],[[233.2,31.4],[232.0,29.1],[233.7,26.7],[235.7,26.3],[237.4,26.1],[239.4,26.9],[240.4,29.9]],[[182.1,-24.7],[182.5,-22.6],[184.0,-17.5],[187.5,-16.5],[188.6,-23.4],[182.5,-22.6]],[[174.2,-9.8],[171.2,-10.9],[169.8,-14.8],[164.9,-18.3],[167.9,-22.8],[170.8,-18.8],[171.2,-17.7],[176.2,-18.4],[179.0,-17.2]],[[169.8,-14.8],[171.2,-17.7]],[[191.9,-59.7],[183.8,-58.7]],[[186.6,-63.1],[187.8,-57.1]],[[318.2,30.2],[311.6,34.0],[305.6,40.3],[296.2,45.1],[292.4,51.7],[289.3,53.4]],[[310.4,45.3],[305.6,40.3],[299.1,35.1],[292.7,28.0]],[[308.3,11.3],[309.4,14.6],[309.9,15.9],[311.7,16.1],[310.9,15.1],[309.4,14.6]],[[64.0,-51.5],[68.5,-55.0],[83.4,-62.5],[86.2,-65.7],[88.5,-63.1],[83.4,-62.5],[76.4,-57.5],[68.5,-55.0]],[[268.4,56.9],[269.2,51.5],[262.6,52.3],[263.1,55.2],[268.4,56.9],[288.1,67.7],[275.2,71.3],[257.2,65.7],[246.0,61.5],[240.5,58.6],[231.2,59.0],[211.1,64.4],[188.4,69.8],[172.9,69.3]],[[275.2,71.3],[275.3,72.7]],[[288.1,67.7],[297.0,70.3]],[[319.0,5.2],[318.6,10.0],[317.6,10.1]],[[77.0,-5.1],[71.4,-3.3],[69.1,-3.4],[63.0,-6.8],[59.5,-13.5],[56.5,-12.1],[55.8,-9.8],[53.2,-9.5],[44.1,-8.9],[41.0,-13.9],[41.3,-18.6],[45.6,-23.6],[49.9,-21.8],[53.4,-21.6],[56.7,-23.2],[68.9,-30.6],[66.0,-34.0],[64.5,-33.8],[57.4,-36.2],[54.3,-40.3],[50.0,-43.1],[44.6,-40.3],[40.2,-39.9],[36.7,-47.7],[34.1,-51.5],[29.0,-51.6],[24.4,-57.2]],[[48.0,-29.0],[42.3,-32.4],[31.1,-29.3]],[[93.7,22.5],[95.7,22.5],[101.0,25.1],[107.8,30.2],[113.6,31.9],[116.3,28.0],[114.0,26.9],[110.0,22.0],[106.0,20.6],[99.4,16.4],[101.3,12.9]],[[110.0,22.0],[109.5,16.5]],[[345.2,-52.8],[342.1,-51.3],[340.7,-46.9],[337.4,-43.7],[332.1,-47.0],[340.7,-46.9]],[[337.3,-43.5],[333.9,-41.3],[331.5,-39.5],[328.5,-37.4]],[[245.5,19.2],[247.6,21.5],[250.3,31.6],[250.7,38.9],[248.5,42.4],[244.9,46.3],[242.2,44.9],[238.2,42.5]],[[250.3,31.6],[255.1,30.9]],[[250.7,38.9],[258.8,36.8]],[[269.1,37.3],[260.9,37.1],[258.8,36.8],[255.1,30.9],[258.8,24.8],[266.6,27.7],[269.4,29.2],[271.9,28.8]],[[258.7,14.4],[247.6,21.5]],[[63.5,-42.3],[40.6,-50.8],[39.4,-52.5],[40.2,-54.5],[45.9,-59.7],[44.7,-64.1]],[[131.7,6.4],[132.1,5.8],[130.8,3.4],[129.7,3.3],[129.4,5.7],[131.7,6.4],[133.8,5.9],[138.6,2.3],[145.0,-1.1],[141.9,-8.7],[147.9,-14.8],[152.6,-12.4],[156.5,-16.8],[162.4,-16.2],[173.3,-31.9],[178.2,-33.9],[199.7,-23.2],[211.6,-26.7],[222.6,-28.0]],[[6.4,-77.3],[56.8,-74.2],[39.9,-68.3],[35.4,-68.7],[28.7,-67.6],[29.7,-61.6]],[[309.4,-47.3],[311.0,-51.9],[313.7,-58.5],[329.5,-55.0],[320.0,-53.4],[309.4,-47.3]],[[335.9,52.2],[337.8,50.3],[337.4,47.7],[335.3,46.5],[337.6,43.1],[340.1,44.3],[337.4,47.7],[336.1,49.5],[335.9,52.2]],[[337.6,43.1],[333.5,39.7],[334.0,37.7]],[[152.1,12.0],[151.8,16.8],[155.0,19.8],[168.5,20.5],[177.3,14.6],[168.6,15.4],[152.1,12.0]],[[155.0,19.8],[154.2,23.4],[148.2,26.0],[146.5,23.8]],[[151.9,35.2],[156.5,33.8],[163.3,34.2],[157.0,36.7],[151.9,35.2],[143.6,36.4]],[[91.5,-14.9],[89.1,-14.2],[86.7,-14.8],[83.2,-17.8],[78.2,-16.2],[76.4,-22.4],[82.1,-20.8],[86.1,-22.4],[87.8,-20.9]],[[78.3,-12.9],[78.2,-16.2],[79.9,-13.2]],[[226.0,-25.3],[222.7,-16.0],[229.3,-9.4],[233.9,-14.8],[234.3,-28.1],[234.7,-29.8]],[[222.7,-16.0],[233.9,-14.8]],[[237.7,-33.6],[234.9,-34.4],[230.5,-36.3],[230.3,-40.6],[224.6,-43.1],[220.5,-47.4],[228.1,-52.1],[229.6,-47.9],[230.7,-44.7],[233.8,-41.2],[240.0,-38.4],[241.6,-36.8]],[[230.3,-40.6],[233.8,-41.2]],[[94.9,59.0],[104.3,58.4],[111.7,49.2],[125.7,43.2],[135.2,41.8],[139.7,36.8],[140.3,34.4]],[[281.2,37.6],[281.1,39.6],[279.2,38.8],[281.2,37.6],[283.6,36.9],[284.7,32.7],[282.5,33.4],[281.2,37.6]],[[92.6,-74.8],[83.0,-76.3],[73.8,-74.9],[75.7,-71.3]],[[312.5,-33.8],[312.1,-44.0],[320.2,-40.8],[319.5,-32.2],[315.3,-32.3],[312.5,-33.8]],[[115.3,-9.6],[122.1,-3.0],[108.0,-0.5],[97.2,-7.0],[93.7,-6.3]],[[108.0,-0.5],[102.0,2.4],[95.9,4.6],[98.2,7.3],[100.2,9.9]],[[176.4,-66.7],[184.4,-68.0],[189.3,-69.1],[191.6,-68.1],[195.6,-71.5],[188.1,-72.1],[189.3,-69.1]],[[241.6,-45.2],[246.8,-47.6],[245.0,-50.2],[240.8,-49.2],[241.6,-45.2]],[[216.7,-83.7],[341.5,-81.4],[325.4,-77.4],[216.7,-83.7]],[[269.8,-9.8],[267.0,2.7],[265.9,4.6],[263.7,12.6],[254.4,9.4],[247.7,2.0],[243.6,-3.7],[244.6,-4.7],[249.3,-10.6],[257.6,-15.7]],[[254.4,9.4],[249.3,-10.6],[247.8,-16.6],[246.8,-18.5],[246.0,-20.0],[246.4,-23.4]],[[265.9,4.6],[257.6,-15.7],[260.5,-25.0],[261.8,-29.9]],[[91.9,14.8],[88.6,20.3],[91.0,20.1],[93.0,14.2],[90.6,9.6],[88.8,7.4],[81.3,6.3],[73.7,10.2]],[[74.6,1.7],[73.6,2.4],[72.8,5.6],[72.5,7.0],[72.7,8.9],[73.7,10.2],[74.1,13.5],[76.1,15.4],[77.4,15.6]],[[78.6,-8.2],[81.1,-2.4],[83.0,-0.3],[81.3,6.3],[83.8,9.9],[88.8,7.4],[85.2,-1.9],[86.9,-9.7]],[[85.2,-1.9],[84.1,-1.2],[83.0,-0.3]],[[306.4,-56.7],[311.2,-66.2],[302.2,-66.2],[283.1,-62.2],[275.8,-61.5],[272.1,-63.7],[266.4,-64.7],[280.8,-71.4],[300.1,-72.9],[311.2,-66.2],[321.6,-65.4]],[[332.5,33.2],[340.8,30.2],[345.9,28.1],[2.1,29.1],[3.3,15.2],[346.2,15.2],[341.7,12.2],[340.4,10.8],[332.5,6.2],[326.0,9.9]],[[346.2,15.2],[345.9,28.1],[342.5,24.6],[341.6,23.6],[331.8,25.3],[326.2,25.6]],[[56.1,32.3],[58.5,31.9],[59.7,35.8],[59.5,40.0],[56.3,42.6],[55.7,47.8],[54.1,48.2],[51.1,49.9],[46.2,53.5],[42.7,55.9],[43.6,52.8],[47.3,49.6],[47.4,44.9],[47.0,41.0],[47.8,39.6],[46.3,38.8],[44.7,39.7],[44.9,41.0],[47.0,41.0]],[[61.6,50.4],[63.7,48.4],[62.2,47.7],[55.7,47.8]],[[47.3,49.6],[41.0,49.2],[25.9,50.7]],[[6.6,-42.3],[16.5,-46.7],[22.1,-43.3],[22.8,-49.1],[17.1,-55.2],[16.5,-46.7],[2.4,-45.7],[6.6,-42.3]],[[102.0,-61.9],[87.5,-56.2],[86.8,-51.1]],[[18.4,24.6],[17.9,30.1],[19.9,27.3],[18.4,24.6],[17.9,21.0],[22.9,15.3],[26.3,9.2],[30.5,2.8],[28.4,3.2],[25.4,5.5],[22.5,6.1],[18.4,7.6],[15.7,7.9],[12.2,7.6],[359.8,6.9],[355.0,5.6],[352.0,6.4],[350.1,5.4],[349.3,3.3],[351.7,1.3],[355.5,1.8],[356.6,3.5],[355.0,5.6]],[[349.3,3.3],[346.0,3.8]],[[340.2,-27.0],[344.4,-29.6],[344.0,-32.5],[343.1,-32.9],[337.9,-32.3],[332.1,-33.0],[326.2,-33.0],[326.9,-30.9],[332.1,-33.0],[340.2,-27.0]],[[99.4,-43.2],[109.3,-37.1],[113.8,-28.4],[114.7,-26.8],[117.3,-24.9],[119.2,-22.9],[121.9,-24.3],[120.9,-40.0],[122.4,-47.3]],[[117.3,-24.9],[117.0,-25.9],[116.0,-29.0],[113.8,-28.4]],[[120.9,-40.0],[130.0,-35.3],[130.9,-33.2],[132.6,-27.7]],[[63.6,-62.5],[64.1,-59.3],[59.7,-61.4],[56.0,-64.8],[63.6,-62.5]],[[295.0,18.0],[296.8,18.5],[299.7,19.5]],[[295.3,17.5],[296.8,18.5]],[[274.4,-36.8],[276.0,-34.4],[275.2,-29.8],[277.0,-25.4],[273.4,-21.1]],[[290.7,-44.5],[291.0,-40.6],[285.7,-29.9],[281.4,-27.0],[277.0,-25.4]],[[298.8,-41.9],[299.9,-35.3],[299.0,-26.3],[294.2,-24.9],[291.3,-24.5],[288.9,-25.3],[283.8,-26.3],[281.4,-27.0],[275.2,-29.8],[271.5,-30.4],[276.0,-34.4],[285.7,-29.9],[286.7,-27.7],[283.8,-26.3],[286.2,-21.7],[287.4,-21.0],[289.4,-19.0],[290.4,-17.8],[290.4,-16.0]],[[286.2,-21.7],[284.4,-21.1],[283.5,-22.7],[283.8,-26.3]],[[239.7,-26.1],[240.1,-22.6],[241.4,-19.8]],[[240.1,-22.6],[245.3,-25.6],[247.4,-26.4],[249.0,-28.2],[252.5,-34.3],[253.0,-38.0],[253.6,-42.4],[258.0,-43.2],[264.3,-43.0],[266.9,-40.1],[265.6,-39.0],[263.4,-37.1]],[[14.7,-29.4],[357.2,-28.1],[349.7,-32.5],[353.2,-37.8]],[[278.8,-8.2],[281.8,-4.7],[280.6,-9.1],[277.3,-14.6],[278.8,-8.2]],[[236.5,15.4],[235.4,19.7],[237.2,18.1],[239.1,15.7],[236.5,15.4],[233.7,10.5],[236.1,6.4],[237.7,4.5],[243.6,-3.7]],[[257.6,-15.7],[264.4,-15.4],[269.8,-9.8],[270.8,-8.2],[275.3,-2.9],[284.1,4.2]],[[152.0,-0.4],[148.1,-8.1],[157.4,-2.7],[157.6,-0.6]],[[84.4,21.1],[69.0,16.5],[67.2,15.9],[64.9,15.6],[65.7,17.5],[67.2,19.2],[81.6,28.6]],[[64.9,15.6],[60.2,12.5],[51.8,9.7],[60.8,6.0]],[[51.8,9.7],[51.2,9.0],[54.2,0.4]],[[272.8,-46.0],[276.7,-46.0],[277.2,-49.1]],[[28.3,29.6],[32.4,35.0],[34.3,33.8],[28.3,29.6]],[[252.2,-69.0],[238.8,-63.4],[229.7,-68.7],[252.2,-69.0]],[[334.6,-60.3],[349.4,-58.2],[7.9,-63.0],[5.0,-64.9],[360.0,-65.6],[336.8,-65.0],[334.6,-60.3]],[[183.9,57.0],[165.9,61.8],[165.5,56.4],[178.5,53.7],[183.9,57.0],[193.5,56.0],[201.0,54.9],[206.9,49.3]],[[178.5,53.7],[176.5,47.8],[169.6,33.1],[169.5,31.5]],[[176.5,47.8],[167.4,44.5],[155.6,41.5]],[[167.4,44.5],[154.3,42.9]],[[165.9,61.8],[142.9,63.1],[127.6,60.7],[147.7,59.0],[165.5,56.4]],[[165.5,56.4],[148.0,54.1],[143.2,51.7],[134.8,48.0]],[[135.9,47.2],[143.2,51.7]],[[236.0,77.8],[244.4,75.8],[230.2,71.8],[222.7,74.2],[236.0,77.8],[251.5,82.0],[263.1,86.6],[38.0,89.3]],[[131.2,-54.7],[140.5,-55.0],[149.2,-54.6],[161.7,-49.4],[153.7,-42.1],[142.7,-40.5],[137.0,-43.4],[122.4,-47.3]],[[176.5,6.5],[177.7,1.8],[185.0,-0.7],[190.4,-1.4],[197.5,-5.5],[201.3,-11.2],[214.0,-6.0],[220.8,-5.7]],[[195.5,11.0],[193.9,3.4],[190.4,-1.4]],[[197.5,-5.5],[203.7,-0.6],[210.4,1.5],[221.6,1.9]],[[135.6,-66.4],[126.4,-66.1],[122.0,-68.6],[109.2,-68.0],[107.2,-70.5],[122.0,-68.6],[135.6,-66.4]],[[289.1,21.4],[292.2,24.7],[298.4,24.1],[300.3,27.8],[303.9,27.8]]];
+const PLM_NAMED={"Sol":[0.0,0.0],"Achernar":[24.43,-57.24],"Aldebaran":[68.98,16.51],"Rigel":[78.63,-8.2],"Capella":[79.17,46.0],"Betelgeuse":[88.79,7.41],"Canopus":[95.99,-52.7],"Sirius":[101.29,-16.72],"Adhara":[104.66,-28.97],"Castor":[113.65,31.89],"Procyon":[114.83,5.22],"Pollux":[116.33,28.03],"Regulus":[152.09,11.97],"Acrux":[186.65,-63.1],"Gacrux":[187.79,-57.11],"Mimosa":[191.93,-59.69],"Spica":[201.3,-11.16],"Hadar":[210.96,-60.37],"Arcturus":[213.92,19.18],"Toliman":[219.91,-60.84],"Rigil Kentaurus":[219.91,-60.83],"Antares":[247.35,-26.43],"Vega":[279.23,38.78],"Altair":[297.7,8.87],"Deneb":[310.36,45.28],"Fomalhaut":[344.41,-29.62]};
+
+// ============================================================
+//  PLANETARIUM — full-sky projection over the former Matsubishi
+//  site (34.7049N 137.7312E). Equidistant azimuthal, zenith-
+//  centered, N up / E left (true looking-up chirality).
+//  Stars: HYG v3.8 (mag<=5.0). Fixed-star sphere only — planets
+//  and the Moon require ephemerides and are not included.
+// ============================================================
+const VSOP={
+me:{L:[[[440250710.144,0.0,0.0],[40989414.976,1.4830203,26087.9031416],[5046294.199,4.4778549,52175.8062831],[855346.843,1.1652032,78263.7094247],[165590.362,4.1196916,104351.6125663],[34561.897,0.7793077,130439.5157079],[7583.476,3.713484,156527.4188494],[3559.74,1.5120267,1109.3785521],[1803.463,4.1033318,5661.3320492]],[[2608814706222.746,0.0,0.0],[1126007.832,6.2170397,26087.9031416],[303471.395,3.0556547,52175.8062831],[80538.452,6.1045474,78263.7094247],[21245.035,2.8353193,104351.6125663],[5592.094,5.8267567,130439.5157079],[1472.233,2.5184546,156527.4188494],[388.318,5.4803923,182615.321991],[352.244,3.0523809,1109.3785521]],[[53049.845,0.0,0.0],[16903.658,4.690723,26087.9031416],[7396.711,1.3473562,52175.8062831],[3018.297,4.4564354,78263.7094247],[1107.419,1.2622654,104351.6125663],[378.173,4.3199806,130439.5157079],[122.998,1.0686854,156527.4188494],[38.663,4.0801161,182615.321991],[14.898,4.6334309,1109.3785521]],[[35.395,0.0,0.0],[188.077,0.0346683,52175.8062831],[142.152,3.1250545,26087.9031416],[96.877,3.0037817,78263.7094247],[43.669,6.0186797,104351.6125663],[18.045,2.7753837,130439.5157079],[6.971,5.8180867,156527.4188494],[2.556,2.5701436,182615.321991],[0.9,5.5930889,208703.2251326]],[[114.078,3.1415927,0.0],[3.247,2.0284801,26087.9031416],[1.914,1.417318,78263.7094247],[1.727,4.5013764,52175.8062831],[1.237,4.4997018,104351.6125663],[0.645,1.2659178,130439.5157079],[0.298,4.3060098,156527.4188494],[0.128,1.0570251,182615.321991],[0.051,4.0856619,208703.2251326]],[[0.877,3.1415927,0.0],[0.059,3.3751329,52175.8062831],[0.043,4.6507141,26087.9031416],[0.042,0.024331,78263.7094247],[0.031,2.981122,104351.6125663],[0.019,6.0099247,130439.5157079],[0.01,2.7569979,156527.4188494],[0.005,5.7908236,182615.321991],[0.002,2.5143545,208703.2251326]]],B:[[[1222839.532,3.1415927,0.0],[11737528.962,1.983575,26087.9031416],[2388076.996,5.0373896,52175.8062831],[543251.81,1.7964436,78263.7094247],[129778.77,4.832325,104351.6125663],[31866.927,1.580885,130439.5157079],[7963.301,4.6097213,156527.4188494],[2014.189,1.3532416,182615.321991],[513.953,4.3783541,208703.2251326]],[[146233.668,3.1415927,0.0],[429151.362,3.5016978,26087.9031416],[22675.295,0.0151537,52175.8062831],[10894.981,0.4854017,78263.7094247],[6353.462,3.4294392,104351.6125663],[2495.743,0.1605121,130439.5157079],[859.585,3.1845243,156527.4188494],[277.503,6.2102077,182615.321991],[86.233,2.9524439,208703.2251326]],[[1913.516,0.0,0.0],[11830.934,4.7906559,26087.9031416],[1044.801,1.2121654,52175.8062831],[266.213,4.4341834,78263.7094247],[170.28,1.6225564,104351.6125663],[96.3,4.8002369,130439.5157079],[44.692,1.6075827,156527.4188494],[18.316,4.6690466,182615.321991],[6.927,1.4340489,208703.2251326]],[[160.537,0.0,0.0],[235.423,0.3538752,26087.9031416],[18.904,4.3627546,52175.8062831],[6.376,2.5071538,78263.7094247],[4.58,6.1425782,104351.6125663],[3.061,3.1249755,130439.5157079],[1.732,6.2664241,156527.4188494],[0.857,3.0767317,182615.321991],[0.384,6.1481532,208703.2251326]],[[1.023,3.1415927,0.0],[4.276,1.7457993,26087.9031416],[0.425,4.0341951,52175.8062831],[0.257,0.2064359,78263.7094247],[0.116,3.7523735,104351.6125663],[0.073,1.1821038,130439.5157079],[0.051,4.5458109,156527.4188494],[0.031,1.4422694,182615.321991],[0.016,4.5637268,208703.2251326]],[[0.075,3.1415927,0.0],[0.106,3.9455578,26087.9031416],[0.022,1.3051487,52175.8062831],[0.007,4.9971714,78263.7094247],[0.004,2.0566255,104351.6125663],[0.002,5.4316206,130439.5157079],[0.001,2.6805252,156527.4188494],[0.001,6.0084187,182615.321991],[0.0,2.8594173,208703.2251326]]],R:[[[39528271.652,0.0,0.0],[7834131.817,6.1923372,26087.9031416],[795525.557,2.9598969,52175.8062831],[121281.763,6.0106415,78263.7094247],[21921.969,2.7782009,104351.6125663],[4354.065,5.8289454,130439.5157079],[918.228,2.5965056,156527.4188494],[289.955,1.4244194,25028.5212114],[260.033,3.0281775,27197.2816937]],[[1624.367,0.0,0.0],[217347.739,4.6561716,26087.9031416],[44141.826,1.4238554,52175.8062831],[10094.479,4.4746633,78263.7094247],[2432.804,1.2422608,104351.6125663],[603.996,4.2930312,130439.5157079],[152.851,1.0606078,156527.4188494],[39.202,4.1113675,182615.321991],[17.999,4.7119373,24978.5245895]],[[21.759,3.1415927,0.0],[3117.867,3.0823184,26087.9031416],[1245.396,6.1518332,52175.8062831],[424.822,2.9258335,78263.7094247],[136.13,5.9798393,104351.6125663],[42.175,2.7493698,130439.5157079],[12.793,5.8014316,156527.4188494],[3.825,2.569936,182615.321991],[1.131,5.621422,208703.2251326]],[[1.46,3.1415927,0.0],[32.676,1.6797164,26087.9031416],[24.166,4.6340317,52175.8062831],[12.133,1.3898378,78263.7094247],[5.14,4.4391539,104351.6125663],[1.981,1.2073388,130439.5157079],[0.719,4.2591363,156527.4188494],[0.25,1.0279443,182615.321991],[0.084,4.0800862,208703.2251326]],[[0.017,0.0,0.0],[0.394,0.367354,26087.9031416],[0.387,3.1856877,52175.8062831],[0.27,6.1698362,78263.7094247],[0.149,2.915919,104351.6125663],[0.071,5.9586789,130439.5157079],[0.031,2.723867,156527.4188494],[0.012,5.7777533,182615.321991],[0.005,2.5450644,208703.2251326]],[[0.001,3.1415927,0.0],[0.006,3.9890027,26087.9031416],[0.006,1.5524828,52175.8062831],[0.005,4.6546172,78263.7094247],[0.004,1.4023837,104351.6125663],[0.002,4.4423149,130439.5157079],[0.001,1.2127818,156527.4188494],[0.001,4.2614903,182615.321991],[0.0,0.9983113,208703.2251326]]]},
+ve:{L:[[[317614666.774,0.0,0.0],[1353968.419,5.5931332,10213.2855462],[89891.645,5.3065005,20426.5710924],[5477.201,4.4163065,7860.4193924],[3455.732,2.6996447,11790.6290887],[2372.061,2.9937754,3930.2096962],[1664.069,4.2501894,1577.3435424],[1438.322,4.1574504,9683.5945811],[1317.108,5.1866822,26.2983198]],[[1021352943052.898,0.0,0.0],[95707.712,2.4642445,10213.2855462],[14444.977,0.5162456,20426.5710924],[213.374,1.7954793,30639.8566386],[173.904,2.6553588,26.2983198],[151.669,6.1063528,1577.3435424],[82.233,5.7023413,191.4482661],[69.734,2.6813603,9437.7629349],[52.408,3.6001309,775.5226113]],[[54127.076,0.0,0.0],[3891.46,0.3451436,10213.2855462],[1337.88,2.0201129,20426.5710924],[23.836,2.0459212,26.2983198],[19.331,3.5352737,30639.8566386],[9.984,3.9713022,775.5226113],[7.046,1.5196259,1577.3435424],[6.014,0.9992676,191.4482661],[3.163,4.3609548,9437.7629349]],[[26.023,0.0,0.0],[135.742,4.8038902,10213.2855462],[77.846,3.6687637,20426.5710924],[1.214,5.3197001,30639.8566386],[0.254,4.1502167,40853.1421848],[0.008,5.5552356,51066.4277311],[0.008,1.4050123,1577.3435424],[0.006,1.2779148,10404.7338123],[0.006,5.7644707,10239.583866]],[[114.016,3.1415927,0.0],[3.209,5.2051417,20426.5710924],[1.714,2.5109959,10213.2855462],[0.05,0.7135606,30639.8566386],[0.023,5.6812761,40853.1421848]],[[0.874,3.1415927,0.0],[0.118,1.9054854,10213.2855462],[0.117,0.5464301,20426.5710924],[0.002,1.0773428,40853.1421848],[0.002,1.8946022,30639.8566386]]],B:[[[32814.918,3.1415927,0.0],[5923638.472,0.2670278,10213.2855462],[40107.978,1.1473718,20426.5710924],[1011.392,1.0894612,30639.8566386],[149.458,6.253903,18073.7049387],[137.788,0.8602015,1577.3435424],[129.973,3.6715248,9437.7629349],[119.507,3.7046881,2352.8661538],[107.971,4.5390368,22003.9146349]],[[199.162,0.0,0.0],[513347.602,1.8036431,10213.2855462],[4380.1,3.3861571,20426.5710924],[196.586,2.530012,30639.8566386],[14.031,2.2708704,9437.7629349],[12.958,1.5073562,18073.7049387],[11.941,5.6046245,1577.3435424],[10.324,5.2422431,2352.8661538],[9.294,6.0754563,22003.9146349]],[[281.739,0.0,0.0],[22377.665,3.3850914,10213.2855462],[173.164,5.2556377,20426.5710924],[26.945,3.8704089,30639.8566386],[1.174,0.0976863,10186.9872264],[0.788,4.3651597,10239.583866],[0.685,3.1913907,11790.6290887],[0.592,5.2227044,40853.1421848],[0.54,3.1165784,18073.7049387]],[[19.952,3.1415927,0.0],[646.671,4.9916657,10213.2855462],[5.54,0.7737692,20426.5710924],[2.526,5.4449376,30639.8566386],[0.079,1.5144761,10186.9872264],[0.058,5.7073118,10239.583866],[0.056,0.6364781,40853.1421848],[0.031,4.7252306,11790.6290887],[0.026,1.0206811,10988.8081575]],[[0.214,3.1415927,0.0],[14.102,0.3153719,10213.2855462],[0.19,2.354664,20426.5710924],[0.164,0.7447622,30639.8566386],[0.004,2.3419088,40853.1421848]],[[0.039,0.0,0.0],[0.239,2.0520173,10213.2855462],[0.011,3.8250028,20426.5710924],[0.009,2.3295312,30639.8566386]]],R:[[[72334820.905,0.0,0.0],[489824.185,4.0215183,10213.2855462],[1658.058,4.9020673,20426.5710924],[1632.093,2.8454885,7860.4193924],[1378.048,1.1284659,11790.6290887],[498.399,2.5868219,9683.5945811],[373.958,1.4231484,3930.2096962],[263.616,5.5293819,9437.7629349],[237.455,2.551359,15720.8387849]],[[233.998,3.1415927,0.0],[34551.039,0.8919871,10213.2855462],[234.203,1.7722494,20426.5710924],[23.864,1.112745,9437.7629349],[10.568,4.5916821,1577.3435424],[9.124,4.5354091,10404.7338123],[6.599,5.97704,5507.5532387],[4.667,3.8768396,9153.903616],[3.84,5.6619692,13367.9726311]],[[13.059,0.0,0.0],[1406.587,5.063664,10213.2855462],[15.529,5.4732169,20426.5710924],[1.099,2.7888399,9437.7629349],[0.488,6.2780691,1577.3435424],[0.389,1.9501778,11015.1064773],[0.372,2.3322283,775.5226113],[0.361,6.1191419,10404.7338123],[0.31,1.38985,5507.5532387]],[[0.112,3.1415927,0.0],[49.582,3.2226355,10213.2855462],[0.831,3.2121908,20426.5710924],[0.013,3.7744869,30639.8566386],[0.009,4.1980204,10239.583866],[0.006,0.2071494,10186.9872264],[0.005,0.6878196,8635.9420038]],[[0.006,3.1415927,0.0],[0.573,0.922297,10213.2855462],[0.04,0.9546891,20426.5710924]],[[0.045,0.3003287,10213.2855462],[0.002,5.2962772,20426.5710924]]]},
+ea:{L:[[[175347045.673,0.0,0.0],[3341656.456,4.6692568,6283.07585],[34894.275,4.6261024,12566.1517],[3497.056,2.744118,5753.3848849],[3417.571,2.8288658,3.5231183],[3135.896,3.6276704,77713.7714681],[2676.218,4.4180835,7860.4193924],[2342.687,6.1351624,3930.2096962],[1324.292,0.7424636,11506.7697698]],[[628331966747.491,0.0,0.0],[206058.863,2.6782346,6283.07585],[4303.43,2.6351265,12566.1517],[425.264,1.5904698,3.5231183],[119.261,5.7955749,26.2983198],[108.977,2.96618,1577.3435424],[93.478,2.5921284,18849.22755],[72.122,1.1384616,529.6909651],[67.768,1.874723,398.1490034]],[[52918.87,0.0,0.0],[8719.837,1.0720967,6283.07585],[309.125,0.8672882,12566.1517],[27.339,0.0529787,3.5231183],[16.334,5.1882669,26.2983198],[15.752,3.6845789,155.4203994],[9.541,0.757423,18849.22755],[8.937,2.0570542,77713.7714681],[6.952,0.8267331,775.5226113]],[[34.955,0.0,0.0],[289.226,5.843842,6283.07585],[16.819,5.4876691,12566.1517],[2.962,5.1957727,155.4203994],[1.288,4.7220025,3.5231183],[0.714,5.3004581,18849.22755],[0.635,5.9692594,242.728604],[0.402,3.7868298,553.5694028],[0.072,4.2976813,6286.5989683]],[[114.084,3.1415927,0.0],[7.717,4.1344659,6283.07585],[0.765,3.8380378,12566.1517],[0.42,0.4192586,155.4203994],[0.041,3.1439841,3.5231183],[0.04,3.5984759,18849.22755],[0.035,5.0029894,5573.1428014],[0.013,0.4879483,77713.7714681],[0.01,5.6480177,6127.6554506]],[[0.878,3.1415927,0.0],[0.172,2.7657907,6283.07585],[0.05,2.013533,155.4203994],[0.028,2.2149642,12566.1517],[0.005,1.7560006,18849.22755]]],B:[[[1.039,3.1415927,0.0],[279.62,3.1987016,84334.6615813],[101.643,5.4224862,5507.5532387],[80.445,3.880132,5223.6939198],[43.806,3.7044469,2352.8661538],[31.933,4.0002637,1577.3435424],[22.724,3.9847383,1047.7473118],[18.141,4.9836747,6283.07585],[16.392,3.5645612,5856.4776591],[14.443,3.7027561,9437.7629349],[14.304,3.4111786,10213.2855462],[11.246,4.8282069,14143.4952424],[10.9,2.0857456,6812.7668151],[10.367,4.0566393,71092.8813549],[9.714,3.4730395,4694.0029547],[9.145,1.1418265,6620.8901132],[8.775,4.4401652,5753.3848849],[8.366,4.9925151,7084.8967811],[7.698,5.5542575,167621.5758509],[7.194,3.6019321,529.6909651],[6.921,4.3255905,6275.962303]],[[0.143,0.0,0.0],[9.03,3.8972906,5507.5532387],[6.177,1.7303885,5223.6939198],[3.8,5.2440415,2352.8661538],[2.834,2.4734504,1577.3435424],[1.817,0.4187474,6283.07585],[1.499,1.8332098,5856.4776591],[1.466,5.6940193,5753.3848849],[1.301,2.1889007,9437.7629349],[1.233,4.9522245,10213.2855462],[1.021,0.1286666,7860.4193924],[0.982,0.0900545,14143.4952424],[0.865,1.7394995,3930.2096962],[0.581,2.2694917,5884.9268466],[0.524,5.656625,529.6909651],[0.473,6.2275097,6309.3741698],[0.451,1.5328862,18073.7049387],[0.372,3.2247072,6275.962303],[0.364,3.6161448,13367.9726311],[0.322,0.9408405,6069.7767546],[0.268,2.3434127,11790.6290887],[0.232,0.2678118,7058.5984613],[0.232,2.9332565,22003.9146349],[0.22,3.9930564,6812.7668151],[0.216,6.0595222,10977.0788047],[0.212,1.5716629,4694.0029547],[0.204,3.8626484,6496.3749454],[0.202,2.8189251,15720.8387849],[0.185,4.9351238,12036.4607349]],[[1.662,1.6270321,84334.6615813],[0.492,2.4138222,1047.7473118],[0.344,2.24353,5507.5532387],[0.258,6.009069,5223.6939198],[0.131,0.9544735,6283.07585],[0.09,0.976068,1577.3435424],[0.09,0.3789987,2352.8661538],[0.089,6.2580751,10213.2855462],[0.086,1.6753025,7860.4193924],[0.075,0.8421352,167621.5758509],[0.057,6.1529583,12194.0329146],[0.052,1.7050157,14143.4952424],[0.051,1.2761602,5753.3848849],[0.051,5.3722974,6812.7668151],[0.046,3.386171,156475.290248],[0.038,2.7776103,10988.8081575],[0.034,1.7367299,7058.5984613]],[[0.011,0.2387726,7860.4193924],[0.009,1.1606998,5507.5532387],[0.008,1.6535755,5884.9268466],[0.008,2.8672004,7058.5984613],[0.008,4.0286309,6256.7775302],[0.008,2.4200351,5753.3848849],[0.007,3.0481874,5486.7778432],[0.007,2.594371,529.6909651],[0.007,2.7339987,6309.3741698],[0.006,0.8418109,6275.962303],[0.006,5.4016093,1577.3435424]],[[0.005,0.8430871,1047.7473118],[0.005,0.0571157,84334.6615813],[0.004,0.796622,6438.4962494],[0.003,3.467799,6279.5527316],[0.003,2.898222,6127.6554506]]],R:[[[100013988.799,0.0,0.0],[1670699.626,3.0984635,6283.07585],[13956.023,3.0552461,12566.1517],[3083.72,5.1984667,77713.7714681],[1628.461,1.1738775,5753.3848849],[1575.568,2.8468525,7860.4193924],[924.799,5.4529223,11506.7697698],[542.444,4.5640915,3930.2096962],[472.11,3.6610002,5884.9268466]],[[702.215,3.1415927,0.0],[103018.608,1.1074897,6283.07585],[1721.238,1.064423,12566.1517],[32.346,1.0216906,18849.22755],[30.799,2.843538,5507.5532387],[24.971,1.3190671,5223.6939198],[18.485,1.4242975,1577.3435424],[10.078,5.9137819,10977.0788047],[8.654,1.4204685,6275.962303]],[[12.341,3.1415927,0.0],[4359.385,5.7845513,6283.07585],[123.633,5.5793472,12566.1517],[8.792,3.6277773,77713.7714681],[5.689,1.8695891,5573.1428014],[3.301,5.4702791,18849.22755],[1.471,4.4802889,5507.5532387],[1.102,2.8417399,161000.6857377],[1.013,2.8145642,5223.6939198]],[[0.774,0.0,0.0],[144.595,4.2731944,6283.07585],[6.729,3.9169761,12566.1517],[0.247,3.730193,18849.22755],[0.036,2.8008141,6286.5989683],[0.033,5.622166,6127.6554506],[0.019,3.7129262,6438.4962494],[0.016,4.2601148,6525.804454],[0.016,3.5041689,6256.7775302]],[[3.858,2.5638439,6283.07585],[0.306,2.267695,12566.1517],[0.053,3.4403147,5573.1428014],[0.015,2.0479457,18849.22755],[0.013,2.0568887,77713.7714681],[0.007,4.4121885,161000.6857377],[0.006,3.8151421,149854.4001348],[0.005,5.2615465,6438.4962494]],[[0.086,1.2157974,6283.07585],[0.012,0.6561726,12566.1517],[0.001,0.380688,18849.22755]]]},
+ma:{L:[[[620347711.583,0.0,0.0],[18656368.1,5.050371,3340.6124267],[1108216.792,5.4009984,6681.2248534],[91798.394,5.7547875,10021.8372801],[27744.987,5.9704951,3.5231183],[12315.897,0.8495608,2810.9214616],[10610.23,2.9395852,2281.2304965],[8926.772,4.1569785,0.0172537],[8715.688,6.1100516,13362.4497068],[7774.867,3.3396866,5621.8429232],[6797.552,0.3646224,398.1490034],[4161.101,0.2281498,2942.4634233],[3575.079,1.6618654,2544.3144199],[3075.25,0.856966,191.4482661],[2937.543,6.0789371,0.0673103]],[[334085627474.342,0.0,0.0],[1458227.051,3.6042605,3340.6124267],[164901.343,3.9263125,6681.2248534],[19963.338,4.2659406,10021.8372801],[3452.399,4.7321039,3.5231183],[2485.48,4.6127757,13362.4497068],[841.551,4.4585826,2281.2304965],[537.566,5.0158973,398.1490034],[521.041,4.9942268,3344.135545],[432.614,2.560664,191.4482661],[429.656,5.3164616,155.4203994],[381.747,3.5388129,796.2980068],[314.129,4.9633527,16703.0621335],[282.804,3.1596752,2544.3144199]],[[54187.645,0.0,0.0],[58015.791,2.0497946,3340.6124267],[13908.426,2.4574236,6681.2248534],[2465.104,2.8000002,10021.8372801],[398.379,3.1411843,13362.4497068],[222.022,3.1943608,3.5231183],[120.957,0.5432529,155.4203994],[61.517,3.4852943,16703.0621335],[53.638,3.5419112,3344.135545],[34.268,6.001885,2281.2304965],[31.665,4.1401517,191.4482661],[29.839,1.9987068,796.2980068],[23.168,4.3340337,242.728604],[21.659,3.4453247,398.1490034],[20.37,5.4219138,553.5694028],[16.227,0.6567895,0.9803211],[16.044,6.1100047,2146.1654165],[15.648,1.2208612,1748.0164131],[14.927,6.0954178,3185.1920273],[14.416,4.0192381,951.7184063],[14.317,2.618519,1349.8674097],[13.352,0.6018901,1194.4470102],[11.934,3.8612216,6684.7479717],[11.26,4.7182236,2544.3144199],[10.396,0.2503871,382.8965322],[9.468,0.6817071,1059.3819302],[9.229,3.8320909,20043.6745602],[9.005,3.8827183,3738.7614301]],[[25.994,0.0,0.0],[1482.423,0.4443469,3340.6124267],[662.095,0.8846918,6681.2248534],[188.268,1.2879998,10021.8372801],[41.474,1.6485079,13362.4497068],[22.661,2.0526767,155.4203994],[10.454,1.5800691,3.5231183],[8.024,1.9985876,16703.0621335],[4.9,2.8245246,242.728604],[3.782,2.0191427,3344.135545],[3.176,4.591449,3185.1920273],[3.134,0.6504471,553.5694028],[1.684,5.5383585,951.7184063],[1.511,5.7179585,191.4482661],[1.448,0.4586914,796.2980068],[1.442,2.343685,20043.6745602],[1.302,5.3628401,0.9803211],[1.169,4.1460116,1349.8674097],[1.133,2.3818083,6684.7479717],[1.037,1.7689275,382.8965322],[0.894,5.3368833,1194.4470102],[0.807,2.7479889,1748.0164131],[0.647,3.1764548,3583.3410307],[0.64,6.1066515,3496.0328261],[0.567,5.8592238,7.113547],[0.558,1.8521234,398.1490034],[0.519,4.9337618,6525.804454],[0.508,1.011393,3149.1641606],[0.472,0.8441148,4136.9104335],[0.452,5.9810999,2787.0430239],[0.405,1.2729544,2281.2304965],[0.399,2.3288869,3738.7614301],[0.333,5.4270454,1059.3819302],[0.313,3.705999,3097.8838227],[0.287,2.693048,10025.3603984],[0.281,5.7458172,3341.5927478],[0.269,1.1039015,2388.8940204],[0.26,2.6799688,23384.2869869],[0.237,5.6851988,4535.0594369]],[[113.969,3.1415927,0.0],[28.725,5.6366241,6681.2248534],[24.447,5.1386848,3340.6124267],[11.187,6.0316107,10021.8372801],[3.252,0.1322835,13362.4497068],[3.19,3.5626799,155.4203994],[0.787,0.4934078,16703.0621335],[0.776,1.3173453,242.728604],[0.494,3.0635621,3185.1920273],[0.374,2.1578585,553.5694028],[0.331,6.2315979,3.5231183],[0.197,0.4435015,3344.135545],[0.181,0.8153128,20043.6745602],[0.168,3.7350978,3496.0328261],[0.115,1.6689853,3583.3410307],[0.092,3.4053036,6525.804454],[0.086,0.7925955,6684.7479717],[0.064,4.4744358,2787.0430239],[0.045,5.1721622,3097.8838227],[0.041,1.2187503,23384.2869869],[0.039,5.4096635,4136.9104335],[0.036,5.5397565,3149.1641606],[0.032,1.2233709,10025.3603984],[0.029,2.4017863,3894.1818295],[0.028,4.8537878,6127.6554506],[0.027,0.4281109,3738.7614301],[0.025,1.5634888,26724.8994136],[0.023,4.1637125,3341.5927478],[0.022,5.9842919,7477.5228602],[0.021,4.2753211,6836.6452528],[0.02,3.7927557,9866.4168807],[0.019,2.0322898,6923.9534574],[0.015,1.563155,13365.9728251],[0.011,1.3326196,2281.2304965],[0.009,6.1539046,6489.7765873],[0.007,4.2389419,4535.0594369]],[[0.868,3.1415927,0.0],[0.71,4.0409,6681.2248534],[0.51,4.492149,10021.8372801],[0.357,5.0743551,155.4203994],[0.223,3.5135188,3340.6124267],[0.199,4.8531367,13362.4497068],[0.1,6.0908936,242.728604],[0.069,5.1901748,16703.0621335],[0.064,1.5578306,3185.1920273],[0.035,3.6824617,553.5694028],[0.025,5.2207979,3496.0328261],[0.024,0.1786199,3583.3410307],[0.019,5.5918471,20043.6745602],[0.014,5.9556579,23384.2869869],[0.012,1.9385926,6525.804454]]],B:[[[289104.742,0.0,0.0],[3197134.986,3.7683204,3340.6124267],[298033.234,4.10617,6681.2248534],[31365.538,4.4465105,10021.8372801],[3484.1,4.7881255,13362.4497068],[443.401,5.0264262,3344.135545],[442.999,5.6523302,3337.0893084],[399.109,5.1305681,16703.0621335],[292.506,3.7929064,2281.2304965]],[[14116.03,3.1415927,0.0],[350068.845,5.3684784,3340.6124267],[9670.755,5.4787779,6681.2248534],[1471.918,3.2020577,10021.8372801],[425.864,3.4084381,13362.4497068],[102.039,0.7761729,3337.0893084],[78.848,3.7176829,16703.0621335],[32.708,3.4580372,5621.8429232],[26.171,2.4829356,2281.2304965]],[[4986.799,3.1415927,0.0],[16726.69,0.6022139,3340.6124267],[302.141,5.5587128,6681.2248534],[25.767,1.8966267,13362.4497068],[21.452,0.9174997,10021.8372801],[11.82,2.2424074,3337.0893084],[7.985,2.2489287,16703.0621335],[2.96,5.8942583,3496.0328261],[2.445,5.1877053,5621.8429232]],[[42.611,0.0,0.0],[606.506,1.9805063,3340.6124267],[13.652,1.7958823,6681.2248534],[2.73,3.4537708,10021.8372801],[0.929,3.7522616,3337.0893084],[0.617,1.1447177,3496.0328261],[0.607,0.1061849,13362.4497068],[0.479,0.7050497,16703.0621335],[0.185,3.2877856,3185.1920273],[0.169,0.2998053,5621.8429232],[0.158,1.0902532,20043.6745602],[0.126,4.7451702,3532.0606928],[0.123,2.5566497,3097.8838227],[0.106,3.4131585,2942.4634233],[0.099,4.9225705,2544.3144199],[0.093,6.0360769,3894.1818295]],[[13.369,0.0,0.0],[11.334,3.4572435,3340.6124267],[0.744,0.5044581,6681.2248534],[0.148,1.050566,10021.8372801],[0.102,2.6618584,3496.0328261],[0.053,5.2788822,3337.0893084],[0.023,1.7242234,3185.1920273],[0.022,4.099716,3097.8838227],[0.013,5.4170478,16703.0621335],[0.013,2.0695707,13362.4497068],[0.01,0.959896,3894.1818295]],[[0.007,0.0,0.0],[0.457,4.8679413,3340.6124267],[0.053,5.3054705,6681.2248534],[0.013,4.1773693,3496.0328261],[0.012,5.7511407,10021.8372801]]],R:[[[153033488.276,0.0,0.0],[14184953.153,3.4797128,3340.6124267],[660776.357,3.8178344,6681.2248534],[46179.117,4.1559532,10021.8372801],[8109.738,5.5595846,2810.9214616],[7485.315,1.77239,5621.8429232],[5523.193,1.3643632,2281.2304965],[3825.16,4.4940718,13362.4497068],[2484.385,4.9254558,2942.4634233],[2306.539,0.0908174,2544.3144199]],[[12877.2,0.0,0.0],[1107433.34,2.0325052,3340.6124267],[103175.886,2.3707185,6681.2248534],[10815.88,2.7088809,10021.8372801],[1194.55,3.0470218,13362.4497068],[438.579,2.8883507,2281.2304965],[395.698,3.4232461,3344.135545],[182.572,1.5842864,2544.3144199],[135.85,3.3850702,16703.0621335]],[[52.396,3.1415927,0.0],[44242.247,0.479306,3340.6124267],[8138.042,0.869984,6681.2248534],[1274.915,1.2259405,10021.8372801],[187.387,1.5729899,13362.4497068],[40.744,1.9708018,3344.135545],[26.616,1.9166562,16703.0621335],[17.825,4.4349951,2281.2304965],[11.713,4.5251045,3185.1920273],[10.209,5.3914347,1059.3819302],[9.95,0.4187058,796.2980068],[9.237,4.5357927,2146.1654165],[7.785,5.9336908,1748.0164131],[7.299,3.1421851,2544.3144199],[7.217,2.2930086,6684.7479717],[6.808,5.2670258,155.4203994],[6.749,5.301944,1194.4470102]],[[4.693,3.1415927,0.0],[1113.107,5.1498735,3340.6124267],[424.446,5.6134377,6681.2248534],[100.044,5.9972683,10021.8372801],[19.606,0.0763306,13362.4497068],[3.477,0.4295191,16703.0621335],[2.869,0.4471184,3344.135545],[2.428,3.0211553,3185.1920273],[0.688,0.8069336,6684.7479717],[0.577,0.7785328,20043.6745602],[0.54,3.8683652,1059.3819302],[0.487,1.6086239,3583.3410307],[0.468,4.5245079,3496.0328261],[0.397,5.7196799,3149.1641606],[0.362,4.423979,2787.0430239],[0.35,5.5569198,4136.9104335],[0.314,3.376329,6525.804454],[0.299,0.7564003,3738.7614301],[0.233,2.1396526,3097.8838227],[0.23,5.8295906,2388.8940204],[0.214,0.5677956,155.4203994],[0.212,4.2048749,3341.5927478],[0.204,0.9672332,1990.745017],[0.201,2.3528446,1592.5960136]],[[0.148,0.0,0.0],[19.552,3.5821165,3340.6124267],[16.323,4.0511608,6681.2248534],[5.848,4.4638396,10021.8372801],[1.532,4.8437432,13362.4497068],[0.375,1.5096223,3185.1920273],[0.339,5.2068497,16703.0621335],[0.151,5.1647293,3344.135545],[0.125,2.1923353,3496.0328261],[0.087,0.1027507,3583.3410307],[0.07,5.5530362,20043.6745602],[0.057,1.8686728,6525.804454],[0.049,5.5703851,6684.7479717],[0.048,2.9179779,2787.0430239],[0.034,3.6337092,3097.8838227],[0.021,2.3067764,1059.3819302],[0.021,4.0368212,4136.9104335],[0.018,4.1743876,3149.1641606],[0.017,5.9485641,10025.3603984],[0.016,2.6420677,4399.9943569],[0.014,0.7659155,3894.1818295],[0.013,1.9780548,155.4203994],[0.013,2.2293829,9866.4168807],[0.013,2.7581397,6836.6452528],[0.013,4.5198835,6489.7765873],[0.012,0.5109744,6923.9534574],[0.012,3.279453,6127.6554506],[0.011,5.4738124,3738.7614301]],[[0.012,3.1415927,0.0],[0.476,2.476172,6681.2248534],[0.268,2.9151055,10021.8372801],[0.115,1.7688896,3340.6124267],[0.096,3.3137838,13362.4497068],[0.048,6.2745783,3185.1920273],[0.027,3.6938088,16703.0621335],[0.013,3.7200581,3496.0328261],[0.012,4.88179,3583.3410307]]]},
+ju:{L:[[[59954691.495,0.0,0.0],[9695898.711,5.0619179,529.6909651],[573610.145,1.4440621,7.113547],[306389.18,5.4173473,1059.3819302],[97178.28,4.1426471,632.7837393],[72903.096,3.6404291,522.5774181],[64263.986,3.4114519,103.0927742],[39806.051,2.2937674,419.4846439],[38857.78,1.2723172,316.3918697],[27964.622,1.7845459,536.8045121],[13589.738,5.7748103,1589.0728953],[8768.686,3.6300032,949.175609],[8246.362,3.5822796,206.1855484],[7368.057,5.0810113,735.8765135],[6263.171,0.0249764,213.2990954],[6114.05,4.5131953,1162.4747044],[5305.457,4.1862505,1052.2683832],[5305.283,1.3067124,14.227094],[4905.419,1.3208463,110.2063212],[4647.249,4.6995811,3.9321533]],[[52993480757.497,0.0,0.0],[489741.194,4.2206669,529.6909651],[228918.538,6.0264746,7.113547],[27655.38,4.5726596,1059.3819302],[20720.943,5.4593894,522.5774181],[12105.732,0.1698577,536.8045121],[6068.051,4.424195,103.0927742],[5433.924,3.9847838,419.4846439],[4237.795,5.8900935,14.227094],[2211.854,5.2677145,206.1855484],[1745.919,4.9266938,1589.0728953],[1295.769,5.5513277,3.1813937],[1173.129,5.856473,1052.2683832],[1163.411,0.514509,3.9321533],[1098.735,5.3070498,515.4638711],[1007.216,0.464784,735.8765135],[1003.574,3.150403,426.5981909],[847.678,5.7580585,110.2063212],[827.329,4.8031202,213.2990954],[816.397,0.5864305,1066.4954772],[725.447,5.5182747,639.8972863],[567.845,5.9886705,625.6701923],[474.181,4.1324527,412.3710969],[412.93,5.7365289,95.9792272],[345.249,4.2415957,632.7837393],[335.817,3.7324875,1162.4747044],[234.34,4.0346997,949.175609],[234.066,6.2430223,309.2783227],[198.525,1.5045844,838.9692878]],[[38965.55,0.0,0.0],[47233.598,4.3214832,7.113547],[30629.053,2.9302144,529.6909651],[3189.317,1.0550462,522.5774181],[2729.292,4.8454548,536.8045121],[2723.358,3.4141153,1059.3819302],[1721.069,4.1873439,14.227094],[383.258,5.7679071,419.4846439],[377.524,0.7604896,515.4638711],[367.498,6.0550912,103.0927742],[337.386,3.7864438,3.1813937],[308.2,0.6935665,206.1855484],[218.408,3.8138919,1589.0728953],[198.883,5.3399644,1066.4954772],[197.445,2.483564,3.9321533],[155.862,1.4064243,1052.2683832],[146.23,3.813732,639.8972863],[141.932,1.6343517,426.5981909],[129.57,5.8373887,412.3710969],[117.327,1.4143546,625.6701923],[96.733,4.0338343,110.2063212],[90.823,1.1063063,95.9792272],[87.292,2.5223517,632.7837393],[78.769,4.6372613,543.9180591],[72.392,2.2171667,735.8765135],[58.475,0.8321632,199.0720014],[56.91,3.1229206,213.2990954],[48.622,1.6728379,309.2783227],[40.15,4.0248544,21.340641],[39.784,0.6241695,323.5054167],[35.718,2.3258125,728.7629665],[29.255,3.6083833,10.2949407],[27.814,3.2399201,838.9692878],[25.993,4.501183,742.9900605],[25.62,2.5124062,1162.4747044],[25.194,1.2186811,1045.1548362],[23.591,3.0053214,956.289156],[19.458,4.2902864,532.8723588]],[[44.378,0.0,0.0],[6501.665,2.5986288,7.113547],[1356.524,1.3463589,529.6909651],[470.716,2.4750398,14.227094],[416.96,3.2445124,536.8045121],[352.851,2.9736016,522.5774181],[154.88,2.0756559,1059.3819302],[86.771,2.5143158,515.4638711],[33.538,3.8263379,1066.4954772],[28.457,2.4475476,206.1855484],[23.737,1.2766717,412.3710969],[22.644,2.9823133,543.9180591],[19.798,2.1009993,639.8972863],[19.74,1.4025594,419.4846439],[18.768,1.593684,103.0927742],[17.033,2.3021468,21.340641],[16.774,2.5982146,1589.0728953],[16.214,3.1452112,625.6701923],[16.055,3.3603013,1052.2683832],[13.392,2.7597389,95.9792272],[13.234,2.5386224,199.0720014],[12.611,6.2657811,426.5981909],[8.701,1.7633496,10.2949407],[8.637,2.2656326,110.2063212],[6.725,3.4256643,309.2783227],[6.527,4.0386956,728.7629665],[5.675,2.5209642,508.3503241],[5.399,2.9118469,1045.1548362],[5.368,5.2519615,323.5054167],[3.996,4.3029026,88.8656802],[3.857,3.5238136,302.1647757],[3.774,4.0912532,735.8765135],[3.269,1.4317599,956.289156],[2.783,4.3581751,1596.1864423],[2.661,1.2527659,213.2990954],[2.656,5.0150584,838.9692878]],[[114.019,3.1415927,0.0],[669.483,0.8528242,7.113547],[99.961,0.7425895,14.227094],[50.024,1.6534621,536.8045121],[43.585,5.8202639,529.6909651],[31.813,4.8582999,522.5774181],[14.742,4.2906164,515.4638711],[8.899,0.7147852,1059.3819302],[4.957,1.2950226,543.9180591],[4.484,2.3171552,1066.4954772],[4.251,0.483268,21.340641],[3.1,3.0024554,412.3710969],[2.055,0.3985894,639.8972863],[1.902,4.2592562,199.0720014],[1.762,4.9053621,625.6701923],[1.695,4.2614758,206.1855484],[1.375,5.2554696,1052.2683832],[1.203,4.7161463,95.9792272],[1.086,1.2860457,1589.0728953],[0.982,4.7799007,1045.1548362],[0.935,6.0584706,88.8656802],[0.916,5.775375,728.7629665],[0.89,4.5529919,426.5981909],[0.784,3.4016157,419.4846439],[0.768,3.5467205,103.0927742],[0.67,0.5222331,110.2063212],[0.421,0.5956132,117.3198682],[0.415,5.2280948,302.1647757],[0.393,6.2418462,956.289156],[0.381,5.2546697,309.2783227],[0.346,4.7834831,508.3503241],[0.331,2.9589349,1596.1864423],[0.319,3.4797983,323.5054167],[0.319,0.4799005,831.8557407],[0.295,4.3271346,942.062062]],[[0.845,3.1415927,0.0],[49.577,5.2565897,7.113547],[15.761,5.2512684,14.227094],[4.343,0.0146187,536.8045121],[1.526,1.0973991,522.5774181],[0.728,5.8594905,543.9180591],[0.694,0.8738249,515.4638711],[0.456,0.8152169,1066.4954772],[0.293,5.6290936,1059.3819302],[0.09,0.2117812,529.6909651]]],B:[[[110090.358,0.0,0.0],[2268615.703,3.5585261,529.6909651],[109971.634,3.9080935,1059.3819302],[8101.427,3.6050957,522.5774181],[6437.782,0.3062712,536.8045121],[6043.996,4.2588311,1589.0728953],[1106.88,2.9853442,1162.4747044],[944.328,1.6752229,426.5981909],[941.651,2.9361907,1052.2683832]],[[1694.232,3.1415927,0.0],[177351.787,5.7016649,529.6909651],[3230.171,5.7794162,1059.3819302],[3081.364,5.474643,522.5774181],[2211.914,4.7347748,536.8045121],[346.445,4.7459517,1052.2683832],[234.264,5.188561,1066.4954772],[196.154,6.1855429,7.113547],[150.468,3.9272123,1589.0728953],[114.128,3.4389727,632.7837393],[96.667,2.914263,949.175609],[81.671,5.076661,1162.4747044],[76.599,2.5052219,103.0927742],[76.572,0.6128898,419.4846439],[73.875,5.4995829,515.4638711]],[[813.244,3.1415927,0.0],[8094.051,1.4632284,529.6909651],[742.415,0.9569164,522.5774181],[398.951,2.8988867,536.8045121],[342.226,1.4468379,1059.3819302],[73.948,0.4072468,1052.2683832],[46.151,3.480369,1066.4954772],[29.717,1.9250417,1589.0728953],[29.314,0.9908883,515.4638711],[22.753,4.2712405,7.113547],[13.916,2.9224239,543.9180591],[12.067,5.2216893,632.7837393],[10.703,4.8802422,949.175609],[6.078,6.2108911,1045.1548362],[5.935,0.5297776,1581.9593483],[5.098,6.031698,735.8765135],[5.037,1.4344493,526.5095714],[4.564,0.9181173,1162.4747044],[4.547,4.0195375,1596.1864423],[3.593,4.5408016,110.2063212],[3.443,1.3861895,533.6231184],[3.407,0.4227563,419.4846439],[3.277,4.3965029,14.227094]],[[2.798,3.1415927,0.0],[251.624,3.3808792,529.6909651],[121.738,2.7331184,522.5774181],[48.694,1.0369,536.8045121],[10.988,2.3146356,1052.2683832],[8.067,2.7672976,515.4638711],[7.287,4.2526832,1059.3819302],[6.205,1.7811583,1066.4954772],[3.627,1.1302892,543.9180591],[1.898,2.2893405,7.113547],[1.643,1.7750721,1045.1548362],[0.945,0.4526114,632.7837393],[0.876,0.3292777,1589.0728953],[0.758,0.3057792,949.175609],[0.736,1.5253237,735.8765135],[0.731,2.6374822,14.227094],[0.678,2.3690962,1581.9593483],[0.623,2.4805621,1596.1864423],[0.499,3.6798549,419.4846439],[0.454,0.269774,942.062062],[0.453,3.1823233,526.5095714],[0.409,2.8814734,110.2063212],[0.347,5.7624429,103.0927742],[0.321,4.4064203,532.8723588],[0.31,2.9801733,508.3503241],[0.3,1.6693657,625.6701923],[0.295,1.759242,1073.6090242],[0.282,3.110878,533.6231184],[0.263,0.5525503,426.5981909],[0.208,2.175405,1155.3611574],[0.183,4.3467087,525.7588118],[0.18,6.0777774,639.8972863],[0.159,2.6084386,1162.4747044],[0.13,1.3789772,323.5054167],[0.117,4.7014143,95.9792272],[0.114,3.7517098,117.3198682],[0.107,5.4894281,433.7117379],[0.105,3.751921,316.3918697]],[[3.422,0.0,0.0],[15.05,4.52957,522.5774181],[5.37,4.4742716,529.6909651],[4.456,5.4390858,536.8045121],[1.833,4.5180704,515.4638711],[1.322,4.2011761,1052.2683832],[0.755,5.5945155,543.9180591],[0.512,0.0580318,1066.4954772],[0.282,3.6680777,1059.3819302],[0.147,3.5649099,1045.1548362],[0.142,5.6993647,7.113547],[0.112,1.1671838,14.227094]],[[1.445,0.0919855,522.5774181],[0.368,0.0087441,515.4638711],[0.304,3.2790295,536.8045121],[0.129,0.3395978,529.6909651],[0.095,1.2930595,543.9180591]]],R:[[[520887429.471,0.0,0.0],[25209327.02,3.4910864,529.6909651],[610599.902,3.8411537,1059.3819302],[282029.465,2.5741988,632.7837393],[187647.391,2.0759038,522.5774181],[86792.941,0.7100109,419.4846439],[72062.869,0.2146569,536.8045121],[65517.227,5.9799585,316.3918697],[30135.275,2.1613206,949.175609],[29134.62,1.6775924,103.0927742],[23947.34,0.2745785,7.113547],[23453.209,3.5402315,735.8765135],[22283.71,4.1936277,1589.0728953],[13032.6,2.9604306,1162.4747044],[12749.004,2.715501,1052.2683832]],[[41390.257,0.0,0.0],[1271801.596,2.6493751,529.6909651],[61661.771,3.0007625,1059.3819302],[53443.592,3.8971764,522.5774181],[31185.167,4.8827666,536.8045121],[11847.19,2.4132959,419.4846439],[9166.36,4.7597941,7.113547],[3403.605,3.3468854,1589.0728953],[3203.446,5.2108329,735.8765135],[3175.763,2.7929799,103.0927742],[2806.064,3.7422369,515.4638711],[2676.575,4.3305288,1052.2683832],[2600.003,3.634351,206.1855484],[2412.207,1.4694731,426.5981909],[2100.507,3.9276268,639.8972863],[1646.182,5.3095351,1066.4954772],[1641.257,4.4162867,625.6701923],[1049.866,3.1611362,213.2990954],[1024.802,2.5543264,412.3710969],[806.404,2.677508,632.7837393],[740.996,2.1709463,1162.4747044],[676.928,6.2495348,838.9692878],[567.076,4.5765541,742.9900605]],[[497.92,3.1415927,0.0],[79644.833,1.358659,529.6909651],[8251.618,5.7777394,522.5774181],[7029.864,3.2747697,536.8045121],[5314.006,1.8383511,1059.3819302],[1860.833,2.9768214,7.113547],[964.466,5.4803182,515.4638711],[836.267,4.1988988,419.4846439],[426.57,2.227531,639.8972863],[406.453,3.7825073,1066.4954772],[377.316,2.2424835,1589.0728953],[362.943,5.3676185,206.1855484],[342.048,6.0992297,1052.2683832],[339.043,6.1269086,625.6701923],[332.578,0.0032896,426.5981909],[279.92,4.2616256,412.3710969],[257.29,0.9629536,632.7837393],[229.777,0.7053077,735.8765135],[200.783,3.0685062,543.9180591],[199.807,4.4288417,103.0927742],[138.606,2.9323567,14.227094],[113.535,0.7871391,728.7629665],[94.565,1.7049804,838.9692878],[86.025,5.1443475,323.5054167],[83.469,0.0583487,309.2783227],[80.328,2.9812236,742.9900605],[75.198,1.604952,956.289156],[70.451,1.5098836,213.2990954],[66.572,5.4730718,199.0720014],[61.649,6.1013789,1045.1548362],[56.203,0.9553481,1162.4747044],[51.904,5.5843563,942.062062],[50.057,2.7206316,532.8723588],[44.548,5.5244562,508.3503241],[44.282,0.2711815,526.5095714],[39.833,5.9456651,95.9792272]],[[89.729,3.1415927,0.0],[3519.257,6.0580063,529.6909651],[1073.239,1.6732135,536.8045121],[915.666,1.4132968,522.5774181],[341.593,0.5229654,1059.3819302],[254.893,1.1962547,7.113547],[221.512,0.9522523,515.4638711],[69.078,2.2688528,1066.4954772],[57.827,1.4138975,543.9180591],[57.653,0.5258012,639.8972863],[51.079,5.9801636,412.3710969],[46.935,1.5786424,625.6701923],[42.824,6.1168961,419.4846439],[37.477,1.1826276,14.227094],[33.816,1.6667171,1052.2683832],[33.531,0.8478498,206.1855484],[31.195,1.0429025,1589.0728953],[30.023,4.6323625,426.5981909],[20.804,2.5007124,728.7629665],[15.023,0.89137,199.0720014],[14.466,0.960402,508.3503241],[12.969,1.5023379,1045.1548362],[12.319,2.6095261,735.8765135],[11.654,3.5551351,323.5054167],[11.16,1.7904144,309.2783227],[10.554,6.2784511,956.289156],[9.812,6.2601686,103.0927742],[9.301,3.4512681,838.9692878],[7.442,1.2804701,742.9900605],[7.178,0.9202219,942.062062],[6.834,3.4522872,831.8557407],[6.672,1.8700491,302.1647757],[5.577,1.3798079,95.9792272],[4.632,2.8293455,1596.1864423],[3.969,1.2129001,1169.5882514],[3.869,5.9949531,213.2990954],[3.551,6.1071479,405.2575499],[2.943,2.3283108,1155.3611574],[2.491,0.3512502,1272.6810256],[2.442,1.8696521,532.8723588],[2.41,0.4262721,220.4126424],[2.387,5.9708067,1162.4747044],[2.289,1.9494149,1073.6090242],[2.274,0.0921152,632.7837393],[2.189,1.5890775,2118.7638604],[2.128,1.511194,1258.4539316],[2.104,1.0675146,21.340641],[2.04,2.1646397,433.7117379],[2.006,5.9448739,110.2063212],[2.003,3.165206,1148.2476104],[1.98,2.5498938,88.8656802],[1.955,2.7034159,721.6494195],[1.91,2.2596476,1361.5467058],[1.71,1.9837207,525.7588118],[1.71,2.7085042,330.6189637],[1.671,0.443521,533.6231184],[1.67,4.4625572,853.1963818],[1.629,0.4737603,526.5095714],[1.52,0.1164136,949.175609]],[[1.697,0.0,0.0],[128.628,0.0841931,536.8045121],[113.458,4.2485886,529.6909651],[82.65,3.2975491,522.5774181],[37.883,2.7332661,515.4638711],[26.694,5.6914259,7.113547],[17.65,5.4001254,1059.3819302],[12.612,6.0156042,543.9180591],[9.287,0.7681395,1066.4954772],[8.107,5.6822807,14.227094],[6.978,1.4275129,412.3710969],[6.271,5.1228693,639.8972863],[5.377,3.3350195,625.6701923],[2.911,3.4033481,1052.2683832],[2.593,4.1609041,728.7629665],[2.562,2.8980204,426.5981909],[2.268,6.2219594,1589.0728953],[2.114,3.1175886,1045.1548362],[1.823,1.8943243,419.4846439],[1.805,2.6003001,199.0720014],[1.673,2.8139929,206.1855484],[1.522,1.3343265,1596.1864423],[1.161,5.1618131,831.8557407],[1.039,4.4190494,956.289156],[0.966,5.4745797,220.4126424],[0.955,0.6680137,1361.5467058],[0.916,3.1724572,508.3503241],[0.916,1.8712966,1148.2476104],[0.87,5.7938781,1169.5882514],[0.788,1.4751545,1272.6810256],[0.788,2.4225287,117.3198682],[0.771,2.1989322,942.062062],[0.765,5.3114726,551.0316061],[0.712,0.496559,1073.6090242],[0.681,2.8450717,191.9584544],[0.667,3.7243231,88.8656802],[0.656,3.5302274,302.1647757],[0.631,1.8386316,10.2949407],[0.612,1.5932094,3.1813937],[0.584,3.8224306,618.5566453],[0.553,0.85896,330.6189637],[0.543,5.2605758,21.340641],[0.534,1.8317208,647.0108333],[0.521,0.2401142,433.7117379],[0.512,4.4448552,110.2063212],[0.491,1.5291202,405.2575499]],[[11.188,4.752494,536.8045121],[4.255,5.9151623,522.5774181],[2.079,5.5678156,515.4638711],[1.908,4.2965965,543.9180591],[1.875,3.693575,7.113547],[1.612,4.1322281,1059.3819302],[1.59,5.493128,1066.4954772],[1.24,3.7798172,14.227094],[1.033,4.5067182,529.6909651]]]},
+sa:{L:[[[87401354.029,0.0,0.0],[11107659.78,3.9620509,213.2990954],[1414150.958,4.5858152,7.113547],[398379.386,0.5211203,206.1855484],[350769.223,3.303299,426.5981909],[206816.296,0.2465837,103.0927742],[79271.288,3.8400708,220.4126424],[23990.338,4.6697693,110.2063212],[16573.583,0.4371912,419.4846439],[15820.3,0.9380895,632.7837393],[15053.509,2.7167003,639.8972863],[14906.995,5.7690328,316.3918697],[14609.562,1.5651857,3.9321533],[13160.308,4.4489118,14.227094],[13005.305,5.9811907,11.0457003],[10725.066,3.129396,202.2533952],[6126.308,1.763285,277.0349937],[5863.207,0.2365703,529.6909651],[5227.771,4.2078316,3.1813937],[5019.658,3.1778792,433.7117379],[4592.541,0.6197642,199.0720014],[4005.862,2.2447989,63.7358983],[3873.696,3.2228269,138.5174969],[3269.49,0.774919,949.175609],[2953.815,0.9828039,95.9792272],[2461.172,2.0316363,735.8765135],[1758.143,3.2658051,522.5774181]],[[21354295595.986,0.0,0.0],[1296855.005,1.8282054,213.2990954],[564347.566,2.8850014,7.113547],[107678.77,2.2776991,206.1855484],[98323.03,1.0807006,426.5981909],[40254.586,2.0412826,220.4126424],[19941.734,1.2795466,103.0927742],[10511.706,2.7488039,14.227094],[6939.233,0.4049308,639.8972863],[4803.325,2.441941,419.4846439],[4056.325,2.9216662,110.2063212],[3768.63,3.6496563,3.9321533],[3384.684,2.4169425,3.1813937],[3302.2,1.2625649,433.7117379],[3071.382,2.3273932,199.0720014],[1953.036,3.5639468,11.0457003],[1249.348,2.6280374,95.9792272],[921.683,1.9608983,227.5261894],[705.587,4.4168925,529.6909651],[649.654,6.1741809,202.2533952],[627.603,6.1108823,309.2783227],[486.843,6.039982,853.1963818],[478.501,4.9877699,522.5774181],[468.377,4.6170784,63.7358983],[417.01,2.1170817,323.5054167],[407.63,1.2994956,209.3669422],[352.489,2.3170708,632.7837393],[343.826,3.9585418,412.3710969],[339.724,3.633964,316.3918697],[335.936,3.7717307,735.8765135],[331.933,2.860777,210.1177017],[289.429,2.7326308,117.3198682],[280.911,5.7439885,2.4476806],[265.801,0.5434463,647.0108333],[230.493,1.6442888,216.4804892]],[[90592.251,0.0,0.0],[116441.181,1.1798785,7.113547],[91920.844,0.0742526,213.2990954],[15276.909,4.0649201,206.1855484],[10631.396,0.2577828,220.4126424],[10604.979,5.409636,426.5981909],[4265.368,1.0459556,14.227094],[1215.527,2.9186004,103.0927742],[1164.684,4.6094213,639.8972863],[1081.967,5.6913035,433.7117379],[1044.754,4.0420645,199.0720014],[1020.079,0.6336918,3.1813937],[633.582,4.3882541,419.4846439],[549.329,5.5730313,3.9321533],[456.914,1.2684097,110.2063212],[425.1,0.209355,227.5261894],[273.739,4.2884101,95.9792272],[161.571,1.3813915,11.0457003],[129.494,1.5658688,309.2783227],[117.008,3.8812092,853.1963818],[105.415,4.900032,647.0108333],[100.967,0.8927049,21.340641],[95.659,2.9109356,316.3918697],[95.227,5.6256115,412.3710969],[84.86,5.7347278,209.3669422],[82.727,6.0503093,216.4804892],[81.948,1.0247756,117.3198682],[74.857,4.7617847,210.1177017],[67.184,0.4564861,522.5774181],[66.459,0.4829794,10.2949407],[63.696,0.351798,323.5054167],[60.647,4.8751785,632.7837393],[53.281,2.7473054,529.6909651],[45.827,5.6929662,440.8252849],[45.293,1.668567,202.2533952],[42.33,5.7076819,88.8656802],[32.14,0.0705005,63.7358983],[31.573,1.6719002,302.1647757],[31.15,4.1637954,191.9584544],[26.558,0.8325621,224.3447957],[24.631,5.6556473,735.8765135],[20.108,5.9436461,217.2312487],[17.511,4.9001474,625.6701923]],[[3.701,3.1415927,0.0],[16038.734,5.7394538,7.113547],[4249.793,4.5853968,213.2990954],[1906.524,4.7608205,220.4126424],[1465.687,5.9132668,206.1855484],[1162.041,5.6197313,14.227094],[1066.581,3.6081653,426.5981909],[239.377,3.8608827,433.7117379],[236.975,5.7682645,199.0720014],[165.641,5.1164115,3.1813937],[151.352,2.7359464,639.8972863],[131.409,4.7432754,227.5261894],[63.365,0.2285009,419.4846439],[61.63,4.7428705,103.0927742],[40.437,5.4729806,21.340641],[40.205,5.9642027,95.9792272],[38.746,5.833862,110.2063212],[28.025,3.0123531,647.0108333],[25.029,0.9880817,3.9321533],[19.014,1.9161424,853.1963818],[18.262,4.9673842,10.2949407],[18.101,1.025064,412.3710969],[17.919,4.2037651,216.4804892],[17.879,3.3191342,309.2783227],[16.208,3.8982527,440.8252849],[15.763,5.6166781,117.3198682],[12.947,1.1806895,88.8656802],[11.453,5.5752062,11.0457003],[10.548,5.9290627,191.9584544],[10.389,3.9483874,209.3669422],[8.65,3.3933537,302.1647757],[7.58,4.8773691,323.5054167],[6.697,0.3819873,632.7837393],[6.327,2.2549272,522.5774181],[5.864,1.0562116,210.1177017],[5.449,4.6426848,234.6397364],[3.602,2.3067701,515.4638711],[3.229,2.203094,860.3099288],[2.85,0.586044,529.6909651],[2.583,4.9344768,224.3447957],[2.543,0.4239388,625.6701923],[2.421,4.7662139,330.6189637]],[[113.953,3.1415927,0.0],[1661.894,3.9982625,7.113547],[257.107,2.984365,220.4126424],[236.344,3.9024143,14.227094],[149.418,2.7411082,213.2990954],[109.598,1.5151574,206.1855484],[68.39,1.7212095,426.5981909],[40.06,2.046449,433.7117379],[37.699,1.2379546,199.0720014],[31.219,3.0109418,227.5261894],[15.111,0.8289706,639.8972863],[9.444,3.714853,21.340641],[5.69,2.4199529,419.4846439],[5.608,1.156071,647.0108333],[4.47,1.4512082,95.9792272],[4.463,2.1178323,440.8252849],[3.229,4.0927808,110.2063212],[2.871,2.7720315,412.3710969],[2.796,3.0073025,88.8656802],[2.638,0.0025572,853.1963818],[2.574,0.3924685,103.0927742],[2.225,3.776892,117.3198682],[1.921,2.8288433,234.6397364],[1.862,5.0795546,309.2783227],[1.805,2.2381604,216.4804892],[1.769,5.1917688,302.1647757],[1.211,1.5468525,191.9584544],[0.765,3.4450177,323.5054167],[0.763,4.8319722,210.1177017],[0.648,2.2859171,209.3669422],[0.639,0.2977268,860.3099288],[0.63,2.3795253,632.7837393],[0.616,4.0319447,522.5774181],[0.613,4.1905266,515.4638711],[0.559,2.1711006,124.4334152],[0.488,3.2032978,405.2575499],[0.469,1.2688943,654.1243803],[0.442,2.2350008,447.9388319],[0.442,3.389335,81.7521332],[0.415,3.1243541,330.6189637],[0.407,5.4451597,1066.4954772],[0.333,2.9435591,728.7629665],[0.332,4.1246421,838.9692878],[0.32,3.1833203,529.6909651],[0.312,1.409628,429.7795846],[0.291,3.1888537,1464.6394801],[0.286,2.57895,1045.1548362],[0.262,2.4832215,625.6701923],[0.261,2.0456414,1677.9385755]],[[1.007,3.1415927,0.0],[123.615,2.2592335,7.113547],[34.19,2.1625065,14.227094],[27.546,1.1986815,220.4126424],[5.818,1.2158427,227.5261894],[5.318,0.235504,433.7117379],[3.677,6.2266969,426.5981909],[3.057,2.9737205,199.0720014],[2.861,4.2871093,206.1855484],[1.617,6.2526536,213.2990954],[1.279,5.2761256,639.8972863],[1.038,0.2351695,440.8252849],[0.932,5.5674155,647.0108333],[0.76,0.6947554,302.1647757],[0.756,6.1771623,191.9584544],[0.549,4.8773329,88.8656802],[0.504,4.779555,419.4846439],[0.392,5.6992239,654.1243803],[0.346,4.3184755,853.1963818],[0.266,1.1138453,234.6397364],[0.258,5.1007449,95.9792272],[0.242,2.0505268,323.5054167],[0.199,0.885059,309.2783227],[0.166,2.4006331,515.4638711],[0.155,4.7043322,860.3099288],[0.102,0.4945004,117.3198682],[0.089,1.3637107,412.3710969]]],B:[[[84745.939,0.0,0.0],[4330678.04,3.6028443,213.2990954],[240348.303,2.8523849,426.5981909],[34116.063,0.5729731,206.1855484],[30863.357,3.484415,220.4126424],[14734.07,2.118466,639.8972863],[9916.668,5.7900319,419.4846439],[6993.564,4.7360469,7.113547],[4807.587,5.4330532,316.3918697],[4788.392,4.9651293,110.2063212],[3432.125,2.7325575,433.7117379],[1506.129,6.0130454,103.0927742],[1060.298,5.6309929,529.6909651],[969.071,5.2043497,632.7837393],[942.05,1.3964668,853.1963818],[707.645,3.8030233,323.5054167]],[[49478.641,3.1415927,0.0],[397554.998,5.3328999,213.2990954],[18571.607,6.0991921,426.5981909],[14800.587,2.3058606,206.1855484],[9643.981,1.6967466,220.4126424],[3757.161,1.2542951,419.4846439],[2716.647,5.9116666,639.8972863],[1455.309,0.8516162,433.7117379],[1290.595,2.9177086,7.113547],[852.63,0.4357208,316.3918697],[297.726,0.9190921,632.7837393],[292.185,5.3157425,853.1963818],[284.386,1.6188175,227.5261894],[275.09,3.8886414,103.0927742],[172.359,0.0521515,647.0108333],[166.237,2.4435161,199.0720014],[158.22,5.2085013,110.2063212],[127.731,1.2071145,529.6909651],[109.839,2.4569555,217.2312487],[81.759,2.7583917,210.1177017],[81.01,2.8603838,14.227094],[68.658,1.6553762,202.2533952],[65.161,1.2552752,216.4804892],[61.024,1.2527341,209.3669422]],[[1346.067,0.0,0.0],[20629.977,0.5048242,213.2990954],[3719.555,3.9983348,206.1855484],[1627.158,6.1818994,220.4126424],[705.842,3.0391431,419.4846439],[365.042,5.0992868,426.5981909],[329.632,5.2789921,433.7117379],[219.335,3.8284153,639.8972863],[139.393,1.0427262,7.113547],[103.98,6.1573099,227.5261894],[92.961,1.9799441,316.3918697],[71.242,4.1475435,199.0720014],[51.927,2.8836483,632.7837393],[48.961,4.4339021,647.0108333],[41.373,3.1592777,853.1963818],[28.602,4.5297833,210.1177017],[23.969,1.1159591,14.227094],[20.511,4.3509584,217.2312487],[19.532,5.3077971,440.8252849],[18.263,0.8539148,110.2063212],[16.84,5.6811208,216.4804892],[15.742,4.2576723,103.0927742],[13.613,2.9990433,412.3710969],[11.567,2.5267993,529.6909651],[7.963,3.3151242,202.2533952],[6.648,5.5571413,209.3669422],[6.599,0.2876603,323.5054167],[6.312,1.1612132,117.3198682],[6.192,3.6123189,860.3099288],[5.891,3.5826018,309.2783227],[5.59,2.4778394,1066.4954772],[4.231,3.0221236,846.0828348],[3.612,4.7993574,625.6701923],[3.398,3.7673273,423.4167971],[3.387,6.0422275,234.6397364]],[[398.051,0.0,0.0],[666.252,1.9900634,213.2990954],[632.35,5.6977832,206.1855484],[187.838,4.337798,220.4126424],[91.884,4.8410421,419.4846439],[51.548,3.4214949,433.7117379],[42.369,2.3807324,426.5981909],[25.661,4.4016721,227.5261894],[20.551,5.8531351,199.0720014],[18.081,1.9932143,639.8972863],[10.874,5.3734455,7.113547],[9.59,2.5490183,647.0108333],[7.085,3.4551837,316.3918697],[6.002,4.8005523,632.7837393],[5.778,0.0168038,210.1177017],[5.542,3.5175675,440.8252849],[4.881,5.6371973,14.227094],[4.501,1.2242442,853.1963818],[3.548,4.7129937,412.3710969],[2.851,0.6267921,103.0927742],[2.173,3.7198227,216.4804892],[1.991,6.1086707,217.2312487],[1.435,1.6917714,860.3099288],[1.217,4.3077884,234.6397364],[1.157,5.7502779,309.2783227],[0.897,2.6557787,654.1243803],[0.795,5.6902644,117.3198682],[0.773,5.4836198,202.2533952],[0.733,0.5984272,1066.4954772],[0.713,0.2170031,625.6701923],[0.509,2.8607983,429.7795846],[0.505,4.5190576,323.5054167],[0.462,4.1774257,529.6909651],[0.39,6.1128804,191.9584544],[0.384,4.4818741,330.6189637],[0.379,3.74436,223.5940362],[0.377,5.2562481,95.9792272],[0.367,5.0319093,846.0828348],[0.332,5.4937089,21.340641],[0.305,5.9774688,302.1647757],[0.284,0.6622457,203.0041547],[0.281,1.1413389,735.8765135],[0.258,3.6911012,447.9388319],[0.245,5.8161825,423.4167971],[0.241,1.7033512,522.5774181],[0.231,4.1569763,110.2063212],[0.204,1.5468382,209.3669422],[0.194,4.211938,124.4334152],[0.151,3.8201088,536.8045121],[0.145,4.7968926,88.8656802],[0.11,2.2119747,515.4638711],[0.1,0.0359655,949.175609]],[[11.844,3.1415927,0.0],[80.384,1.1191841,206.1855484],[31.66,3.1221875,213.2990954],[17.143,2.480732,220.4126424],[9.005,0.3844142,419.4846439],[6.164,1.5618638,433.7117379],[4.775,2.634983,227.5261894],[4.66,1.2823564,199.0720014],[1.487,1.4309667,426.5981909],[1.424,0.6698808,647.0108333],[1.145,1.7204193,440.8252849],[1.075,6.1809227,639.8972863],[0.682,3.848411,14.227094],[0.655,3.4948626,7.113547],[0.509,0.3143229,412.3710969],[0.456,0.4733819,632.7837393],[0.343,5.8641388,853.1963818],[0.27,2.5012559,234.6397364],[0.236,2.1108459,210.1177017],[0.197,5.3915632,316.3918697],[0.172,6.0968287,860.3099288],[0.159,5.9504915,216.4804892],[0.115,5.0388472,117.3198682],[0.115,0.4458961,110.2063212],[0.112,0.8552642,654.1243803],[0.1,1.985349,625.6701923]],[[0.967,3.1415927,0.0],[7.895,2.8192756,206.1855484],[1.014,0.5118721,220.4126424],[0.772,2.9948412,199.0720014],[0.588,0.7800867,227.5261894],[0.583,5.9645694,433.7117379],[0.445,2.386308,419.4846439],[0.098,5.1062213,647.0108333],[0.091,5.8165971,7.113547],[0.089,0.5839686,213.2990954],[0.088,6.1782853,440.8252849]]],R:[[[955758135.801,0.0,0.0],[52921382.465,2.3922622,213.2990954],[1873679.934,5.2354961,206.1855484],[1464663.959,1.6476305,426.5981909],[821891.059,5.9352003,316.3918697],[547506.899,5.0153263,103.0927742],[371684.449,2.2711483,220.4126424],[361778.433,3.139043,7.113547],[140617.548,5.7040665,632.7837393],[108974.737,3.293136,110.2063212],[69007.015,5.9409962,419.4846439],[61053.35,0.9403776,639.8972863],[48913.044,1.5573339,202.2533952],[34143.794,0.1951855,277.0349937],[32401.718,5.4708461,949.175609],[20936.573,0.4634916,735.8765135],[20839.118,1.5210259,433.7117379],[20746.678,5.3325567,199.0720014],[15298.457,3.0594365,529.6909651],[14296.479,2.6043354,323.5054167],[12884.128,1.6489231,138.5174969],[11993.314,5.9805142,846.0828348],[11380.261,1.7310575,522.5774181],[9796.061,5.2047586,1265.5674786]],[[186261.54,3.1415927,0.0],[6182981.282,0.2584352,213.2990954],[506577.574,0.7111465,206.1855484],[341394.136,5.7963577,426.5981909],[188491.375,0.4721572,220.4126424],[143891.176,1.4074486,7.113547],[49621.111,6.0174447,103.0927742],[20928.189,5.0924565,639.8972863],[19952.612,1.1756013,419.4846439],[18839.639,1.6081956,110.2063212],[13876.565,0.758862,199.0720014],[12892.827,5.9433026,433.7117379],[5396.699,1.2885241,14.227094],[4869.308,0.8679389,323.5054167],[4247.455,0.3929938,227.5261894],[3252.084,1.2585347,95.9792272],[3081.408,3.4366256,522.5774181],[2909.411,4.6067915,202.2533952],[2856.006,2.1673141,735.8765135],[1987.689,2.450542,412.3710969],[1941.309,6.0239339,209.3669422],[1581.446,1.2919179,210.1177017],[1339.511,4.3080182,853.1963818],[1315.59,1.2529645,117.3198682],[1203.085,1.8665467,316.3918697],[1091.088,0.0752725,216.4804892],[966.012,0.4799138,632.7837393],[954.403,5.1517341,647.0108333]],[[2326.801,0.0,0.0],[436902.464,4.7867167,213.2990954],[71922.76,2.5006999,206.1855484],[49766.792,4.9716815,220.4126424],[43220.894,3.8694044,426.5981909],[29645.554,5.9631026,7.113547],[4720.909,2.4752799,199.0720014],[4141.65,4.1067094,433.7117379],[3789.37,3.0977103,639.8972863],[2963.99,1.3720625,103.0927742],[2556.363,2.8506572,419.4846439],[2208.457,6.2758886,110.2063212],[2187.621,5.8554583,14.227094],[1956.896,4.9244862,227.5261894],[923.84,5.4639242,323.5054167],[705.936,2.9708128,95.9792272],[546.115,4.1285418,412.3710969],[431.485,5.1782541,522.5774181],[405.018,4.1729416,209.3669422],[390.627,4.4810618,216.4804892],[373.838,5.8343599,117.3198682],[360.882,3.2770308,647.0108333],[356.35,3.1915204,210.1177017],[325.598,2.268676,853.1963818],[206.854,4.0218834,735.8765135],[204.494,0.0877485,202.2533952],[180.143,3.597049,632.7837393],[178.474,4.0971654,440.8252849],[153.656,3.1347053,625.6701923],[147.779,0.136143,302.1647757],[133.076,2.5935047,191.9584544],[131.975,5.9329397,309.2783227],[123.189,4.1889531,88.8656802],[119.053,5.5538511,224.3447957],[110.709,4.778538,838.9692878],[108.701,5.293109,515.4638711],[100.367,5.4605619,3.1813937],[97.235,4.018326,728.7629665],[96.412,6.2585923,742.9900605],[93.852,4.3839553,217.2312487],[81.468,5.1089737,956.289156],[78.609,5.7252545,21.340641],[69.228,4.0490124,3.9321533]],[[393.174,0.0,0.0],[20315.005,3.0218663,213.2990954],[8923.581,3.1914421,220.4126424],[6908.677,4.3517489,206.1855484],[4087.129,4.2240693,7.113547],[3879.041,2.0105645,426.5981909],[1070.788,4.2036034,199.0720014],[907.332,2.2834437,433.7117379],[606.121,3.1745857,227.5261894],[596.639,4.1345575,14.227094],[483.181,1.1734597,639.8972863],[229.472,4.6983853,419.4846439],[188.25,4.5900389,110.2063212],[149.508,3.2019944,103.0927742],[121.442,3.7683137,323.5054167],[102.146,4.7097442,95.9792272],[101.215,5.8188414,412.3710969],[93.078,1.4353127,647.0108333],[84.347,2.6346238,216.4804892],[72.601,4.153956,117.3198682],[62.198,2.3123935,440.8252849],[54.829,0.3052647,853.1963818],[49.536,2.3885423,209.3669422],[45.145,4.3731705,191.9584544],[40.671,0.6884518,522.5774181],[40.498,1.8383657,302.1647757],[38.089,5.9445512,88.8656802],[32.243,4.0114635,21.340641],[28.209,5.7719301,210.1177017],[25.07,0.7313743,515.4638711],[24.976,3.0624971,234.6397364],[20.824,4.925707,625.6701923],[18.009,1.4559315,309.2783227],[17.485,5.7313507,728.7629665],[16.927,3.5277158,3.1813937],[13.437,3.364799,330.6189637],[11.551,5.9909373,735.8765135],[11.09,3.3721268,224.3447957],[11.082,3.4171997,956.289156],[10.5,6.0691109,405.2575499],[10.091,0.2826877,838.9692878],[10.023,0.5824701,860.3099288],[9.978,1.5879158,202.2533952],[9.243,2.5703455,223.5940362],[9.144,2.9355742,124.4334152],[8.737,4.6543248,632.7837393],[8.652,1.758081,429.7795846],[8.067,4.4845771,742.9900605],[7.934,4.2011237,195.1398482],[7.693,0.4376972,831.8557407],[7.564,1.4563511,654.1243803],[7.482,4.5066922,942.062062],[7.058,5.4739479,1045.1548362],[6.97,1.518117,422.6660376],[6.817,4.8308442,316.3918697],[6.556,3.4245987,10.2949407],[6.189,6.0143383,1066.4954772],[6.119,2.3396039,269.9214467],[5.649,0.827846,217.2312487],[5.589,1.1451872,284.1485407],[5.564,4.1812319,529.6909651],[5.544,2.4682327,536.8045121],[5.034,2.1202004,295.0512287],[4.45,0.9247781,203.0041547],[4.264,3.2324574,1272.6810256],[3.951,0.11125,1155.3611574],[3.773,6.0115706,1052.2683832],[3.655,0.0583212,81.7521332],[3.268,4.3277752,1258.4539316],[3.146,0.1921518,1148.2476104]],[[9.552,3.1415927,0.0],[1202.05,1.4149945,220.4126424],[707.796,1.1615357,213.2990954],[516.121,6.2397357,206.1855484],[426.664,2.4692489,7.113547],[267.736,0.1865921,426.5981909],[170.171,5.9592697,199.0720014],[150.339,0.4797017,433.7117379],[145.113,1.4421106,227.5261894],[121.033,2.4052732,14.227094],[47.332,5.5685749,639.8972863],[18.954,5.8562643,647.0108333],[16.668,0.5292077,440.8252849],[15.745,2.9011247,110.2063212],[14.724,0.2990532,419.4846439],[14.074,1.3034355,412.3710969],[12.708,2.0934931,323.5054167],[11.32,0.2178551,95.9792272],[11.133,2.4630483,117.3198682],[9.246,1.5649631,88.8656802],[9.233,2.2812732,21.340641],[8.97,0.6830128,216.4804892],[8.36,1.2723949,234.6397364],[7.823,4.486888,853.1963818],[7.674,3.5936772,302.1647757],[6.059,5.1677445,103.0927742],[4.834,2.5883629,515.4638711],[4.447,4.9741511,860.3099288],[4.41,0.0221164,191.9584544],[4.364,1.5962275,330.6189637],[4.364,5.9734993,654.1243803],[4.005,1.5985844,405.2575499],[3.676,3.2989984,210.1177017],[3.22,2.7268424,522.5774181],[3.099,0.7523544,209.3669422],[3.088,1.3225893,728.7629665],[2.464,1.1916731,124.4334152],[2.248,0.4931915,447.9388319],[2.22,3.2808799,203.0041547],[2.18,0.7276106,625.6701923],[2.127,6.146481,429.7795846],[2.11,0.7546286,295.0512287],[2.02,3.8939493,1066.4954772],[1.902,2.0047281,831.8557407],[1.809,0.0905784,942.062062],[1.772,0.8187925,223.5940362],[1.672,1.396354,224.3447957],[1.641,3.0246831,184.8449074],[1.6,5.4118517,824.7421937],[1.505,5.9552075,422.6660376],[1.487,2.1190647,529.6909651],[1.409,0.7225442,536.8045121],[1.301,1.6486704,17.4084877],[1.19,1.8960057,956.289156],[1.164,5.9695798,195.1398482],[1.133,1.1151297,838.9692878],[1.125,0.8906269,721.6494195],[1.05,1.5920248,735.8765135],[0.985,3.0576867,1574.8458013],[0.969,1.0070826,1045.1548362],[0.95,5.3608071,316.3918697],[0.817,4.9283881,56.6223513],[0.78,2.721254,508.3503241],[0.716,1.1104218,1169.5882514]],[[1.678,0.0,0.0],[128.612,5.9128257,220.4126424],[32.273,0.6925623,7.113547],[26.698,5.9142853,227.5261894],[20.223,4.951368,433.7117379],[19.923,0.6737065,14.227094],[14.097,2.6707428,206.1855484],[13.537,1.4566952,199.0720014],[13.364,4.58827,426.5981909],[7.257,4.6296613,213.2990954],[4.876,3.6144828,639.8972863],[3.759,4.8962417,440.8252849],[3.303,4.0719086,647.0108333],[3.136,4.6566102,191.9584544],[2.917,0.4866527,323.5054167],[2.883,3.1800302,419.4846439],[2.338,3.6955355,88.8656802],[2.052,3.3166358,95.9792272],[2.028,0.5602555,117.3198682],[1.95,5.3272925,302.1647757],[1.591,2.6700922,853.1963818],[1.56,0.8560804,515.4638711],[1.285,5.8256338,234.6397364],[1.141,0.1574123,412.3710969],[1.102,5.9801194,3.1813937],[0.896,5.2279186,216.4804892],[0.837,5.0476979,124.4334152],[0.798,0.3745285,28.454188]]]},
+};
+const MOON_LR=[[0,0,1,0,6288774.0,-20905355.0],[2,0,-1,0,1274027.0,-3699111.0],[2,0,0,0,658314.0,-2955968.0],[0,0,2,0,213618.0,-569925.0],[0,1,0,0,-185116.0,48888.0],[0,0,0,2,-114332.0,-3149.0],[2,0,-2,0,58793.0,246158.0],[2,-1,-1,0,57066.0,-152138.0],[2,0,1,0,53322.0,-170733.0],[2,-1,0,0,45758.0,-204586.0],[0,1,-1,0,-40923.0,-129620.0],[1,0,0,0,-34720.0,108743.0],[0,1,1,0,-30383.0,104755.0],[2,0,0,-2,15327.0,10321.0],[0,0,1,2,-12528.0,0.0],[0,0,1,-2,10980.0,79661.0],[4,0,-1,0,10675.0,-34782.0],[0,0,3,0,10034.0,-23210.0],[4,0,-2,0,8548.0,-21636.0],[2,1,-1,0,-7888.0,24208.0],[2,1,0,0,-6766.0,30824.0],[1,0,-1,0,-5163.0,-8379.0],[1,1,0,0,4987.0,-16675.0],[2,-1,1,0,4036.0,-12831.0],[2,0,2,0,3994.0,-10445.0],[4,0,0,0,3861.0,-11650.0],[2,0,-3,0,3665.0,14403.0],[0,1,-2,0,-2689.0,-7003.0],[2,0,-1,2,-2602.0,0.0],[2,-1,-2,0,2390.0,10056.0],[1,0,1,0,-2348.0,6322.0],[2,-2,0,0,2236.0,-9884.0],[0,1,2,0,-2120.0,5751.0],[0,2,0,0,-2069.0,0.0],[2,-2,-1,0,2048.0,-4950.0],[2,0,1,-2,-1773.0,4130.0],[2,0,0,2,-1595.0,0.0],[4,-1,-1,0,1215.0,-3958.0],[0,0,2,2,-1110.0,0.0],[3,0,-1,0,-892.0,3258.0],[2,1,1,0,-810.0,2616.0],[4,-1,-2,0,759.0,-1897.0],[0,2,-1,0,-713.0,-2117.0],[2,2,-1,0,-700.0,2354.0],[2,1,-2,0,691.0,0.0],[2,-1,0,-2,596.0,0.0],[4,0,1,0,549.0,-1423.0],[0,0,4,0,537.0,-1117.0],[4,-1,0,0,520.0,-1571.0],[1,0,-2,0,-487.0,-1739.0],[2,1,0,-2,-399.0,0.0],[0,0,2,-2,-381.0,-4421.0],[1,1,1,0,351.0,0.0],[3,0,-2,0,-340.0,0.0],[4,0,-3,0,330.0,0.0],[2,-1,2,0,327.0,0.0],[0,2,1,0,-323.0,1165.0],[1,1,-1,0,299.0,0.0],[2,0,3,0,294.0,0.0],[2,0,-1,-2,0.0,8752.0]];
+const MOON_B=[[0,0,0,1,5128122.0],[0,0,1,1,280602.0],[0,0,1,-1,277693.0],[2,0,0,-1,173237.0],[2,0,-1,1,55413.0],[2,0,-1,-1,46271.0],[2,0,0,1,32573.0],[0,0,2,1,17198.0],[2,0,1,-1,9266.0],[0,0,2,-1,8822.0],[2,-1,0,-1,8216.0],[2,0,-2,-1,4324.0],[2,0,1,1,4200.0],[2,1,0,-1,-3359.0],[2,-1,-1,1,2463.0],[2,-1,0,1,2211.0],[2,-1,-1,-1,2065.0],[0,1,-1,-1,-1870.0],[4,0,-1,-1,1828.0],[0,1,0,1,-1794.0],[0,0,0,3,-1749.0],[0,1,-1,1,-1565.0],[1,0,0,1,-1491.0],[0,1,1,1,-1475.0],[0,1,1,-1,-1410.0],[0,1,0,-1,-1344.0],[1,0,0,-1,-1335.0],[0,0,3,1,1107.0],[4,0,0,-1,1021.0],[4,0,-1,1,833.0],[0,0,1,-3,777.0],[4,0,-2,1,671.0],[2,0,0,-3,607.0],[2,0,2,-1,596.0],[2,-1,1,-1,491.0],[2,0,-2,1,-451.0],[0,0,3,-1,439.0],[2,0,2,1,422.0],[2,0,-3,-1,421.0],[2,1,-1,1,-366.0],[2,1,0,1,-351.0],[4,0,0,1,331.0],[2,-1,1,1,315.0],[2,-2,0,-1,302.0],[0,0,1,3,-283.0],[2,1,1,-1,-229.0],[1,1,0,-1,223.0],[1,1,0,1,223.0],[0,1,-2,-1,-220.0],[2,1,-1,-1,-220.0],[1,0,1,1,-185.0],[2,-1,-2,-1,181.0],[0,1,2,1,-177.0],[4,0,-2,-1,176.0],[4,-1,-1,-1,166.0],[1,0,1,-1,-164.0],[4,0,1,-1,132.0],[1,0,-1,-1,-119.0],[4,-1,0,-1,115.0],[2,-2,0,1,107.0]];
+// ============================================================
+//  EPHEM — Sun, Moon (Meeus ch.47, 60-term), planets (VSOP87D
+//  truncated, helio err < 22", verified against full series
+//  over 1950–2100). Positions of date; Moon topocentric in
+//  altitude; Bennett refraction. Representative magnitudes.
+// ============================================================
+const EPHEM = (function(){
+  const D2R=Math.PI/180, R2D=180/Math.PI;
+  function vsopEval(series, t){
+    let tot=0, tp=1;
+    for (const terms of series){
+      let s=0;
+      for (const [A,B,C] of terms) s += A*Math.cos(B+C*t);
+      tot += s*tp; tp*=t;
+    }
+    return tot/1e8;
+  }
+  function helio(pk, t){                       // t: millennia from J2000 (TDB≈UT ok here)
+    const p=VSOP[pk];
+    return [vsopEval(p.L,t), vsopEval(p.B,t), vsopEval(p.R,t)];
+  }
+  function obliquity(T){                       // Meeus 22.2 (T centuries)
+    return (23.4392911111 - 0.0130041667*T - 1.6389e-7*T*T + 5.0361e-7*T*T*T)*D2R;
+  }
+  function eclToEq(lon, lat, eps){
+    const sl=Math.sin(lon), cl=Math.cos(lon), sb=Math.sin(lat), cb=Math.cos(lat);
+    const ra=Math.atan2(sl*Math.cos(eps)-Math.tan(lat)*Math.sin(eps), cl);
+    const dec=Math.asin(sb*Math.cos(eps)+cb*Math.sin(eps)*sl);
+    return [((ra*R2D)%360+360)%360, dec*R2D];
+  }
+  function planetsAndSun(jde){
+    const t=(jde-2451545.0)/365250.0, T=(jde-2451545.0)/36525.0, eps=obliquity(T);
+    const [Le,Be,Re]=helio('ea',t);
+    const xe=Re*Math.cos(Be)*Math.cos(Le), ye=Re*Math.cos(Be)*Math.sin(Le), ze=Re*Math.sin(Be);
+    // Sun (geocentric) = -Earth
+    const sunLon=Math.atan2(-ye,-xe), sunLat=Math.asin(-ze/Re);
+    const [sRA,sDec]=eclToEq(sunLon,sunLat,eps);
+    const out={ sun:{ra:sRA,dec:sDec,dist:Re} };
+    const mags={me:-0.2, ve:-4.1, ma:-0.8, ju:-2.4, sa:0.6};
+    for (const pk of ['me','ve','ma','ju','sa']){
+      const [L,B,R]=helio(pk,t);
+      const x=R*Math.cos(B)*Math.cos(L)-xe, y=R*Math.cos(B)*Math.sin(L)-ye, z=R*Math.sin(B)-ze;
+      const delta=Math.sqrt(x*x+y*y+z*z);
+      const lon=Math.atan2(y,x), lat=Math.asin(z/delta);
+      const [ra,dec]=eclToEq(lon,lat,eps);
+      out[pk]={ra,dec,dist:delta,mag:mags[pk]};
+    }
+    return out;
+  }
+  // ---- Moon: Meeus ch.47 fundamental arguments + 60-term tables ----
+  function moon(jde){
+    const T=(jde-2451545.0)/36525.0;
+    const rd=x=>((x%360)+360)%360*D2R;
+    const Lp=rd(218.3164477+481267.88123421*T-0.0015786*T*T+T*T*T/538841-T*T*T*T/65194000);
+    const D =rd(297.8501921+445267.1114034*T-0.0018819*T*T+T*T*T/545868-T*T*T*T/113065000);
+    const Ms=rd(357.5291092+35999.0502909*T-0.0001536*T*T+T*T*T/24490000);
+    const Mp=rd(134.9633964+477198.8675055*T+0.0087414*T*T+T*T*T/69699-T*T*T*T/14712000);
+    const F =rd(93.2720950+483202.0175233*T-0.0036539*T*T-T*T*T/3526000+T*T*T*T/863310000);
+    const A1=rd(119.75+131.849*T), A2=rd(53.09+479264.290*T), A3=rd(313.45+481266.484*T);
+    const E=1-0.002516*T-0.0000074*T*T;
+    let sl=0, sr=0, sb=0;
+    for (const [d,m,mp,f,cl,cr] of MOON_LR){
+      const arg=d*D+m*Ms+mp*Mp+f*F;
+      const e = m===0?1:(Math.abs(m)===1?E:E*E);
+      if (cl) sl += cl*e*Math.sin(arg);
+      if (cr) sr += cr*e*Math.cos(arg);
+    }
+    for (const [d,m,mp,f,cb] of MOON_B){
+      const arg=d*D+m*Ms+mp*Mp+f*F;
+      const e = m===0?1:(Math.abs(m)===1?E:E*E);
+      sb += cb*e*Math.sin(arg);
+    }
+    sl += 3958*Math.sin(A1)+1962*Math.sin(Lp-F)+318*Math.sin(A2);
+    sb += -2235*Math.sin(Lp)+382*Math.sin(A3)+175*Math.sin(A1-F)+175*Math.sin(A1+F)
+          +127*Math.sin(Lp-Mp)-115*Math.sin(Lp+Mp);
+    const lon=Lp+sl*1e-6*D2R;
+    const lat=sb*1e-6*D2R;
+    const dist=385000.56+sr/1000;                      // km
+    const eps=obliquity(T);
+    const [ra,dec]=eclToEq(lon,lat,eps);
+    const hp=Math.asin(6378.14/dist);                  // horizontal parallax
+    return {ra,dec,dist,hp,lon,lat};
+  }
+  function refract(altDeg){                            // Bennett 1885 (arcmin), standard atm
+    if (altDeg < -1) return altDeg;
+    const R = 1/Math.tan((altDeg + 7.31/(altDeg+4.4))*D2R);
+    return altDeg + R/60;
+  }
+  function illumination(sun, mn){                      // Meeus 48
+    const cosPsi=Math.sin(sun.dec*D2R)*Math.sin(mn.dec*D2R)
+               + Math.cos(sun.dec*D2R)*Math.cos(mn.dec*D2R)*Math.cos((sun.ra-mn.ra)*D2R);
+    const psi=Math.acos(Math.max(-1,Math.min(1,cosPsi)));
+    const R=sun.dist*149597870.7;                      // km
+    const i=Math.atan2(R*Math.sin(psi), mn.dist - R*Math.cos(psi));
+    return (1+Math.cos(i))/2;
+  }
+  return { planetsAndSun, moon, refract, illumination };
+})();
+
+const PLM = (function(){
+  const D2R = Math.PI/180, R2D = 180/Math.PI;
+  const SITE = { lat: 34.704856, lon: 137.731155 };
+  const EPOCH_MS = Date.UTC(2034,6,7,14,24,39);           // 2034-07-07 23:24:39 JST
+  let mode = 'epoch';                                      // 'epoch' | 'now'
+  let canvas=null, ctx=null, raf=0, W=0, H=0, R=0, CX=0, CY=0;
+
+  // --- astronomy ---
+  function jd(ms){ return ms/86400000 + 2440587.5; }
+  function gmst(ms){
+    const D = jd(ms) - 2451545.0, T = D/36525;
+    return ((280.46061837 + 360.98564736629*D + 0.000387933*T*T - T*T*T/38710000) % 360 + 360) % 360;
+  }
+  function precessMat(T){                                   // J2000 -> date (IAU1976)
+    const z  = (2306.2181*T + 1.09468*T*T + 0.018203*T*T*T)/3600*D2R;
+    const ze = (2306.2181*T + 0.30188*T*T + 0.017998*T*T*T)/3600*D2R;
+    const th = (2004.3109*T - 0.42665*T*T - 0.041833*T*T*T)/3600*D2R;
+    const cz=Math.cos(z),sz=Math.sin(z),cze=Math.cos(ze),sze=Math.sin(ze),ct=Math.cos(th),st=Math.sin(th);
+    return [
+      [ cz*ct*cze - sz*sze, -cz*ct*sze - sz*cze, -cz*st],
+      [ sz*ct*cze + cz*sze, -sz*ct*sze + cz*cze, -sz*st],
+      [ st*cze,             -st*sze,              ct   ]
+    ];
+  }
+  function altaz(raDeg, decDeg, ms, M){
+    let ra = raDeg*D2R, dec = decDeg*D2R;
+    if (M){
+      const x=Math.cos(dec)*Math.cos(ra), y=Math.cos(dec)*Math.sin(ra), z=Math.sin(dec);
+      const X=M[0][0]*x+M[0][1]*y+M[0][2]*z, Y=M[1][0]*x+M[1][1]*y+M[1][2]*z, Z=M[2][0]*x+M[2][1]*y+M[2][2]*z;
+      ra=Math.atan2(Y,X); dec=Math.asin(Z);
+    }
+    const lst=(gmst(ms)+SITE.lon)*D2R;
+    let H=lst-ra;
+    const f=SITE.lat*D2R;
+    const alt=Math.asin(Math.sin(f)*Math.sin(dec)+Math.cos(f)*Math.cos(dec)*Math.cos(H));
+    const az =Math.atan2(Math.sin(H), Math.cos(H)*Math.sin(f)-Math.tan(dec)*Math.cos(f))+Math.PI;
+    return [alt*R2D, ((az*R2D)%360+360)%360];
+  }
+  // looking-up all-sky: N top, E LEFT  →  x=-r·sin(az), y=-r·cos(az)
+  function project(alt, az){
+    if (alt < -1) return null;
+    const r = (90-alt)/90 * R;
+    const a = az*D2R;
+    return [CX - r*Math.sin(a), CY - r*Math.cos(a), r];
+  }
+
+  // --- rendering ---
+  function draw(ms){
+    const T = (jd(ms)-2451545.0)/36525;
+    const M = precessMat(T);
+    ctx.clearRect(0,0,W,H);
+
+    // horizon disc backdrop
+    const g = ctx.createRadialGradient(CX,CY,0,CX,CY,R);
+    g.addColorStop(0,'rgba(10,20,36,0.92)');
+    g.addColorStop(0.8,'rgba(6,12,24,0.95)');
+    g.addColorStop(1,'rgba(3,7,14,0.98)');
+    ctx.beginPath(); ctx.arc(CX,CY,R,0,7); ctx.fillStyle=g; ctx.fill();
+
+    // altitude rings 30/60 + horizon
+    ctx.strokeStyle='rgba(140,230,240,0.10)'; ctx.lineWidth=1;
+    [30,60].forEach(a=>{ ctx.beginPath(); ctx.arc(CX,CY,(90-a)/90*R,0,7); ctx.stroke(); });
+    ctx.strokeStyle='rgba(140,230,240,0.30)';
+    ctx.beginPath(); ctx.arc(CX,CY,R,0,7); ctx.stroke();
+    // cardinal ticks + labels
+    const card = PLM.i18n.cardinal;                        // [N,E,S,W] localized
+    ctx.fillStyle='rgba(234,247,248,0.7)';
+    ctx.font=`${Math.max(11,R*0.035)}px "Noto Sans TC","Noto Sans JP",sans-serif`;
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    [[0,card[0]],[90,card[1]],[180,card[2]],[270,card[3]]].forEach(([az,t])=>{
+      const a=az*D2R, lx=CX-(R+16)*Math.sin(a), ly=CY-(R+16)*Math.cos(a);
+      ctx.fillText(t,lx,ly);
+      const x1=CX-(R-6)*Math.sin(a), y1=CY-(R-6)*Math.cos(a);
+      const x2=CX-(R+4)*Math.sin(a), y2=CY-(R+4)*Math.cos(a);
+      ctx.strokeStyle='rgba(234,247,248,0.5)';
+      ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+    });
+
+    ctx.save();
+    ctx.beginPath(); ctx.arc(CX,CY,R,0,7); ctx.clip();
+
+    // Milky Way — galactic equator band (J2000 pole 192.8595°,+27.1284°),
+    // brightness modulated toward the summer arm (Sgr→Cyg), the Tanabata river.
+    (function(){
+      const aG=192.8595*D2R, dG=27.1284*D2R, lN=122.93192*D2R;
+      function galToEq(l){
+        const b=0;
+        const sinD=Math.sin(dG)*Math.sin(b)+Math.cos(dG)*Math.cos(b)*Math.cos(lN-l);
+        const dec=Math.asin(sinD);
+        const y=Math.cos(b)*Math.sin(lN-l);
+        const x=Math.cos(dG)*Math.sin(b)-Math.sin(dG)*Math.cos(b)*Math.cos(lN-l);
+        const ra=aG+Math.atan2(y,x);
+        return [((ra*R2D)%360+360)%360, dec*R2D];
+      }
+      const pts=[];
+      for (let l=0;l<=360;l+=3){
+        const [ra,dec]=galToEq(l*D2R);
+        let [alt,az]=altaz(ra,dec,ms,M);
+        alt=EPHEM.refract(alt);
+        pts.push(alt>0.5 ? {p:project(alt,az), l} : null);
+      }
+      ctx.lineCap='round'; ctx.lineJoin='round';
+      for (const [w,a] of [[R*0.10,0.028],[R*0.062,0.040],[R*0.032,0.055]]){
+        let run=[];
+        const flush=()=>{
+          if (run.length<2){run=[];return;}
+          for (let i=1;i<run.length;i++){
+            const lm=(run[i].l+run[i-1].l)/2;
+            const bright=0.55+0.45*Math.cos((lm-45)*D2R*2*0.5);  // peak Sgr(0)→Cyg(90)
+            ctx.strokeStyle=`rgba(150,210,235,${(a*bright).toFixed(4)})`;
+            ctx.lineWidth=w*(0.7+0.5*bright);
+            ctx.beginPath(); ctx.moveTo(run[i-1].p[0],run[i-1].p[1]);
+            ctx.lineTo(run[i].p[0],run[i].p[1]); ctx.stroke();
+          }
+          run=[];
+        };
+        for (const q of pts){ if(q) run.push(q); else flush(); }
+        flush();
+      }
+      ctx.lineCap='butt';
+    })();
+
+    // constellation lines
+    ctx.strokeStyle='rgba(40,239,239,0.16)'; ctx.lineWidth=1;
+    for (const pl of PLM_LINES){
+      let started=false;
+      ctx.beginPath();
+      for (const [ra,dec] of pl){
+        const [alt,az]=altaz(ra,dec,ms,M);
+        const p=project(alt,az);
+        if (!p || alt<0){ started=false; continue; }
+        if (!started){ ctx.moveTo(p[0],p[1]); started=true; }
+        else ctx.lineTo(p[0],p[1]);
+      }
+      ctx.stroke();
+    }
+
+    // Summer Triangle (dashed, the house signature)
+    const tri=[PLM_NAMED['Vega'],PLM_NAMED['Deneb'],PLM_NAMED['Altair']];
+    ctx.setLineDash([3,11]); ctx.strokeStyle='rgba(40,239,239,0.45)'; ctx.lineWidth=1.2;
+    ctx.beginPath();
+    let first=null, ok=true;
+    tri.concat([tri[0]]).forEach(([ra,dec],i)=>{
+      const [alt,az]=altaz(ra,dec,ms,M);
+      const p=project(alt,az);
+      if(!p||alt<0){ok=false;return;}
+      if(i===0){ctx.moveTo(p[0],p[1]);first=p;}else ctx.lineTo(p[0],p[1]);
+    });
+    if (ok) ctx.stroke();
+    ctx.setLineDash([]);
+
+    // stars
+    for (const [ra,dec,mag] of PLM_STARS){
+      let [alt,az]=altaz(ra,dec,ms,M);
+      if (alt<-0.6) continue;
+      alt=EPHEM.refract(alt);
+      if (alt<0) continue;
+      const p=project(alt,az);
+      const s=Math.max(0.4, 2.6-0.45*mag);
+      const a=Math.max(0.25, Math.min(1, 1.15-0.16*mag));
+      if (mag<1.5){
+        ctx.fillStyle=`rgba(140,230,240,${a*0.28})`;
+        ctx.beginPath(); ctx.arc(p[0],p[1],s*3,0,7); ctx.fill();
+      }
+      ctx.fillStyle=`rgba(234,247,248,${a})`;
+      ctx.beginPath(); ctx.arc(p[0],p[1],s,0,7); ctx.fill();
+    }
+
+    // ---- solar system bodies (positions of date; refraction; Moon topocentric) ----
+    (function(){
+      const jde = ms/86400000 + 2440587.5;
+      const P = EPHEM.planetsAndSun(jde);
+      const mn = EPHEM.moon(jde);
+      const L = PLM.i18n.bodies || {};
+      const style = { me:['#cfc9bd',2.2], ve:['#f6efc9',3.4], ma:['#ff8a5c',2.6], ju:['#f0d9a8',3.0], sa:['#e8d9a0',2.6] };
+      ctx.font=`${Math.max(11,R*0.030)}px "Noto Sans TC","Noto Sans JP",sans-serif`;
+      function place(ra,dec,extraAlt){
+        let [alt,az]=altaz(ra,dec,ms,null);
+        if (extraAlt) alt += extraAlt(alt);
+        if (alt<-0.9) return null;
+        alt=EPHEM.refract(alt);
+        if (alt<-0.5) return null;
+        return project(Math.max(alt,0.0001),az);
+      }
+      // planets
+      for (const k of ['me','ve','ma','ju','sa']){
+        const pos=place(P[k].ra,P[k].dec);
+        if (!pos) continue;
+        const [col,rr]=style[k];
+        ctx.fillStyle='rgba(140,230,240,0.25)';
+        ctx.beginPath(); ctx.arc(pos[0],pos[1],rr*2.4,0,7); ctx.fill();
+        ctx.fillStyle=col;
+        ctx.beginPath(); ctx.arc(pos[0],pos[1],rr,0,7); ctx.fill();
+        ctx.fillStyle='rgba(234,247,248,0.8)';
+        ctx.fillText(L[k]||k, pos[0], pos[1]-rr-7);
+      }
+      // sun
+      const sp=place(P.sun.ra,P.sun.dec);
+      if (sp){
+        const g2=ctx.createRadialGradient(sp[0],sp[1],1,sp[0],sp[1],16);
+        g2.addColorStop(0,'rgba(255,244,214,0.95)'); g2.addColorStop(1,'rgba(255,244,214,0)');
+        ctx.fillStyle=g2; ctx.beginPath(); ctx.arc(sp[0],sp[1],16,0,7); ctx.fill();
+        ctx.fillStyle='#fff3cf'; ctx.beginPath(); ctx.arc(sp[0],sp[1],6.5,0,7); ctx.fill();
+        ctx.fillStyle='rgba(234,247,248,0.85)'; ctx.fillText(L.sun||'Sun', sp[0], sp[1]-15);
+      }
+      // moon with phase (bright limb toward the sun's screen direction)
+      const mpos=place(mn.ra,mn.dec, a=>-(mn.hp*180/Math.PI)*Math.cos(a*Math.PI/180));
+      if (mpos){
+        const k=EPHEM.illumination(P.sun,mn);
+        const rM=7;
+        // sun screen direction (project even if below horizon for orientation)
+        let [sa2,sz2]=altaz(P.sun.ra,P.sun.dec,ms,null);
+        const spx=CX-((90-sa2)/90*R)*Math.sin(sz2*Math.PI/180), spy=CY-((90-sa2)/90*R)*Math.cos(sz2*Math.PI/180);
+        const th=Math.atan2(spy-mpos[1], spx-mpos[0]);
+        ctx.save(); ctx.translate(mpos[0],mpos[1]); ctx.rotate(th);
+        ctx.fillStyle='rgba(90,105,118,0.55)';
+        ctx.beginPath(); ctx.arc(0,0,rM,0,7); ctx.fill();
+        ctx.fillStyle='#e9eef2';
+        ctx.beginPath();
+        ctx.arc(0,0,rM,-Math.PI/2,Math.PI/2);                 // bright semicircle toward sun
+        ctx.ellipse(0,0,rM*Math.abs(2*k-1),rM,0,Math.PI/2,-Math.PI/2, k<0.5);
+        ctx.fill();
+        ctx.restore();
+        ctx.fillStyle='rgba(234,247,248,0.85)';
+        ctx.fillText(L.moon||'Moon', mpos[0], mpos[1]-rM-7);
+      }
+    })();
+
+    // the three, localized
+    const names=PLM.i18n.tri;                               // [Vega,Deneb,Altair] localized
+    ctx.font=`${Math.max(12,R*0.036)}px "Noto Sans TC","Noto Sans JP",sans-serif`;
+    ctx.fillStyle='rgba(234,247,248,0.9)';
+    [['Vega',0,-14],['Deneb',0,-14],['Altair',0,18]].forEach(([k,dx,dy],i)=>{
+      const [ra,dec]=PLM_NAMED[k];
+      const [alt,az]=altaz(ra,dec,ms,M);
+      if (alt<0) return;
+      const p=project(alt,az);
+      ctx.fillText(names[i], p[0]+dx, p[1]+dy);
+    });
+    ctx.restore();
+
+    // console readout
+    const dt=new Date(ms);
+    const jstr=dt.toLocaleString(PLM.i18n.locale,{timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+    const el=document.getElementById('plm-time');
+    if (el) el.textContent = jstr + ' JST';
+  }
+
+  function loop(){
+    const ms = (mode==='epoch') ? EPOCH_MS : Date.now();
+    draw(ms);
+    raf = requestAnimationFrame(loop);
+  }
+  function resize(){
+    const dpr = Math.min(window.devicePixelRatio||1, 2);
+    W = canvas.clientWidth*dpr; H = canvas.clientHeight*dpr;
+    canvas.width=W; canvas.height=H;
+    CX=W/2; CY=H/2; R=Math.min(W,H)/2 - 34*dpr;
+    ctx.setTransform(1,0,0,1,0,0);
+  }
+  return {
+    i18n: { cardinal:['N','E','S','W'], tri:['Vega','Deneb','Altair'], locale:'en-GB' },
+    setMode(m){ mode=m;
+      document.querySelectorAll('.plm-mode').forEach(b=>b.classList.toggle('active',b.dataset.mode===m)); },
+    start(){
+      canvas=document.getElementById('plm-canvas');
+      if(!canvas) return;
+      ctx=canvas.getContext('2d');
+      resize(); window.addEventListener('resize', resize);
+      cancelAnimationFrame(raf); loop();
+    },
+    stop(){ cancelAnimationFrame(raf); },
+  };
+})();
+
+// --- language switching ---
+function applyLang(lang){
+  if (!I18N[lang]) lang = 'en';
+  LANG = lang;
+  localStorage.setItem('cv_lang', lang);
+  CV = Object.assign({}, CV_DATA, I18N[lang]);
+  document.documentElement.lang = (lang==='zh'?'zh-Hant':lang);
+  renderCV();
+  document.querySelectorAll('.lang-btn').forEach(b=> b.classList.toggle('active', b.dataset.lang===lang));
+  const sw=document.getElementById('lang-switch');
+  if (sw) sw.dataset.pos = {en:0, zh:1, ja:2}[lang];
+  const dl = document.getElementById('card-dl');
+  if (dl){ dl.setAttribute('href', CV.card.file); dl.querySelector('.lab').textContent = CV.card.label; dl.title = CV.card.label; }
+  if (window.PLM && CV.plm){
+    PLM.i18n = { cardinal: CV.plm.cardinal, tri: CV.plm.tri, locale: CV.plm.locale, bodies: CV.plm.bodies };
+    const st=document.getElementById('plm-site');  if (st) st.textContent = CV.plm.site;
+    const bn=document.getElementById('plm-now');   if (bn) bn.textContent = CV.plm.now;
+    const be=document.getElementById('plm-epoch'); if (be) be.textContent = CV.plm.epoch;
+    const nt=document.getElementById('plm-note');  if (nt) nt.textContent = CV.plm.note + '　·　' + CV.theater.hint;
+  }
+}
+document.querySelectorAll('.lang-btn').forEach(b=>{
+  b.addEventListener('click', ()=> applyLang(b.dataset.lang));
+});
+applyLang(LANG);
+
 
 /* parallax — continuous lerp easing (mimics planetarian's TweenMax 0.6s float).
    Each layer chases its target offset; current position eases toward target
@@ -1379,6 +2133,41 @@ $('last-updated').textContent = CV.lastUpdated;
   const ap = () => cst.setAttribute('preserveAspectRatio', mq.matches ? 'xMidYMid meet' : 'xMidYMid slice');
   (mq.addEventListener ? mq.addEventListener('change', ap) : mq.addListener(ap));
   ap();
+})();
+
+/* RAIN — the sealed city's thirty-year rain, synthesized (no asset).
+   Pink-ish noise through a lowpass; ducks to 22% while the projection runs. */
+window.RAIN=(function(){
+  let ctx=null,gain=null,on=false,duck=false;
+  function build(){
+    ctx=new (window.AudioContext||window.webkitAudioContext)();
+    const len=2*ctx.sampleRate, buf=ctx.createBuffer(1,len,ctx.sampleRate);
+    const d=buf.getChannelData(0); let b0=0,b1=0,b2=0;
+    for(let i=0;i<len;i++){ const w=Math.random()*2-1;
+      b0=0.997*b0+0.029*w; b1=0.985*b1+0.032*w; b2=0.95*b2+0.048*w;
+      d[i]=(b0+b1+b2+w*0.05)*0.6; }
+    const src=ctx.createBufferSource(); src.buffer=buf; src.loop=true;
+    const lp=ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=1400; lp.Q.value=0.4;
+    gain=ctx.createGain(); gain.gain.value=0;
+    src.connect(lp); lp.connect(gain); gain.connect(ctx.destination); src.start();
+  }
+  function level(){ return on ? (duck?0.032:0.15) : 0; }
+  function apply(){ if(gain) gain.gain.setTargetAtTime(level(), ctx.currentTime, 1.2); }
+  return {
+    toggle(){ if(!ctx) build(); if(ctx.state==='suspended') ctx.resume();
+      on=!on; apply(); return on; },
+    duck(v){ duck=v; apply(); },
+    isOn(){ return on; }
+  };
+})();
+(function(){
+  const b=document.getElementById('bgm-btn'); if(!b) return;
+  b.addEventListener('click', ()=>{
+    const on=RAIN.toggle();
+    b.textContent=(CV.plm&&CV.plm.rain?CV.plm.rain:'RAIN')+' · '+(on?'ON':'OFF');
+    b.classList.toggle('on',on);
+  });
+  if (window.CV && CV.plm) b.textContent = CV.plm.rain + ' · OFF';
 })();
 
 /* pagetop — appears after scrolling past the hero */
@@ -1500,6 +2289,8 @@ $('last-updated').textContent = CV.lastUpdated;
   const lines = document.querySelectorAll('.catchcopy .line');
   let on = false, guard = false;
   function enter() {
+    PLM.start();
+    RAIN.duck(true);
     on = true; guard = true;
     document.body.classList.add('theater');
     document.documentElement.classList.add('theater-lock');
@@ -1510,12 +2301,17 @@ $('last-updated').textContent = CV.lastUpdated;
     setTimeout(() => { guard = false; }, 450);
   }
   function exit() {
+    PLM.stop();
+    RAIN.duck(false);
     on = false;
     document.body.classList.remove('theater');
     document.documentElement.classList.remove('theater-lock');
     lines.forEach(l => { l.style.height = '0px'; });
   }
   btns.forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); if (!on) enter(); }));
+  document.querySelectorAll('.plm-mode').forEach(b=>{
+    b.addEventListener('click', (e)=>{ e.stopPropagation(); PLM.setMode(b.dataset.mode); });
+  });
   document.addEventListener('click', () => { if (on && !guard) exit(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && on) exit(); });
 })();
