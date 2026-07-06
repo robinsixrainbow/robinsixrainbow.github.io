@@ -1,0 +1,275 @@
+{
+ "en": {
+  "_label": "EN",
+  "_name": "English",
+  "badge": "— Curriculum Vitae —",
+  "subname": "吳　國　禎",
+  "card": {
+   "label": "Business Card",
+   "file": "cards/card_en.pdf"
+  },
+  "contact": {
+   "phone": "Phone",
+   "bmail": "Business Email",
+   "pmail": "Personal Email"
+  },
+  "sec": {
+   "edu": [
+    "Education",
+    "academic background"
+   ],
+   "skill": [
+    "Technical Skills",
+    "tools & expertise"
+   ],
+   "exp": [
+    "Experience",
+    "professional record"
+   ],
+   "pub": [
+    "Publications",
+    "peer-reviewed work"
+   ],
+   "pat": [
+    "Patents",
+    "invention record"
+   ],
+   "comp": [
+    "Competitions & Awards",
+    "recognition"
+   ]
+  },
+  "tag": {
+   "invited": "INVITED"
+  },
+  "closing": "Achieved a 5-Year CJA Score Above 600",
+  "updated": "Last updated",
+  "theater": {
+   "enter": "THEATER ✦",
+   "hint": "click anywhere to exit"
+  },
+  "ctl": {
+   "pdf": "EXPORT ⤓",
+   "pdfTtl": "PDF",
+   "modeTtl": "MODE"
+  },
+  "news": "WHAT'S NEW",
+  "plm": {
+   "site": "Former Matsubishi Site, Hamamatsu",
+   "now": "LIVE SKY",
+   "epoch": "YUMEMI EPOCH",
+   "cardinal": [
+    "N",
+    "E",
+    "S",
+    "W"
+   ],
+   "tri": [
+    "VEGA",
+    "DENEB",
+    "ALTAIR"
+   ],
+   "locale": "en-GB",
+   "bodies": {
+    "sun": "Sun",
+    "moon": "Moon",
+    "me": "Mercury",
+    "ve": "Venus",
+    "ma": "Mars",
+    "ju": "Jupiter",
+    "sa": "Saturn"
+   },
+   "rain": "RAIN",
+   "flow": "TIME FLOW",
+   "note": "HYG stars · VSOP87/ELP Sun·Moon·planets (<0.011°, verified) · refraction incl. · planet brightness representative"
+  },
+  "starKey": {
+   "S": "Situation",
+   "T": "Task",
+   "A": "Action",
+   "R": "Result"
+  }
+ },
+ "zh": {
+  "_label": "中",
+  "_name": "繁體中文",
+  "badge": "— 履　歷 —",
+  "subname": "吳　國　禎",
+  "card": {
+   "label": "名片下載",
+   "file": "cards/card_zh.pdf"
+  },
+  "contact": {
+   "phone": "電話",
+   "bmail": "公務信箱",
+   "pmail": "個人信箱"
+  },
+  "sec": {
+   "edu": [
+    "學歷",
+    "學術背景"
+   ],
+   "skill": [
+    "專業技能",
+    "工具與專長"
+   ],
+   "exp": [
+    "工作經歷",
+    "職涯紀錄"
+   ],
+   "pub": [
+    "學術論文",
+    "同儕審查著作"
+   ],
+   "pat": [
+    "發明專利",
+    "發明紀錄"
+   ],
+   "comp": [
+    "競賽與獲獎",
+    "獲獎紀錄"
+   ]
+  },
+  "tag": {
+   "invited": "邀請演講"
+  },
+  "closing": "五年 CJA 積分逾 600",
+  "updated": "最後更新",
+  "theater": {
+   "enter": "劇場模式 ✦",
+   "hint": "點擊任意處退出"
+  },
+  "ctl": {
+   "pdf": "匯出 ⤓",
+   "pdfTtl": "PDF",
+   "modeTtl": "模式"
+  },
+  "news": "最新動態",
+  "plm": {
+   "site": "濱松・旧松菱街區上空",
+   "now": "即時星空",
+   "epoch": "ゆめみの曆元",
+   "cardinal": [
+    "北",
+    "東",
+    "南",
+    "西"
+   ],
+   "tri": [
+    "織女一",
+    "天津四",
+    "河鼓二"
+   ],
+   "locale": "zh-TW",
+   "bodies": {
+    "sun": "太陽",
+    "moon": "月",
+    "me": "水星",
+    "ve": "金星",
+    "ma": "火星",
+    "ju": "木星",
+    "sa": "土星"
+   },
+   "rain": "雨聲",
+   "flow": "時間流速",
+   "note": "HYG 恆星 · VSOP87/ELP 太陽月亮行星（<0.011°，已對完整級數驗證）· 含大氣折射與月相 · 行星亮度為代表值"
+  },
+  "starKey": {
+   "S": "情境",
+   "T": "任務",
+   "A": "行動",
+   "R": "成果"
+  }
+ },
+ "ja": {
+  "_label": "日",
+  "_name": "日本語",
+  "badge": "— 履 歴 書 —",
+  "subname": "呉　国禎",
+  "card": {
+   "label": "名刺 DL",
+   "file": "cards/card_ja.pdf"
+  },
+  "contact": {
+   "phone": "電話",
+   "bmail": "業務用メール",
+   "pmail": "個人用メール"
+  },
+  "sec": {
+   "edu": [
+    "学歴",
+    "学術的背景"
+   ],
+   "skill": [
+    "専門スキル",
+    "ツールと専門知識"
+   ],
+   "exp": [
+    "職歴",
+    "キャリア記録"
+   ],
+   "pub": [
+    "学術論文",
+    "査読付き論文"
+   ],
+   "pat": [
+    "特許",
+    "発明記録"
+   ],
+   "comp": [
+    "受賞歴",
+    "表彰記録"
+   ]
+  },
+  "tag": {
+   "invited": "招待講演"
+  },
+  "closing": "5年間の CJA スコア 600 点超を達成",
+  "updated": "最終更新",
+  "theater": {
+   "enter": "シアターモード ✦",
+   "hint": "どこでもクリックで終了"
+  },
+  "ctl": {
+   "pdf": "書き出し ⤓",
+   "pdfTtl": "PDF",
+   "modeTtl": "モード"
+  },
+  "news": "新着情報",
+  "plm": {
+   "site": "浜松・旧松菱街区の空",
+   "now": "現在の星空",
+   "epoch": "ゆめみの暦元",
+   "cardinal": [
+    "北",
+    "東",
+    "南",
+    "西"
+   ],
+   "tri": [
+    "ベガ",
+    "デネブ",
+    "アルタイル"
+   ],
+   "locale": "ja-JP",
+   "bodies": {
+    "sun": "太陽",
+    "moon": "月",
+    "me": "水星",
+    "ve": "金星",
+    "ma": "火星",
+    "ju": "木星",
+    "sa": "土星"
+   },
+   "rain": "雨音",
+   "flow": "時の流れ",
+   "note": "HYG 恒星 · VSOP87/ELP 太陽・月・惑星（<0.011°、完全級数で検証済）· 大気差・月相含む · 惑星光度は代表値"
+  },
+  "starKey": {
+   "S": "状況",
+   "T": "課題",
+   "A": "行動",
+   "R": "成果"
+  }
+ }
+}
