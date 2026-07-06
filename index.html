@@ -2229,10 +2229,9 @@ applyLang(LANG);
    Pink-ish noise through a lowpass; ducks to 22% while the projection runs. */
 window.RAIN=(function(){
   /* BGM controller — file first (bgm/bgm.ogg → bgm/bgm.mp3), synthesized
-     thirty-year rain as fallback. Lazy: nothing loads until first toggle. */
+     rain fallback. OFF is decisive: fast fade → hard stop (suspend/pause). */
   const FILES=['bgm/bgm.ogg','bgm/bgm.mp3'];
-  let kind='unknown';                 // 'file' | 'rain' | 'unknown'
-  let on=false, duck=false;
+  let kind='unknown', on=false, duck=false, offTimer=null;
   // --- rain synth ---
   let actx=null, gain=null;
   function buildRain(){
@@ -2249,14 +2248,14 @@ window.RAIN=(function(){
   }
   // --- file playback ---
   let audio=null, ramp=null;
-  function rampTo(t){
+  function rampTo(t, k){
     if (!audio) return;
     clearInterval(ramp);
     ramp=setInterval(()=>{
       const d=t-audio.volume;
-      if (Math.abs(d)<0.012){ audio.volume=t; clearInterval(ramp);
-        if (t===0 && !on) audio.pause(); return; }
-      audio.volume+=d*0.12;
+      if (Math.abs(d)<0.02){ audio.volume=t; clearInterval(ramp);
+        if (t===0 && !on){ audio.pause(); } return; }
+      audio.volume=Math.max(0, Math.min(1, audio.volume + d*k));
     },50);
   }
   function probe(i,done){
@@ -2264,18 +2263,33 @@ window.RAIN=(function(){
     const a=new Audio();
     let settled=false;
     const ok=()=>{ if(settled)return; settled=true; done(a); };
-    const ng=()=>{ if(settled)return; settled=true; done(null,i); };
     a.addEventListener('canplaythrough', ok, {once:true});
-    a.addEventListener('error', ()=>probe(i+1,done), {once:true});
+    a.addEventListener('error', ()=>{ if(!settled){settled=true; probe(i+1,done);} }, {once:true});
     a.preload='auto'; a.loop=true; a.volume=0; a.src=FILES[i];
-    setTimeout(()=>{ if(!settled && a.readyState<3) probe(i+1,done); }, 4000);
+    setTimeout(()=>{ if(!settled && a.readyState<3){settled=true; probe(i+1,done);} }, 4000);
   }
   function level(){ return on ? (duck ? (kind==='file'?0.09:0.032)
                                        : (kind==='file'?0.38:0.15)) : 0; }
-  function apply(){
-    if (kind==='file' && audio){ if (on && audio.paused) audio.play(); rampTo(level()); }
-    else if (kind==='rain' && gain){ if(actx.state==='suspended') actx.resume();
-      gain.gain.setTargetAtTime(level(), actx.currentTime, 1.2); }
+  function apply(tc){
+    clearTimeout(offTimer);
+    if (kind==='file' && audio){
+      if (on){ if (audio.paused) audio.play(); rampTo(level(), tc>0.5?0.06:0.25); }
+      else {
+        rampTo(0, 0.3);
+        offTimer=setTimeout(()=>{ if(!on && audio){ audio.pause(); audio.volume=0; } }, 1500);
+      }
+    } else if (kind==='rain' && gain){
+      const now=actx.currentTime;
+      gain.gain.cancelScheduledValues(now);
+      gain.gain.setValueAtTime(gain.gain.value, now);
+      if (on){
+        if (actx.state==='suspended') actx.resume();
+        gain.gain.setTargetAtTime(level(), now, tc);
+      } else {
+        gain.gain.setTargetAtTime(0, now, 0.22);
+        offTimer=setTimeout(()=>{ if(!on && actx && actx.state==='running') actx.suspend(); }, 1300);
+      }
+    }
   }
   function resolveThen(fn){
     if (kind!=='unknown') return fn();
@@ -2287,17 +2301,15 @@ window.RAIN=(function(){
   }
   return {
     toggle(cb){
-      resolveThen(()=>{
-        on=!on;
-        if (kind==='rain' && actx && actx.state==='suspended') actx.resume();
-        apply();
-        if (cb) cb(on, kind);
-      });
-      return !on; /* provisional; real state arrives via cb */
+      resolveThen(()=>{ on=!on; apply(0.25); if (cb) cb(on, kind); });
     },
-    duck(v){ duck=v; apply(); },
+    duck(v){ duck=v; if (on) apply(1.2); },
     isOn(){ return on; },
-    kind(){ return kind; }
+    kind(){ return kind; },
+    _dbg(){ return { kind, on,
+      ctx: actx ? actx.state : null,
+      vol: audio ? +audio.volume.toFixed(3) : null,
+      paused: audio ? audio.paused : null }; }
   };
 })();
 (function(){
