@@ -1,3 +1,4 @@
+# Copyright (c) 2026 Kuo-Chen Wu (吳國禎). All Rights Reserved.
 """從現行 index.html 萃取內容播種資料庫（需要 node）。出貨包已附播種完成的 data/cv.db，
 一般不需執行本檔；僅在你手動改過網站資料、想把 DB 重新同步時使用。"""
 import json, os, subprocess, sys

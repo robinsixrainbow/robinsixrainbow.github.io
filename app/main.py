@@ -1,3 +1,4 @@
+# Copyright (c) 2026 Kuo-Chen Wu (吳國禎). All Rights Reserved.
 """cv_backend — 個人網站的本機 CMS。
 編輯 → 預覽 → 一鍵發佈（重生成 index.html → ots 蓋章 → git 推送）。"""
 import html as _html

@@ -38,3 +38,16 @@
 ## 安全
 伺服器只綁 127.0.0.1（run.py），僅本機可達；這是你一個人的管理台。
 UI 措辭字串在 `app/ui_strings.json`（badge、章節標題等），要改直接編輯後重新發佈。
+
+---
+
+## 版權聲明
+
+Copyright © 2026 吳國禎 (Kuo-Chen Wu). All Rights Reserved.
+
+本管理台之程式碼、資料模型與發佈流程設計為作者原創著作，
+保留一切權利。未經書面授權，不得重製、散布、修改或再發布。
+本工具為 https://robinsixrainbow.github.io/ 之配套系統，
+該網站內容之權利聲明見其倉庫內 LICENSE。
+
+聯絡：d09945002@ntu.edu.tw

@@ -1,3 +1,4 @@
+# Copyright (c) 2026 Kuo-Chen Wu (吳國禎). All Rights Reserved.
 """cv_backend models — mirror the live site's CV_DATA + I18N content shapes.
 Trilingual content = one row per logical item with _en/_zh/_ja columns."""
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column

@@ -1,3 +1,4 @@
+# Copyright (c) 2026 Kuo-Chen Wu (吳國禎). All Rights Reserved.
 """publisher — DB → I18N/CV_DATA JS 區塊 → 置換 index.html →（可選）ots 蓋章 → git 推送。
 首次執行會自動在 index.html 植入哨兵標記；之後的發佈只置換標記之間的內容。"""
 import json, os, re, shutil, subprocess, datetime

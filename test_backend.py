@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 Kuo-Chen Wu (吳國禎). All Rights Reserved.
 """cv_backend 驗收：發佈保真、冪等、git 提交、後台全表面稽核、預覽端點。"""
 import json, os, re, shutil, subprocess, sys, time, signal, urllib.request, urllib.parse, http.cookiejar
 

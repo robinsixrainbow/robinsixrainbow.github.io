@@ -1,3 +1,4 @@
+# Copyright (c) 2026 Kuo-Chen Wu (吳國禎). All Rights Reserved.
 """cv_backend admin — sqladmin 後台（中文標籤）＋登入退避。"""
 import time
 from sqladmin import Admin, ModelView

@@ -1,3 +1,4 @@
+# Copyright (c) 2026 Kuo-Chen Wu (吳國禎). All Rights Reserved.
 import os
 from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker

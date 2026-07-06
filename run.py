@@ -1,3 +1,4 @@
+# Copyright (c) 2026 Kuo-Chen Wu (吳國禎). All Rights Reserved.
 import uvicorn
 from app.settings import PORT
 if __name__ == "__main__":
