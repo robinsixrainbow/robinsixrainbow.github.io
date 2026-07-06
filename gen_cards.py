@@ -218,7 +218,7 @@ FACES = {
    cjk=JPF, latin="Amiri", label_font=JPF, role_size=19,
    name_block=(glow_text(X0, 248, "呉　国禎", JPF, 76)
      + f'<text x="{X0+330}" y="248" font-family="{JPF}" font-size="23" fill="{CYAN}">博士</text>'
-     + f'<text x="{X0+2}" y="285" font-family="{JPF}" font-size="19" fill="rgba(255,255,255,0.6)">ウー・グオジェン ／ Kuo-Chen Wu, Ph.D.</text>'),
+     + f'<text x="{X0+2}" y="285" font-family="{JPF}" font-size="19" fill="rgba(255,255,255,0.6)">ウー・クオチェン ／ Kuo-Chen Wu, Ph.D.</text>'),
    roles=[(346,"智富生醫科技股份有限公司　最高技術責任者（CTO）"),
           (382,"国立台湾師範大学　博士研究員"),
           (418,"国立勤益科技大学　教授")],
