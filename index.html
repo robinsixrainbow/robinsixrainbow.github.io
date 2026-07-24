@@ -17,10 +17,10 @@
   <meta name="copyright" content="© 2026 Kuo-Chen Wu. All Rights Reserved.">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kuo-Chen Wu / 吳國禎 — CV</title>
-<meta name="description" content="Kuo-Chen Wu (吳國禎), Ph.D. — Medical AI. CTO, Zhifu Biomedical Technology · Postdoctoral Researcher, NTNU · Professor, NCUT. Publications, patents &amp; awards.">
+<meta name="description" content="Kuo-Chen Wu (吳國禎), Ph.D. — Medical AI. Supervisor, Zhifu Biomedical Technology · Postdoctoral Researcher, NTNU. Publications, patents &amp; awards.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg stroke='%2328efef' stroke-width='1.7' stroke-linecap='round'%3E%3Cpath d='M16 2.5v27M2.5 16h27'/%3E%3C/g%3E%3Ccircle cx='16' cy='16' r='3.4' fill='%23eaf7f8'/%3E%3C/svg%3E">
 <meta property="og:title" content="Kuo-Chen Wu / 吳國禎 — CV">
-<meta property="og:description" content="Ph.D. — Medical AI. CTO, Zhifu Biomedical Technology · Postdoc, NTNU · Professor, NCUT.">
+<meta property="og:description" content="Ph.D. — Medical AI. Supervisor, Zhifu Biomedical Technology · Postdoc, NTNU.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://robinsixrainbow.github.io/">
 
@@ -85,6 +85,9 @@ html, body {
 @media (max-width: 800px) {
   .bgs .layer2 .constellation { top: 8vh; height: 70vh; }
 }
+#space3d { position: fixed; inset: 0; z-index: -8; pointer-events: none; }
+body.theater #space3d { display: none; }
+@media (prefers-reduced-motion: reduce) { #space3d { opacity: .55; } }
 .starfield { position: fixed; inset: 0; z-index: -9; pointer-events: none;
   opacity: 0; animation: layerIn 1.8s ease-out 1.6s forwards;
 }
@@ -250,7 +253,9 @@ html, body {
 }
 
 /* ===== Contents zone — bg_black.png analog: content sits on its own dark tile ===== */
-.contents-zone { position: relative; z-index: 0; }
+.contents-zone { position: relative; z-index: 0; perspective: 1300px; perspective-origin: 50% 42%; }
+.fx-sec { will-change: transform, opacity, filter; transform-origin: 50% 60%; }
+@media (prefers-reduced-motion: reduce) { .fx-sec { transform: none !important; opacity: 1 !important; filter: none !important; } }
 .contents-zone::before {
   content: ''; position: absolute; z-index: -1;
   top: -48px; bottom: -110px; left: 50%; width: 100vw;
@@ -586,9 +591,9 @@ section { margin-top: 104px; position: relative; }
   box-shadow: 0 0 14px var(--cyan), 0 0 6px #fff;
 }
 .cv-closing .tagline {
-  font-weight: 300;
-  font-size: 18px; color: #fff;
-  text-shadow: var(--glow-text); margin-top: 14px;
+  font-size: 13px; font-weight: 300; letter-spacing: 0.14em;
+  color: rgba(140, 230, 240, 0.55);
+  text-shadow: 0 0 12px rgba(40, 239, 239, 0.18);
 }
 
 
@@ -777,6 +782,9 @@ body.theater .plm { opacity: 1; visibility: visible; }
 .plm-row { display: flex; align-items: flex-end; gap: 16px; pointer-events: auto; }
 .plm-modes { display: flex; border: 1px solid rgba(255,255,255,0.28); border-radius: 3px;
   overflow: hidden; background: rgba(0,0,0,0.5); pointer-events: auto; align-self: center; }
+.plm-view .ls-stop { width: 52px; }
+.plm-view[data-pos="0"] .ls-knob { transform: translateX(21px); }
+.plm-view[data-pos="1"] .ls-knob { transform: translateX(73px); }
 .plm-flow .ls-stop { width: 40px; }
 .plm-flow[data-pos="0"] .ls-knob { transform: translateX(9px); }
 .plm-flow[data-pos="1"] .ls-knob { transform: translateX(49px); }
@@ -791,9 +799,10 @@ body.theater .plm { opacity: 1; visibility: visible; }
 .plm-mode.active { color: var(--bg-deep); background: var(--cyan); }
 .plm-note { font-size: 10px; color: rgba(255,255,255,0.38); }
 @media (max-width: 800px) { .plm-plate { flex-direction: column; gap: 2px; align-items: center; } }
-@media print { .plm { display: none !important; } }
+@media print { .plm, #space3d { display: none !important; } .fx-sec { transform: none !important; opacity: 1 !important; filter: none !important; } }
 
 html { scroll-behavior: smooth; }
+html, body { overflow-x: hidden; }
 section { scroll-margin-top: 80px; }
 
 .print-btn {
@@ -939,7 +948,7 @@ body.theater .theater-hint { animation: hintPulse 5.5s ease 1.2s forwards; }
   .sub-heading::before { background: #2a5d7a !important; box-shadow: none !important; transform: skewX(-14deg) !important; }
   .cv-closing { border-top-color: #aaa !important; margin-top: 30px; }
   .cv-footer::before, .cv-closing::after { background: #2a5d7a !important; box-shadow: none !important; }
-  .cv-closing .tagline { color: #0a1424 !important; text-shadow: none !important; font-size: 13pt; }
+  .cv-closing .tagline { color: #4a6b7a !important; text-shadow: none !important; font-size: 9pt; }
   
   .exp-block, .skill-card, .role-cell, .pub-entry, .patent-entry, .comp-entry, .conf-entry { break-inside: avoid; }
 }
@@ -970,6 +979,7 @@ body.theater .theater-hint { animation: hintPulse 5.5s ease 1.2s forwards; }
 
 <!-- Opening logo: "Wu KC" with subtle hairline ornament beneath -->
 <div class="loader" aria-hidden="true"><div class="progressbar"></div></div>
+<canvas id="space3d" aria-hidden="true"></canvas>
 
 
 <!-- ===== Planetarium (theater mode projection) ===== -->
@@ -985,6 +995,15 @@ body.theater .theater-hint { animation: hintPulse 5.5s ease 1.2s forwards; }
       <div class="plm-modes">
         <button class="plm-mode" data-mode="now"   id="plm-now"></button>
         <button class="plm-mode active" data-mode="epoch" id="plm-epoch"></button>
+      </div>
+      <div class="lang-switch plm-view" data-pos="0" aria-label="View">
+        <span class="ls-ttl" id="plm-view-ttl">VIEW</span>
+        <div class="ls-track">
+          <button class="ls-stop active" data-view="chart"><span class="ls-lamp"></span><span class="ls-lab" id="plm-v-chart">CHART</span></button>
+          <button class="ls-stop" data-view="dome"><span class="ls-lamp"></span><span class="ls-lab" id="plm-v-dome">SEAT</span></button>
+          <div class="ls-groove" aria-hidden="true"></div>
+          <div class="ls-knob" aria-hidden="true"></div>
+        </div>
       </div>
       <div class="lang-switch plm-flow" data-pos="0" aria-label="Time flow">
         <span class="ls-ttl" id="plm-flow-ttl">FLOW</span>
@@ -1264,7 +1283,7 @@ body.theater .theater-hint { animation: hintPulse 5.5s ease 1.2s forwards; }
   </section>
 
   <div class="cv-closing">
-    <div class="tagline">Achieved a 5-Year CJA Score Above 600</div>
+    <div class="tagline">Epoch J2034.5136 — the second Vega culminates over Hamamatsu.</div>
   </div>
 
   </div><!-- /contents-zone -->
@@ -1307,14 +1326,14 @@ const I18N = {
       comp: ["Competitions & Awards", "recognition"],
     },
     tag: { invited: "INVITED" },
-    closing: "Achieved a 5-Year CJA Score Above 600",
+    closing: "Epoch J2034.5136 — the second Vega culminates over Hamamatsu.",
     updated: "Last updated",
     theater: { enter: "THEATER ✦", hint: "click anywhere to exit" },
     ctl: { pdf: "EXPORT ⤓", pdfTtl: "PDF", modeTtl: "MODE" },
     news: "WHAT'S NEW",
     plm: { site: "Former Matsubishi Site, Hamamatsu", now: "LIVE SKY", epoch: "YUMEMI EPOCH",
            cardinal: ["N","E","S","W"], tri: ["VEGA","DENEB","ALTAIR"], locale: "en-GB",
-           bodies: { sun:"Sun", moon:"Moon", me:"Mercury", ve:"Venus", ma:"Mars", ju:"Jupiter", sa:"Saturn" }, rain: "RAIN", flow: "TIME FLOW",
+           bodies: { sun:"Sun", moon:"Moon", me:"Mercury", ve:"Venus", ma:"Mars", ju:"Jupiter", sa:"Saturn" }, rain: "RAIN", flow: "TIME FLOW", vw: { ttl:"VIEW", chart:"CHART", dome:"SEAT" },
            note: "HYG stars · VSOP87/ELP Sun·Moon·planets (<0.011°, verified) · refraction incl. · planet brightness representative" },
     education: [
       { school: "National Taiwan University", degree: "Doctor of Biomedical Electronics and Bioinformatics", date: "Sep. 2020 – Aug. 2025", place: "Taipei, Taiwan" },
@@ -1326,10 +1345,8 @@ const I18N = {
       { ttl: "Web Dev & DevOps", items: ["HTML · CSS · Frontend","GitHub · Travis CI","Continuous Integration"] },
     ],
     currentRoles: [
-      { label: "CTO", org: "智富生醫科技股份有限公司" },
+      { label: "Supervisor", org: "智富生醫科技股份有限公司" },
       { label: "Postdoc", org: "國立臺灣師範大學" },
-      { label: "Advisor", org: "顧芳瑜泌尿科診所" },
-      { label: "Professor", org: "國立勤益科技大學" },
     ],
     experience: [
       { role: "Algorithm Engineer", date: "Jul. 2020 – Feb. 2026",
@@ -1378,14 +1395,14 @@ const I18N = {
       comp: ["競賽與獲獎", "獲獎紀錄"],
     },
     tag: { invited: "邀請演講" },
-    closing: "五年 CJA 積分逾 600",
+    closing: "曆元 J2034.5136 ── 織女星中天於濱松上空的那一秒。",
     updated: "最後更新",
     theater: { enter: "劇場模式 ✦", hint: "點擊任意處退出" },
     ctl: { pdf: "匯出 ⤓", pdfTtl: "PDF", modeTtl: "模式" },
     news: "最新動態",
     plm: { site: "濱松・旧松菱街區上空", now: "即時星空", epoch: "ゆめみの曆元",
            cardinal: ["北","東","南","西"], tri: ["織女一","天津四","河鼓二"], locale: "zh-TW",
-           bodies: { sun:"太陽", moon:"月", me:"水星", ve:"金星", ma:"火星", ju:"木星", sa:"土星" }, rain: "雨聲", flow: "時間流速",
+           bodies: { sun:"太陽", moon:"月", me:"水星", ve:"金星", ma:"火星", ju:"木星", sa:"土星" }, rain: "雨聲", flow: "時間流速", vw: { ttl:"視角", chart:"全天圖", dome:"觀席" },
            note: "HYG 恆星 · VSOP87/ELP 太陽月亮行星（<0.011°，已對完整級數驗證）· 含大氣折射與月相 · 行星亮度為代表值" },
     education: [
       { school: "國立臺灣大學", degree: "生醫電子與資訊學 博士", date: "2020.09 – 2025.08", place: "臺灣・臺北" },
@@ -1397,10 +1414,8 @@ const I18N = {
       { ttl: "網頁開發與維運", items: ["HTML · CSS · 前端","GitHub · Travis CI","持續整合"] },
     ],
     currentRoles: [
-      { label: "技術長", org: "智富生醫科技股份有限公司" },
+      { label: "監察人", org: "智富生醫科技股份有限公司" },
       { label: "博士後研究員", org: "國立臺灣師範大學" },
-      { label: "顧問", org: "顧芳瑜泌尿科診所" },
-      { label: "教授", org: "國立勤益科技大學" },
     ],
     experience: [
       { role: "演算法工程師", date: "2020.07 – 2026.02",
@@ -1449,14 +1464,14 @@ const I18N = {
       comp: ["受賞歴", "表彰記録"],
     },
     tag: { invited: "招待講演" },
-    closing: "5年間の CJA スコア 600 点超を達成",
+    closing: "暦元 J2034.5136 ── ベガが浜松の空で南中するその一秒。",
     updated: "最終更新",
     theater: { enter: "シアターモード ✦", hint: "どこでもクリックで終了" },
     ctl: { pdf: "書き出し ⤓", pdfTtl: "PDF", modeTtl: "モード" },
     news: "新着情報",
     plm: { site: "浜松・旧松菱街区の空", now: "現在の星空", epoch: "ゆめみの暦元",
            cardinal: ["北","東","南","西"], tri: ["ベガ","デネブ","アルタイル"], locale: "ja-JP",
-           bodies: { sun:"太陽", moon:"月", me:"水星", ve:"金星", ma:"火星", ju:"木星", sa:"土星" }, rain: "雨音", flow: "時の流れ",
+           bodies: { sun:"太陽", moon:"月", me:"水星", ve:"金星", ma:"火星", ju:"木星", sa:"土星" }, rain: "雨音", flow: "時の流れ", vw: { ttl:"視点", chart:"全天図", dome:"観席" },
            note: "HYG 恒星 · VSOP87/ELP 太陽・月・惑星（<0.011°、完全級数で検証済）· 大気差・月相含む · 惑星光度は代表値" },
     education: [
       { school: "国立台湾大学", degree: "生体医工学・バイオインフォマティクス 博士", date: "2020年9月 – 2025年8月", place: "台湾・台北" },
@@ -1468,10 +1483,8 @@ const I18N = {
       { ttl: "Web 開発・DevOps", items: ["HTML · CSS · フロントエンド","GitHub · Travis CI","継続的インテグレーション"] },
     ],
     currentRoles: [
-      { label: "最高技術責任者", org: "智富生醫科技股份有限公司" },
+      { label: "監査役", org: "智富生醫科技股份有限公司" },
       { label: "博士研究員", org: "国立台湾師範大学" },
-      { label: "顧問", org: "顧芳瑜泌尿器科クリニック" },
-      { label: "教授", org: "国立勤益科技大学" },
     ],
     experience: [
       { role: "アルゴリズムエンジニア", date: "2020年7月 – 2026年2月",
@@ -1822,6 +1835,8 @@ const PLM = (function(){
   const EPOCH_MS = Date.UTC(2034,6,7,14,24,39);           // 2034-07-07 23:24:39 JST
   let mode = 'epoch';                                      // 'epoch' | 'now'
   let simMs = EPOCH_MS, speed = 1, lastTs = null;
+  let view = 'chart', lookAz = 180, lookAlt = 42;
+  const FOVY = 68*Math.PI/180;
   let beamT0 = 0;
   const meteors = [];
   let canvas=null, ctx=null, raf=0, W=0, H=0, R=0, CX=0, CY=0;
@@ -1857,6 +1872,21 @@ const PLM = (function(){
     const az =Math.atan2(Math.sin(H), Math.cos(H)*Math.sin(f)-Math.tan(dec)*Math.cos(f))+Math.PI;
     return [alt*R2D, ((az*R2D)%360+360)%360];
   }
+  // 觀席（第一人稱圓頂）透視投影
+  function projDome(alt, az){
+    const a=alt*D2R, z=az*D2R;
+    const v=[Math.cos(a)*Math.sin(z), Math.sin(a), Math.cos(a)*Math.cos(z)];
+    const la=lookAlt*D2R, lz=lookAz*D2R;
+    const F=[Math.cos(la)*Math.sin(lz), Math.sin(la), Math.cos(la)*Math.cos(lz)];
+    const Rt=[F[2],0,-F[0]];
+    const rl=Math.hypot(Rt[0],Rt[2])||1; Rt[0]/=rl; Rt[2]/=rl;
+    const U=[F[1]*Rt[2]-F[2]*Rt[1], F[2]*Rt[0]-F[0]*Rt[2], F[0]*Rt[1]-F[1]*Rt[0]];
+    const dz=v[0]*F[0]+v[1]*F[1]+v[2]*F[2];
+    if (dz<=0.02) return null;
+    const f=(H/2)/Math.tan(FOVY/2);
+    return [CX+f*(v[0]*Rt[0]+v[1]*Rt[1]+v[2]*Rt[2])/dz,
+            CY-f*(v[0]*U[0]+v[1]*U[1]+v[2]*U[2])/dz, 0];
+  }
   // looking-up all-sky: N top, E LEFT  →  x=-r·sin(az), y=-r·cos(az)
   function project(alt, az){
     if (alt < -1) return null;
@@ -1869,8 +1899,30 @@ const PLM = (function(){
   function draw(ms){
     const T = (jd(ms)-2451545.0)/36525;
     const M = precessMat(T);
+    const PR = (view==='dome') ? projDome : project;
     ctx.clearRect(0,0,W,H);
 
+    if (view==='dome'){
+      const gd=ctx.createLinearGradient(0,0,0,H);
+      gd.addColorStop(0,'rgba(8,16,30,1)'); gd.addColorStop(1,'rgba(4,9,18,1)');
+      ctx.fillStyle=gd; ctx.fillRect(0,0,W,H);
+      const hz=[];
+      for(let a=0;a<=360;a+=2){ const p=projDome(0.0,a); if(p) hz.push([p[0],p[1]]); }
+      if (hz.length>1){
+        ctx.strokeStyle='rgba(140,230,240,0.35)'; ctx.lineWidth=1;
+        ctx.beginPath(); hz.forEach((p,i)=> i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1])); ctx.stroke();
+        ctx.fillStyle='rgba(2,5,10,0.96)';
+        ctx.beginPath(); hz.forEach((p,i)=> i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));
+        ctx.lineTo(W+40,H+40); ctx.lineTo(-40,H+40); ctx.closePath(); ctx.fill();
+        const card=PLM.i18n.cardinal;
+        ctx.fillStyle='rgba(234,247,248,0.75)';
+        ctx.font=`${Math.max(12,H*0.022)}px "Noto Sans TC","Noto Sans JP",sans-serif`;
+        ctx.textAlign='center';
+        [[0,card[0]],[90,card[1]],[180,card[2]],[270,card[3]]].forEach(([a,t])=>{
+          const p=projDome(2.0,a); if(p) ctx.fillText(t,p[0],p[1]);
+        });
+      }
+    } else {
     // horizon disc backdrop
     const g = ctx.createRadialGradient(CX,CY,0,CX,CY,R);
     g.addColorStop(0,'rgba(10,20,36,0.92)');
@@ -1897,8 +1949,9 @@ const PLM = (function(){
       ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
     });
 
+    }
     ctx.save();
-    ctx.beginPath(); ctx.arc(CX,CY,R,0,7); ctx.clip();
+    if (view==='chart'){ ctx.beginPath(); ctx.arc(CX,CY,R,0,7); ctx.clip(); }
 
     // Milky Way — galactic equator band (J2000 pole 192.8595°,+27.1284°),
     // brightness modulated toward the summer arm (Sgr→Cyg), the Tanabata river.
@@ -1918,7 +1971,8 @@ const PLM = (function(){
         const [ra,dec]=galToEq(l*D2R);
         let [alt,az]=altaz(ra,dec,ms,M);
         alt=EPHEM.refract(alt);
-        pts.push(alt>0.5 ? {p:project(alt,az), l} : null);
+        const pp = alt>0.5 ? PR(alt,az) : null;
+        pts.push(pp ? {p:pp, l} : null);
       }
       ctx.lineCap='round'; ctx.lineJoin='round';
       for (const [w,a] of [[R*0.10,0.028],[R*0.062,0.040],[R*0.032,0.055]]){
@@ -1948,7 +2002,7 @@ const PLM = (function(){
       ctx.beginPath();
       for (const [ra,dec] of pl){
         const [alt,az]=altaz(ra,dec,ms,M);
-        const p=project(alt,az);
+        const p=PR(alt,az);
         if (!p || alt<0){ started=false; continue; }
         if (!started){ ctx.moveTo(p[0],p[1]); started=true; }
         else ctx.lineTo(p[0],p[1]);
@@ -1963,7 +2017,7 @@ const PLM = (function(){
     let first=null, ok=true;
     tri.concat([tri[0]]).forEach(([ra,dec],i)=>{
       const [alt,az]=altaz(ra,dec,ms,M);
-      const p=project(alt,az);
+      const p=PR(alt,az);
       if(!p||alt<0){ok=false;return;}
       if(i===0){ctx.moveTo(p[0],p[1]);first=p;}else ctx.lineTo(p[0],p[1]);
     });
@@ -1976,7 +2030,8 @@ const PLM = (function(){
       if (alt<-0.6) continue;
       alt=EPHEM.refract(alt);
       if (alt<0) continue;
-      const p=project(alt,az);
+      const p=PR(alt,az);
+      if (!p) continue;
       const s=Math.max(0.4, 2.6-0.45*mag);
       let a=Math.max(0.25, Math.min(1, 1.15-0.16*mag));
       if (mag<2.8) a*=0.84+0.16*Math.sin(performance.now()*0.0045+(ra*7+dec*3));
@@ -2002,7 +2057,7 @@ const PLM = (function(){
         if (alt<-0.9) return null;
         alt=EPHEM.refract(alt);
         if (alt<-0.5) return null;
-        return project(Math.max(alt,0.0001),az);
+        return PR(Math.max(alt,0.0001),az);
       }
       // planets
       for (const k of ['me','ve','ma','ju','sa']){
@@ -2032,7 +2087,8 @@ const PLM = (function(){
         const rM=7;
         // sun screen direction (project even if below horizon for orientation)
         let [sa2,sz2]=altaz(P.sun.ra,P.sun.dec,ms,null);
-        const spx=CX-((90-sa2)/90*R)*Math.sin(sz2*Math.PI/180), spy=CY-((90-sa2)/90*R)*Math.cos(sz2*Math.PI/180);
+        const sp2=PR(Math.max(sa2,-30),sz2)||[CX-((90-sa2)/90*R)*Math.sin(sz2*Math.PI/180),CY-((90-sa2)/90*R)*Math.cos(sz2*Math.PI/180)];
+        const spx=sp2[0], spy=sp2[1];
         const th=Math.atan2(spy-mpos[1], spx-mpos[0]);
         ctx.save(); ctx.translate(mpos[0],mpos[1]); ctx.rotate(th);
         ctx.fillStyle='rgba(90,105,118,0.55)';
@@ -2056,7 +2112,8 @@ const PLM = (function(){
       const [ra,dec]=PLM_NAMED[k];
       const [alt,az]=altaz(ra,dec,ms,M);
       if (alt<0) return;
-      const p=project(alt,az);
+      const p=PR(alt,az);
+      if (!p) return;
       ctx.fillText(names[i], p[0]+dx, p[1]+dy);
     });
     ctx.restore();
@@ -2073,8 +2130,7 @@ const PLM = (function(){
     const dt = Math.min(ts-lastTs, 100); lastTs=ts;
     if (mode==='now' && speed===1) simMs = Date.now();
     else simMs += dt*speed;
-    draw(simMs);
-    fx(ts);
+    try { draw(simMs); fx(ts); } catch(err){ console.error('PLM frame:', err); }
     raf = requestAnimationFrame(loop);
   }
   // ---- real-time effects layer: twinkle handled in draw; meteors + entry beam here ----
@@ -2082,7 +2138,8 @@ const PLM = (function(){
     // meteors — spawn ~every 9s of real time
     if (Math.random() < (ts-(fx._t||ts))/9000) spawnMeteor();
     fx._t = ts;
-    ctx.save(); ctx.beginPath(); ctx.arc(CX,CY,R,0,7); ctx.clip();
+    ctx.save();
+    if (view==='chart'){ ctx.beginPath(); ctx.arc(CX,CY,R,0,7); ctx.clip(); }
     for (let i=meteors.length-1;i>=0;i--){
       const m=meteors[i], k=(ts-m.t0)/m.dur;
       if (k>=1){ meteors.splice(i,1); continue; }
@@ -2141,10 +2198,135 @@ const PLM = (function(){
       ctx=canvas.getContext('2d');
       resize(); window.addEventListener('resize', resize);
       lastTs=null; beamT0=performance.now();
+      if(!canvas._domeDrag){
+        canvas._domeDrag=true;
+        let px=0,py=0,down=false,moved=0;
+        canvas.addEventListener('pointerdown',e=>{ if(view!=='dome')return;
+          down=true; moved=0; px=e.clientX; py=e.clientY; canvas.setPointerCapture(e.pointerId); });
+        canvas.addEventListener('pointermove',e=>{ if(!down||view!=='dome')return;
+          const dx=e.clientX-px, dy=e.clientY-py; px=e.clientX; py=e.clientY;
+          moved+=Math.abs(dx)+Math.abs(dy);
+          lookAz=((lookAz - dx*0.16)%360+360)%360;
+          lookAlt=Math.max(3,Math.min(88, lookAlt + dy*0.13)); });
+        canvas.addEventListener('pointerup',()=>{ down=false; });
+        canvas.addEventListener('click',e=>{ if(view==='dome'&&moved>6){ e.stopPropagation(); moved=0; } }, true);
+      }
       cancelAnimationFrame(raf); raf=requestAnimationFrame(loop);
     },
+    _view(){ return { view, lookAz:+lookAz.toFixed(1), lookAlt:+lookAlt.toFixed(1) }; },
+    setView(v){ view=v;
+      document.querySelectorAll('.plm-view .ls-stop').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
+      const sw=document.querySelector('.plm-view');
+      if (sw) sw.dataset.pos={chart:0,dome:1}[v]; },
     stop(){ cancelAnimationFrame(raf); },
   };
+})();
+window.PLM = PLM;
+
+/* ============ SPACE3D — 星海航行層（捲動=前進、滑鼠=視差、分層景深） ============ */
+window.SPACE3D=(function(){
+  const cv=document.getElementById('space3d'); if(!cv) return null;
+  const ctx=cv.getContext('2d');
+  const RM = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const N=520, DEPTH=8, F=0.92;
+  let W=0,H=0,CX=0,CY=0,MIN=0, raf=0;
+  let camZ=0, camT=0, tx=0, ty=0, ttx=0, tty=0;
+  const S=[];
+  (function seed(){
+    let r=20260707;
+    const rnd=()=>{ r=(r*1103515245+12345)%2147483648; return r/2147483648; };
+    for(let i=0;i<N;i++){
+      const kind = rnd()<0.055 ? 2 : (rnd()<0.10 ? 1 : 0);   // 2=亮星 1=cyan塵 0=星塵
+      S.push({x:(rnd()*2-1)*1.35, y:(rnd()*2-1)*1.35, z:rnd()*DEPTH,
+              tw:rnd()*6.28, k:kind});
+    }
+  })();
+  function resize(){
+    const d=Math.min(devicePixelRatio||1,2);
+    W=cv.clientWidth*d; H=cv.clientHeight*d;
+    cv.width=W; cv.height=H; CX=W/2; CY=H/2; MIN=Math.min(W,H);
+  }
+  function frame(t){
+    raf=requestAnimationFrame(frame);
+    if (document.body.classList.contains('theater')) { ctx.clearRect(0,0,W,H); return; }
+    const doc=document.documentElement;
+    const prog = doc.scrollHeight>innerHeight ? scrollY/(doc.scrollHeight-innerHeight) : 0;
+    camT = RM ? 0 : prog*DEPTH*2.1;
+    camZ += (camT-camZ)*0.065;
+    tx += (ttx-tx)*0.05; ty += (tty-ty)*0.05;
+    ctx.clearRect(0,0,W,H);
+    const vel = camZ - (frame._pz ?? camZ); frame._pz = camZ;
+    const streak = RM ? 0 : Math.min(46, Math.abs(vel)*820);
+    for(const s of S){
+      let z=((s.z - camZ)%DEPTH+DEPTH)%DEPTH;
+      if (z<0.06) z+=DEPTH;
+      const sc=F/z;
+      const par=(1 - z/DEPTH);
+      const x=CX + (s.x*sc + (tx*0.16+(frame._bank||0))*par)*MIN;
+      const y=CY + (s.y*sc + ty*0.16*par)*MIN;
+      if (x<-30||x>W+30||y<-30||y>H+30) continue;
+      const near=Math.min(1,(z-0.06)/0.5);                 // 近端淡入
+      const far =Math.max(0.12, 1 - z/DEPTH*0.9);
+      let a=near*far, r=Math.max(0.35, 2.1/z);
+      if (s.k===0){ a*=0.55*(0.8+0.2*Math.sin(t*0.001+s.tw)); ctx.fillStyle=`rgba(214,236,240,${a.toFixed(3)})`; }
+      else if (s.k===1){ a*=0.5; r*=0.9; ctx.fillStyle=`rgba(40,239,239,${a.toFixed(3)})`; }
+      else { a*=0.9*(0.82+0.18*Math.sin(t*0.0016+s.tw));
+        ctx.fillStyle=`rgba(140,230,240,${(a*0.28).toFixed(3)})`;
+        ctx.beginPath(); ctx.arc(x,y,r*3,0,7); ctx.fill();
+        ctx.fillStyle=`rgba(240,250,252,${a.toFixed(3)})`; }
+      if (streak>2.5){
+        const dx=x-CX, dy=y-CY, dl=Math.hypot(dx,dy)||1;
+        const L=streak*(0.35+par)*Math.sign(vel);
+        ctx.strokeStyle=ctx.fillStyle; ctx.lineWidth=Math.max(0.6,r*0.8);
+        ctx.beginPath(); ctx.moveTo(x,y);
+        ctx.lineTo(x - dx/dl*L, y - dy/dl*L); ctx.stroke();
+      }
+      ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fill();
+    }
+    // ---- 章節空間編舞 ----
+    if (!RM && frame._secs){
+      let active=0;
+      const doc=document.documentElement;
+      const atEnd = scrollY + innerHeight >= doc.scrollHeight - 8;
+      frame._secs.forEach((el,idx)=>{
+        const top=layoutTop(el) - scrollY, bottom=top + el.offsetHeight;
+        const vh=innerHeight;
+        let pin=Math.max(0,Math.min(1,(vh - top)/(vh*0.72)));
+        if (atEnd) pin=1;                        // 頁尾：一律完全抵達
+        const pout=Math.max(0,Math.min(1,(vh*0.30 - bottom)/(vh*0.45)));
+        const e=1-Math.pow(1-pin,3);
+        const scale=(0.90+0.10*e)*(1-0.05*pout);
+        const tz=(1-e)*-260;
+        const rx=(1-e)*(idx%2? -7:7);
+        const op=Math.min(1, e*1.25)*(1-0.45*pout);
+        const bl=(1-e)*7;
+        el.style.transform=`translate3d(0,${((1-e)*46).toFixed(1)}px,${tz.toFixed(0)}px) rotateX(${rx.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+        el.style.opacity=op.toFixed(3);
+        el.style.filter= bl>0.4? `blur(${bl.toFixed(1)}px)` : 'none';
+        if (top < vh*0.5 && bottom > vh*0.5) active=idx;
+      });
+      frame._bank += (((active%2)? -0.055:0.055) - frame._bank)*0.03;
+    } else frame._bank = frame._bank||0;
+    // 背景層速差（遠→近：hanabishi 最慢）
+    const hb=document.querySelector('.bgs'); if(hb) hb.style.transform=`translateY(${(-scrollY*0.030).toFixed(1)}px)`;
+    const sf=document.querySelector('.starfield'); if(sf) sf.style.transform=`translateY(${(-scrollY*0.060).toFixed(1)}px)`;
+  }
+  addEventListener('resize', resize);
+  addEventListener('pointermove', e=>{ if(RM) return;
+    ttx=(e.clientX/innerWidth-0.5); tty=(e.clientY/innerHeight-0.5); }, {passive:true});
+  resize();
+  frame._bank=0;
+  function layoutTop(el){                       // transform 免疫的佈局座標
+    let t=0, n=el;
+    while(n){ t+=n.offsetTop; n=n.offsetParent; }
+    return t;
+  }
+  addEventListener('load', ()=>{
+    frame._secs=[...document.querySelectorAll('#education-sec,#skills-sec,#experience-sec,#publications-sec,#patents-sec,#awards-sec')];
+    frame._secs.forEach(el=>el.classList.add('fx-sec'));
+  });
+  raf=requestAnimationFrame(frame);
+  return { _dbg(){ return {camZ:+camZ.toFixed(3), tx:+tx.toFixed(3), n:N}; } };
 })();
 
 // --- language switching ---
@@ -2166,6 +2348,11 @@ function applyLang(lang){
     const bn=document.getElementById('plm-now');   if (bn) bn.textContent = CV.plm.now;
     const be=document.getElementById('plm-epoch'); if (be) be.textContent = CV.plm.epoch;
     const ft=document.getElementById('plm-flow-ttl'); if (ft) ft.textContent = CV.plm.flow || 'FLOW';
+    if (CV.plm.vw){
+      const vt=document.getElementById('plm-view-ttl'); if(vt) vt.textContent=CV.plm.vw.ttl;
+      const vc=document.getElementById('plm-v-chart'); if(vc) vc.textContent=CV.plm.vw.chart;
+      const vd=document.getElementById('plm-v-dome');  if(vd) vd.textContent=CV.plm.vw.dome;
+    }
     const nt=document.getElementById('plm-note');  if (nt) nt.textContent = CV.plm.note + '　·　' + CV.theater.hint;
   }
 }
@@ -2469,6 +2656,9 @@ window.RAIN=(function(){
   });
   document.querySelectorAll('.plm-flow .ls-stop').forEach(b=>{
     b.addEventListener('click', (e)=>{ e.stopPropagation(); PLM.setSpeed(+b.dataset.speed); });
+  });
+  document.querySelectorAll('.plm-view .ls-stop').forEach(b=>{
+    b.addEventListener('click', (e)=>{ e.stopPropagation(); PLM.setView(b.dataset.view); });
   });
   document.addEventListener('click', () => { if (on && !guard) exit(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && on) exit(); });
