@@ -85,7 +85,7 @@ html, body {
 @media (max-width: 800px) {
   .bgs .layer2 .constellation { top: 8vh; height: 70vh; }
 }
-#space3d { position: fixed; inset: 0; z-index: -8; pointer-events: none; }
+#space3d { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: -8; pointer-events: none; }
 body.theater #space3d { display: none; }
 @media (prefers-reduced-motion: reduce) { #space3d { opacity: .55; } }
 .starfield { position: fixed; inset: 0; z-index: -9; pointer-events: none;
@@ -359,6 +359,31 @@ section { margin-top: 104px; position: relative; }
 }
 .role-cell .role-org { font-size: 14px; color: var(--white); position: relative; z-index: 2; }
 
+.exp-divider { display: flex; align-items: center; gap: 14px; margin: 26px 0 14px;
+  font-size: 11px; font-weight: 300; letter-spacing: 0.32em;
+  color: rgba(140, 230, 240, 0.55); }
+.exp-divider::before, .exp-divider::after { content: ""; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(140,230,240,0.25), transparent); }
+
+/* ===== 摺疊式 STAR ===== */
+.exp-toggle { display: flex; align-items: center; gap: 10px; width: 100%;
+  background: none; border: none; border-left: 2px solid rgba(40,239,239,0.55);
+  padding: 6px 0 6px 12px; margin: 10px 0 0; cursor: pointer; text-align: left;
+  font: inherit; color: var(--cyan-txt, #9adfe8); font-size: 15px; font-weight: 500;
+  transition: color .25s; }
+.exp-toggle:hover { color: #d9f6fa; }
+.exp-toggle .tg-caret { display: inline-block; font-size: 11px;
+  color: rgba(140,230,240,0.8); transition: transform .35s ease; }
+.exp-toggle[aria-expanded="true"] .tg-caret { transform: rotate(90deg); }
+.exp-body { display: grid; grid-template-rows: 0fr; opacity: 0;
+  transition: grid-template-rows .5s cubic-bezier(.22,.61,.36,1), opacity .4s ease; }
+.exp-body.open { grid-template-rows: 1fr; opacity: 1; }
+.exp-body > .exp-body-in { overflow: hidden; }
+@media print {
+  .exp-body { grid-template-rows: 1fr !important; opacity: 1 !important; }
+  .exp-toggle .tg-caret { display: none !important; }
+}
+
 /* ===== Experience: episode circle + rotated Episode label ===== */
 .exp-block { position: relative; padding-left: 110px; margin-bottom: 60px; }
 .exp-block:last-child { margin-bottom: 0; }
@@ -591,9 +616,9 @@ section { margin-top: 104px; position: relative; }
   box-shadow: 0 0 14px var(--cyan), 0 0 6px #fff;
 }
 .cv-closing .tagline {
-  font-size: 13px; font-weight: 300; letter-spacing: 0.14em;
-  color: rgba(140, 230, 240, 0.55);
-  text-shadow: 0 0 12px rgba(40, 239, 239, 0.18);
+  font-size: 15px; font-weight: 300; letter-spacing: 0.34em;
+  color: rgba(140, 230, 240, 0.6);
+  text-shadow: 0 0 14px rgba(40, 239, 239, 0.22);
 }
 
 
@@ -894,7 +919,8 @@ body.theater .theater-hint { animation: hintPulse 5.5s ease 1.2s forwards; }
 @media print {
   @page { size: A4; margin: 14mm 12mm; }
   html, body { background: #fff !important; color: #111 !important; font-size: 10pt; line-height: 1.5; }
-  .bgs, .starfield, .memori, .opening-logo, .loader, .newsbox, .controllers { display: none !important; }
+  .bgs, .starfield, .memori, .opening-logo, .loader, .newsbox, .controllers,
+  .langbar, .pagetop, #rainfx { display: none !important; }
   .contents-zone::before { display: none !important; }
   .dataTable th { background: #eef2f4 !important; color: #111 !important; border-color: #999 !important; }
   .dataTable td { background: #fff !important; color: #333 !important; border-color: #bbb !important; }
@@ -1225,7 +1251,9 @@ body.theater .theater-hint { animation: hintPulse 5.5s ease 1.2s forwards; }
         <circle cx="100" cy="7" r="2" fill="#28efef"/>
       </svg>
     </div>
+    <div class="exp-divider" id="exp-now"></div>
     <div class="role-row" id="current-roles"></div>
+    <div class="exp-divider" id="exp-past"></div>
     <div id="experience"></div>
   </section>
 
@@ -1283,7 +1311,7 @@ body.theater .theater-hint { animation: hintPulse 5.5s ease 1.2s forwards; }
   </section>
 
   <div class="cv-closing">
-    <div class="tagline">Epoch J2034.5136 — the second Vega culminates over Hamamatsu.</div>
+    <div class="tagline">· ─── ✧ ✦ ✧ ─── ·</div>
   </div>
 
   </div><!-- /contents-zone -->
@@ -1326,7 +1354,7 @@ const I18N = {
       comp: ["Competitions & Awards", "recognition"],
     },
     tag: { invited: "INVITED" },
-    closing: "Epoch J2034.5136 — the second Vega culminates over Hamamatsu.",
+    closing: "· ─── ✧ ✦ ✧ ─── ·",
     updated: "Last updated",
     theater: { enter: "THEATER ✦", hint: "click anywhere to exit" },
     ctl: { pdf: "EXPORT ⤓", pdfTtl: "PDF", modeTtl: "MODE" },
@@ -1337,13 +1365,13 @@ const I18N = {
            note: "HYG stars · VSOP87/ELP Sun·Moon·planets (<0.011°, verified) · refraction incl. · planet brightness representative" },
     education: [
       { school: "National Taiwan University", degree: "Doctor of Biomedical Electronics and Bioinformatics", date: "Sep. 2020 – Aug. 2025", place: "Taipei, Taiwan" },
-      { school: "National Chung Hsing University", degree: "Master of Computer Science and Engineering", date: "Sep. 2017 – Jan. 2020", place: "Taichung, Taiwan" },
     ],
     skills: [
       { ttl: "AI & Machine Learning", items: ["Medical Image Processing · NLP","Generative AI · RAG · LLM Fine-Tuning","PyTorch · TensorFlow","Radiomics pipelines","Classical CV & segmentation"] },
       { ttl: "Programming Languages", items: ["Python (primary)","C# · C / C++","R · Matlab"] },
       { ttl: "Web Dev & DevOps", items: ["HTML · CSS · Frontend","GitHub · Travis CI","Continuous Integration"] },
     ],
+    expNow: "CURRENT", expPast: "PAST",
     currentRoles: [
       { label: "Supervisor", org: "智富生醫科技股份有限公司" },
       { label: "Postdoc", org: "國立臺灣師範大學" },
@@ -1395,7 +1423,7 @@ const I18N = {
       comp: ["競賽與獲獎", "獲獎紀錄"],
     },
     tag: { invited: "邀請演講" },
-    closing: "曆元 J2034.5136 ── 織女星中天於濱松上空的那一秒。",
+    closing: "· ─── ✧ ✦ ✧ ─── ·",
     updated: "最後更新",
     theater: { enter: "劇場模式 ✦", hint: "點擊任意處退出" },
     ctl: { pdf: "匯出 ⤓", pdfTtl: "PDF", modeTtl: "模式" },
@@ -1406,13 +1434,13 @@ const I18N = {
            note: "HYG 恆星 · VSOP87/ELP 太陽月亮行星（<0.011°，已對完整級數驗證）· 含大氣折射與月相 · 行星亮度為代表值" },
     education: [
       { school: "國立臺灣大學", degree: "生醫電子與資訊學 博士", date: "2020.09 – 2025.08", place: "臺灣・臺北" },
-      { school: "國立中興大學", degree: "資訊科學與工程學 碩士", date: "2017.09 – 2020.01", place: "臺灣・臺中" },
     ],
     skills: [
       { ttl: "人工智慧與機器學習", items: ["醫學影像處理 · 自然語言處理","生成式 AI · RAG · 大模型微調","PyTorch · TensorFlow","放射組學流程","傳統電腦視覺與影像分割"] },
       { ttl: "程式語言", items: ["Python（主力）","C# · C / C++","R · Matlab"] },
       { ttl: "網頁開發與維運", items: ["HTML · CSS · 前端","GitHub · Travis CI","持續整合"] },
     ],
+    expNow: "現任", expPast: "歷任",
     currentRoles: [
       { label: "監察人", org: "智富生醫科技股份有限公司" },
       { label: "博士後研究員", org: "國立臺灣師範大學" },
@@ -1464,7 +1492,7 @@ const I18N = {
       comp: ["受賞歴", "表彰記録"],
     },
     tag: { invited: "招待講演" },
-    closing: "暦元 J2034.5136 ── ベガが浜松の空で南中するその一秒。",
+    closing: "· ─── ✧ ✦ ✧ ─── ·",
     updated: "最終更新",
     theater: { enter: "シアターモード ✦", hint: "どこでもクリックで終了" },
     ctl: { pdf: "書き出し ⤓", pdfTtl: "PDF", modeTtl: "モード" },
@@ -1475,13 +1503,13 @@ const I18N = {
            note: "HYG 恒星 · VSOP87/ELP 太陽・月・惑星（<0.011°、完全級数で検証済）· 大気差・月相含む · 惑星光度は代表値" },
     education: [
       { school: "国立台湾大学", degree: "生体医工学・バイオインフォマティクス 博士", date: "2020年9月 – 2025年8月", place: "台湾・台北" },
-      { school: "国立中興大学", degree: "コンピュータ科学工学 修士", date: "2017年9月 – 2020年1月", place: "台湾・台中" },
     ],
     skills: [
       { ttl: "AI・機械学習", items: ["医用画像処理 · 自然言語処理","生成 AI · RAG · LLM ファインチューニング","PyTorch · TensorFlow","ラジオミクス・パイプライン","古典的 CV・領域分割"] },
       { ttl: "プログラミング言語", items: ["Python（主力）","C# · C / C++","R · Matlab"] },
       { ttl: "Web 開発・DevOps", items: ["HTML · CSS · フロントエンド","GitHub · Travis CI","継続的インテグレーション"] },
     ],
+    expNow: "現職", expPast: "歴任",
     currentRoles: [
       { label: "監査役", org: "智富生醫科技股份有限公司" },
       { label: "博士研究員", org: "国立台湾師範大学" },
@@ -1612,6 +1640,14 @@ $('skills').innerHTML = CV.skills.map(s=>`
     <ul>${s.items.map(i=>`<li>${i}</li>`).join('')}</ul>
   </div>`).join('');
 
+window.EPOPEN = window.EPOPEN || new Set();
+document.getElementById('experience').addEventListener('click', (e)=>{
+  const b=e.target.closest('.exp-toggle'); if(!b) return;
+  const i=+b.dataset.ep, open=b.getAttribute('aria-expanded')==='true';
+  b.setAttribute('aria-expanded', String(!open));
+  b.nextElementSibling.classList.toggle('open', !open);
+  if (open) EPOPEN.delete(i); else EPOPEN.add(i);
+}, { once:false });
 $('current-roles').innerHTML = CV.currentRoles.map(r=>`
   <div class="role-cell">${edges}
     <div class="role-label">${r.label}</div>
@@ -1630,14 +1666,26 @@ $('experience').innerHTML = CV.experience.map((x, i)=>`
       <div class="exp-date">${x.date}</div>
     </div>
     <div class="exp-org">${x.org}</div>
-    <div class="exp-project">${x.project}</div>
-    <div class="star-block">
-      <div class="star-line"><span class="label">${CV.starKey.S}:</span>${x.star.S}</div>
-      <div class="star-line"><span class="label">${CV.starKey.T}:</span>${x.star.T}</div>
-      <div class="star-line"><span class="label">${CV.starKey.A}:</span>${x.star.A}</div>
-      <div class="star-line"><span class="label">${CV.starKey.R}:</span>${x.star.R}</div>
+    <button class="exp-toggle" data-ep="${i}" aria-expanded="false">
+      <span class="tg-caret">▸</span><span>${x.project}</span>
+    </button>
+    <div class="exp-body">
+      <div class="exp-body-in">
+        <div class="star-block">
+          <div class="star-line"><span class="label">${CV.starKey.S}:</span>${x.star.S}</div>
+          <div class="star-line"><span class="label">${CV.starKey.T}:</span>${x.star.T}</div>
+          <div class="star-line"><span class="label">${CV.starKey.A}:</span>${x.star.A}</div>
+          <div class="star-line"><span class="label">${CV.starKey.R}:</span>${x.star.R}</div>
+        </div>
+      </div>
     </div>
   </div>`).join('');
+  document.getElementById('exp-now').textContent = CV.expNow || 'CURRENT';
+  document.getElementById('exp-past').textContent = CV.expPast || 'PAST';
+  EPOPEN.forEach(i=>{
+    const b=document.querySelector(`.exp-toggle[data-ep="${i}"]`);
+    if (b){ b.setAttribute('aria-expanded','true'); b.nextElementSibling.classList.add('open'); }
+  });
 
 $('journals').innerHTML = CV.journals.map((j,i)=>`
   <div class="pub-entry">
@@ -2226,6 +2274,11 @@ window.PLM = PLM;
 /* ============ SPACE3D — 星海航行層（捲動=前進、滑鼠=視差、分層景深） ============ */
 window.SPACE3D=(function(){
   const cv=document.getElementById('space3d'); if(!cv) return null;
+  cv.style.cssText='position:fixed;inset:0;width:100vw;height:100vh;z-index:-8;pointer-events:none;';
+  const rf=document.createElement('canvas'); rf.id='rainfx'; rf.setAttribute('aria-hidden','true');
+  rf.style.cssText='position:fixed;inset:0;width:100vw;height:100vh;z-index:30;pointer-events:none;';
+  document.body.appendChild(rf);
+  const rctx=rf.getContext('2d');
   const ctx=cv.getContext('2d');
   const RM = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   const N=520, DEPTH=8, F=0.92;
@@ -2244,11 +2297,12 @@ window.SPACE3D=(function(){
   function resize(){
     const d=Math.min(devicePixelRatio||1,2);
     W=cv.clientWidth*d; H=cv.clientHeight*d;
-    cv.width=W; cv.height=H; CX=W/2; CY=H/2; MIN=Math.min(W,H);
+    cv.width=W; cv.height=H; rf.width=W; rf.height=H;
+    CX=W/2; CY=H/2; MIN=Math.min(W,H);
   }
   function frame(t){
     raf=requestAnimationFrame(frame);
-    if (document.body.classList.contains('theater')) { ctx.clearRect(0,0,W,H); return; }
+    if (document.body.classList.contains('theater')) { ctx.clearRect(0,0,W,H); rctx.clearRect(0,0,W,H); return; }
     const doc=document.documentElement;
     const prog = doc.scrollHeight>innerHeight ? scrollY/(doc.scrollHeight-innerHeight) : 0;
     camT = RM ? 0 : prog*DEPTH*2.1;
@@ -2282,6 +2336,41 @@ window.SPACE3D=(function(){
         ctx.lineTo(x - dx/dl*L, y - dy/dl*L); ctx.stroke();
       }
       ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fill();
+    }
+    // ---- 封印都市的雨：雨聲開啟時顯影（音檔模式與劇場不落雨） ----
+    rctx.clearRect(0,0,W,H);
+    const wantRain = !RM && window.RAIN && RAIN.isOn && RAIN.isOn() && RAIN.kind()==='rain';
+    frame._ra = (frame._ra||0) + ((wantRain?1:0) - (frame._ra||0))*0.035;
+    if (frame._ra > 0.012){
+      const k = H/940, WIND=0.18;
+      if (!frame._drops || frame._rw!==W || frame._rh!==H){
+        frame._rw=W; frame._rh=H;
+        const n=Math.min(130, Math.floor((W*H)/(14000*k*k)));
+        const sp=(any)=>({ x:Math.random()*(W+H*WIND)-H*WIND*0.5,
+          y:any?Math.random()*H:-20*k-Math.random()*60*k,
+          l:(9+Math.random()*15)*k, v:(7+Math.random()*6)*k, o:0.05+Math.random()*0.1 });
+        frame._drops=Array.from({length:n},()=>sp(true));
+        frame._sp=sp; frame._spl=[];
+      }
+      rctx.lineCap='round';
+      for(const dr of frame._drops){
+        rctx.strokeStyle=`rgba(190,215,235,${Math.min(0.28, dr.o*frame._ra*1.5).toFixed(3)}`+')';
+        rctx.lineWidth=1*k;
+        rctx.beginPath(); rctx.moveTo(dr.x,dr.y);
+        rctx.lineTo(dr.x-dr.l*WIND, dr.y-dr.l); rctx.stroke();
+        dr.x+=dr.v*WIND; dr.y+=dr.v;
+        if (dr.y>H-2){
+          if (Math.random()<0.3) frame._spl.push({x:dr.x,y:H-1,r:0.5*k,o:dr.o*1.6});
+          Object.assign(dr, frame._sp());
+        }
+      }
+      for(const sl of frame._spl){
+        rctx.strokeStyle=`rgba(190,215,235,${Math.min(0.3, sl.o*frame._ra*1.5).toFixed(3)}`+')';
+        rctx.lineWidth=0.6*k;
+        rctx.beginPath(); rctx.arc(sl.x,sl.y,sl.r,Math.PI,Math.PI*2); rctx.stroke();
+        sl.r+=0.5*k; sl.o-=0.012;
+      }
+      frame._spl=frame._spl.filter(x=>x.o>0);
     }
     // ---- 章節空間編舞 ----
     if (!RM && frame._secs){
