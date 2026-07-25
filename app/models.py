@@ -65,6 +65,9 @@ class Education(Base):
     place_en: Mapped[str] = mapped_column(default="")
     place_zh: Mapped[str] = mapped_column(default="")
     place_ja: Mapped[str] = mapped_column(default="")
+    note_en: Mapped[str] = mapped_column(default="")   # 每行一項
+    note_zh: Mapped[str] = mapped_column(default="")
+    note_ja: Mapped[str] = mapped_column(default="")
 
 
 class SkillGroup(Base):

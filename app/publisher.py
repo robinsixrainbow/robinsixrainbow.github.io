@@ -28,8 +28,10 @@ def build_payload():
         exp = db.query(M.Experience).order_by(M.Experience.sort, M.Experience.id).all()
         for lang in ("en", "zh", "ja"):
             i18n[lang]["education"] = [
-                {"school": getattr(e, f"school_{lang}"), "degree": getattr(e, f"degree_{lang}"),
-                 "date": getattr(e, f"date_{lang}"), "place": getattr(e, f"place_{lang}")} for e in edu]
+                ({"school": getattr(e, f"school_{lang}"), "degree": getattr(e, f"degree_{lang}"),
+                  "date": getattr(e, f"date_{lang}"), "place": getattr(e, f"place_{lang}")}
+                 | ({"note": [ln for ln in getattr(e, f"note_{lang}", "").splitlines() if ln.strip()]}
+                    if getattr(e, f"note_{lang}", "").strip() else {})) for e in edu]
             i18n[lang]["skills"] = [
                 {"ttl": getattr(s, f"ttl_{lang}"),
                  "items": [ln for ln in getattr(s, f"items_{lang}").splitlines() if ln.strip()]} for s in skl]

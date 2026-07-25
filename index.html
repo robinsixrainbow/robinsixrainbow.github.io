@@ -300,6 +300,14 @@ section { margin-top: 104px; position: relative; }
   width: 30px; height: 1px; background: var(--cyan); }
 .edu-item:last-child { border-bottom: none; }
 .edu-school { font-size: 17px; font-weight: 400; color: var(--white); }
+.edu-note { font-size: 12.5px; font-weight: 300; color: rgba(255,255,255,0.55);
+  margin-top: 7px; padding-left: 12px; border-left: 1px solid rgba(40,239,239,0.35);
+  letter-spacing: 0.02em; line-height: 1.7; }
+.edu-note + .edu-note { margin-top: 4px; }
+.edu-item.compact { margin-top: 14px; padding-top: 0; border-top: none; }
+.edu-item.compact .edu-school { font-size: 15.5px; font-weight: 400;
+  color: rgba(255,255,255,0.72); letter-spacing: 0.04em; }
+@media print { .edu-note { color: #444 !important; border-left-color: #999 !important; } }
 .edu-degree { font-size: 14px; color: var(--text-dim); margin-top: 3px; }
 .edu-meta { font-size: 13px; font-weight: 300;
   color: var(--text); text-align: right; white-space: nowrap; }
@@ -1364,7 +1372,11 @@ const I18N = {
            bodies: { sun:"Sun", moon:"Moon", me:"Mercury", ve:"Venus", ma:"Mars", ju:"Jupiter", sa:"Saturn" }, rain: "RAIN", flow: "TIME FLOW", vw: { ttl:"VIEW", chart:"CHART", dome:"SEAT" },
            note: "HYG stars · VSOP87/ELP Sun·Moon·planets (<0.011°, verified) · refraction incl. · planet brightness representative" },
     education: [
-      { school: "National Taiwan University", degree: "Doctor of Biomedical Electronics and Bioinformatics", date: "Sep. 2020 – Aug. 2025", place: "Taipei, Taiwan" },
+      { school: "National Taiwan University", degree: "Doctor of Biomedical Electronics and Bioinformatics", date: "Sep. 2020 – Aug. 2025", place: "Taipei, Taiwan",
+        note: ["Dissertation: Deep Learning for Diagnosis and Prognosis of Lymph Node Metastasis in Head and Neck Cancer — Advisor: Prof. Ruey-Feng Chang",
+               "Best Doctoral Dissertation of the Year — 15th GIBEB Research Innovation Awards"] },
+      { school: "M.S. — Computer Science & Engineering", degree: "", date: "", place: "" },
+      { school: "B.S. — Mathematics", degree: "", date: "", place: "" },
     ],
     skills: [
       { ttl: "AI & Machine Learning", items: ["Medical Image Processing · NLP","Generative AI · RAG · LLM Fine-Tuning","PyTorch · TensorFlow","Radiomics pipelines","Classical CV & segmentation"] },
@@ -1377,6 +1389,13 @@ const I18N = {
       { label: "Postdoc", org: "國立臺灣師範大學" },
     ],
     experience: [
+      { role: "Assistant Professor", date: "Feb. 2026 – Aug. 2026",
+        org: "National Chin-Yi University of Technology",
+        project: "Machine Learning Instruction & Practice-Oriented Project Mentoring",
+        star: { S: "In a university of technology, students enter machine learning courses with uneven programming backgrounds, and conventional lectures often stay theoretical without a bridge to industry practice.",
+                T: "I was responsible for designing and delivering the machine learning curriculum, with the goal of enabling every student to complete a demonstrable AI project by the end of the term.",
+                A: "I rebuilt the course around hands-on projects covering the full pipeline from data preprocessing to model deployment, introduced real-world cases from medical imaging, and mentored students through implementation and public demos.",
+                R: "Students delivered working AI projects in the final showcase, and the experience sharpened my ability to translate industry practice into classroom teaching." } },
       { role: "Algorithm Engineer", date: "Jul. 2020 – Feb. 2026",
         org: "China Medical University Hospital · Artificial Intelligence Center",
         project: "Project 1: Leadership and Execution of Multiple Medical Imaging AI Projects",
@@ -1433,7 +1452,11 @@ const I18N = {
            bodies: { sun:"太陽", moon:"月", me:"水星", ve:"金星", ma:"火星", ju:"木星", sa:"土星" }, rain: "雨聲", flow: "時間流速", vw: { ttl:"視角", chart:"全天圖", dome:"觀席" },
            note: "HYG 恆星 · VSOP87/ELP 太陽月亮行星（<0.011°，已對完整級數驗證）· 含大氣折射與月相 · 行星亮度為代表值" },
     education: [
-      { school: "國立臺灣大學", degree: "生醫電子與資訊學 博士", date: "2020.09 – 2025.08", place: "臺灣・臺北" },
+      { school: "國立臺灣大學", degree: "生醫電子與資訊學 博士", date: "2020.09 – 2025.08", place: "臺灣・臺北",
+        note: ["博士論文：《深度學習用於頭頸癌淋巴結轉移的診斷與預後》｜指導教授：張瑞峰",
+               "年度最佳博士論文獎──第十五屆獎勵研究創新獎"] },
+      { school: "資訊工程 碩士", degree: "", date: "", place: "" },
+      { school: "數學 學士", degree: "", date: "", place: "" },
     ],
     skills: [
       { ttl: "人工智慧與機器學習", items: ["醫學影像處理 · 自然語言處理","生成式 AI · RAG · 大模型微調","PyTorch · TensorFlow","放射組學流程","傳統電腦視覺與影像分割"] },
@@ -1446,6 +1469,13 @@ const I18N = {
       { label: "博士後研究員", org: "國立臺灣師範大學" },
     ],
     experience: [
+      { role: "助理教授", date: "2026.02 – 2026.08",
+        org: "國立勤益科技大學",
+        project: "機器學習課程教學與實務專題指導",
+        star: { S: "技職體系學生的程式基礎參差，機器學習課程若停留在理論推導，難以連結產業實務、也難讓每位學生真正動手。",
+                T: "我負責機器學習相關課程之設計與授課，目標是讓不同基礎的學生都能在學期內完成一件可展示的 AI 專題。",
+                A: "以實務專案導向重構課程——涵蓋資料前處理到模型部署的完整流程，引入醫學影像等真實案例，並逐組指導實作與成果發表。",
+                R: "學生於期末公開展示可運行之 AI 專題；此段教學亦深化了我將產業實務轉譯為課堂內容的能力。" } },
       { role: "演算法工程師", date: "2020.07 – 2026.02",
         org: "中國醫藥大學附設醫院 · 人工智慧中心",
         project: "專案一：多項醫學影像 AI 專案之領導與執行",
@@ -1502,7 +1532,11 @@ const I18N = {
            bodies: { sun:"太陽", moon:"月", me:"水星", ve:"金星", ma:"火星", ju:"木星", sa:"土星" }, rain: "雨音", flow: "時の流れ", vw: { ttl:"視点", chart:"全天図", dome:"観席" },
            note: "HYG 恒星 · VSOP87/ELP 太陽・月・惑星（<0.011°、完全級数で検証済）· 大気差・月相含む · 惑星光度は代表値" },
     education: [
-      { school: "国立台湾大学", degree: "生体医工学・バイオインフォマティクス 博士", date: "2020年9月 – 2025年8月", place: "台湾・台北" },
+      { school: "国立台湾大学", degree: "生体医工学・バイオインフォマティクス 博士", date: "2020年9月 – 2025年8月", place: "台湾・台北",
+        note: ["博士論文：『頭頸部癌リンパ節転移の診断と予後予測のための深層学習』｜指導教員：張瑞峰 教授",
+               "年度最優秀博士論文賞──第15回研究革新奨励賞"] },
+      { school: "情報工学 修士", degree: "", date: "", place: "" },
+      { school: "数学 学士", degree: "", date: "", place: "" },
     ],
     skills: [
       { ttl: "AI・機械学習", items: ["医用画像処理 · 自然言語処理","生成 AI · RAG · LLM ファインチューニング","PyTorch · TensorFlow","ラジオミクス・パイプライン","古典的 CV・領域分割"] },
@@ -1515,6 +1549,13 @@ const I18N = {
       { label: "博士研究員", org: "国立台湾師範大学" },
     ],
     experience: [
+      { role: "助理教授", date: "2026年2月 – 2026年8月",
+        org: "国立勤益科技大学",
+        project: "機械学習の講義と実務志向プロジェクト指導",
+        star: { S: "技術系大学の学生はプログラミングの基礎にばらつきがあり、理論中心の機械学習講義では産業実務との橋渡しが難しい状況でした。",
+                T: "機械学習関連科目の設計と講義を担当し、学期内に全学生がデモ可能な AI プロジェクトを完成させることを目標としました。",
+                A: "データ前処理からモデルデプロイまでの全工程を扱う実務プロジェクト型に講義を再構成し、医用画像などの実例を導入、実装から成果発表まで各グループを指導しました。",
+                R: "学期末には学生が動作する AI プロジェクトを公開発表。産業実務を教室の学びへ翻訳する力を一段と深めた経験となりました。" } },
       { role: "アルゴリズムエンジニア", date: "2020年7月 – 2026年2月",
         org: "中国医薬大学附設病院 · 人工知能センター",
         project: "プロジェクト1：複数の医用画像 AI プロジェクトの統括と遂行",
@@ -1626,10 +1667,11 @@ const edges = '<span class="edge edge-t"></span><span class="edge edge-l"></span
 
 function renderCV(){
 $('education').innerHTML = CV.education.map(e=>`
-  <div class="edu-item">
+  <div class="edu-item${(!e.degree && !e.date) ? ' compact' : ''}">
     <div>
       <div class="edu-school">${e.school}</div>
       <div class="edu-degree">${e.degree}</div>
+      ${(e.note||[]).map(n=>`<div class="edu-note">${n}</div>`).join('')}
     </div>
     <div class="edu-meta">${e.date}<span class="place">${e.place}</span></div>
   </div>`).join('');
